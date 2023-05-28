@@ -1,0 +1,118 @@
+{
+  "@context": {
+    "dbp": "http://exdata.co.jp/dbp/schema/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "https://schema.org/"
+  },
+  "@graph": [
+    {
+      "@id": "dbp:RealWorldDataset",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "A body of structured information describing a real world data.",
+      "rdfs:label": "RealWorldDataset",
+      "rdfs:subClassOf": {
+        "@id": "schema:Dataset"
+      }
+    },
+    {
+      "@id": "dbp:structureInfo",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A structure information of a dataset itself. A value of this property should be a JSON text or an URL for JSON text that represents a structure information of the dataset.",
+      "rdfs:label": "structureInfo",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataset"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "schema:URL"
+        },
+        {
+          "@id": "schema:Text"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:generatedFrom",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A source dataset from that a dataset was created.",
+      "rdfs:label": "generatedFrom",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataset"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataset"
+      }
+    },
+    {
+      "@id": "dbp:generatedUsing",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A sensor or a brewer that generated a dataset.",
+      "rdfs:label": "generatedUsing",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataset"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "schema:URL"
+        },
+        {
+          "@id": "schema:Text"
+        },
+        {
+          "@id": "dbp:RealWorldDataBrewer"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:RealWorldDataStructure",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "A structure information of a real world data itself.",
+      "rdfs:label": "RealWorldDataStructure",
+      "rdfs:subClassOf": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:structureItems",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A list of structure item.",
+      "rdfs:label": "structureItems",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructure"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataStructureItem"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataStructureItem",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "An item that describe each data entry in a real world dataset.",
+      "rdfs:label": "RealWorldDataStructureItem",
+      "rdfs:subClassOf": {
+        "@id": "schema:Property"
+      }
+    },
+    {
+      "@id": "dbp:structurePath",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A path text of a data entry in a real world dataset.",
+      "rdfs:label": "structurePath",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureItem"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataBrewer",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "A structure information of a microprogram that convert a real world data into another form.",
+      "rdfs:label": "RealWorldDataBrewer",
+      "rdfs:subClassOf": {
+        "@id": "schema:SoftwareApplication"
+      }
+    }
+  ]
+}
