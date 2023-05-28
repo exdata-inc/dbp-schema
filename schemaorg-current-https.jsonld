@@ -106,6 +106,18 @@
       }
     },
     {
+      "@id": "dbp:itemType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A type of a data entry in a real world dataset.",
+      "rdfs:label": "itemType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureItem"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:DataType"
+      }
+    },
+    {
       "@id": "dbp:RealWorldDataBrewer",
       "@type": "rdfs:Class",
       "rdfs:comment": "A structure information of a microprogram that convert a real world data into another form.",
