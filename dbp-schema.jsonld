@@ -170,6 +170,84 @@
       "rdfs:subClassOf": {
         "@id": "schema:SoftwareApplication"
       }
+    },
+    {
+      "@id": "dbp:inputType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A type of an input data entry in a real world dataset.",
+      "rdfs:label": "itemType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewer"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:DataType"
+      }
+    },
+    {
+      "@id": "dbp:inputCharacteristic",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A characteristic of an input data entry in a real world dataset.",
+      "rdfs:label": "itemType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewer"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:VariableCharacteristicEnumeration"
+      }
+    },
+    {
+      "@id": "dbp:VariableCharacteristicEnumeration",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "Enumerates value characteristics, such as qualitative or quantitative.",
+      "rdfs:label": "VariableCharacteristicEnumeration",
+      "rdfs:subClassOf": {
+        "@id": "schema:Enumeration"
+      }
+    },
+    {
+      "@id": "dbp:conversionCharacteristic",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A characteristic of a conversion done by the brewer.",
+      "rdfs:label": "itemType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewer"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:ConversionCharacteristicEnumeration"
+      }
+    },
+    {
+      "@id": "dbp:ConversionCharacteristicEnumeration",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "Enumerates conversion characteristics, such as single-value-replace, col-merge, or row-merge.",
+      "rdfs:label": "ConversionCharacteristicEnumeration",
+      "rdfs:subClassOf": {
+        "@id": "schema:Enumeration"
+      }
+    },
+    {
+      "@id": "dbp:outputType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A type of an output data entry in a real world dataset.",
+      "rdfs:label": "itemType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewer"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:DataType"
+      }
+    },
+    {
+      "@id": "dbp:outputCharacteristic",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A characteristic of an output data entry in a real world dataset.",
+      "rdfs:label": "itemType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewer"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:VariableCharacteristicEnumeration"
+      }
     }
   ]
 }
