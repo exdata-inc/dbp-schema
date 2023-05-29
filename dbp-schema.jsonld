@@ -64,6 +64,18 @@
       ]
     },
     {
+      "@id": "dbp:collectionInfo",
+      "@type": "rdf:Property",
+      "rdfs:comment": "An information for collecting a real world data.",
+      "rdfs:label": "collectionInfo",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataset"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataCollectionInfo"
+      }
+    },
+    {
       "@id": "dbp:RealWorldDataStructure",
       "@type": "rdfs:Class",
       "rdfs:comment": "A structure information of a real world data itself.",
@@ -115,6 +127,39 @@
       },
       "schema:rangeIncludes": {
         "@id": "schema:DataType"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataCollectionInfo",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "An information for collecting a real world data.",
+      "rdfs:label": "RealWorldDataCollectionInfo",
+      "rdfs:subClassOf": {
+        "@id": "schema:EntryPoint"
+      }
+    },
+    {
+      "@id": "dbp:collectionStyle",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A style of data collection (Server, Client, Pub/Sub).",
+      "rdfs:label": "collectionStyle",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataCollectionInfo"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:collectionProtocol",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A protocol of data collection (HTTP, HTTPS, FTP, etc.).",
+      "rdfs:label": "collectionProtocol",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataCollectionInfo"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
       }
     },
     {
