@@ -168,7 +168,7 @@
       "rdfs:comment": "An information for collecting a real world data.",
       "rdfs:label": "RealWorldDataCollectionInfo",
       "rdfs:subClassOf": {
-        "@id": "schema:EntryPoint"
+        "@id": "schema:CreativeWork"
       }
     },
     {
@@ -193,6 +193,18 @@
       },
       "schema:rangeIncludes": {
         "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:entryPoint",
+      "@type": "rdf:Property",
+      "rdfs:comment": "An entryPoint of data collection (action_application, url).",
+      "rdfs:label": "entryPoint",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataCollectionInfo"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:EntryPoint"
       }
     },
     {
