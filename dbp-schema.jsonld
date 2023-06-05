@@ -64,6 +64,39 @@
       ]
     },
     {
+      "@id": "dbp:generatedArgs",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Arguments that were passed to a brewer to generate this dataset.",
+      "rdfs:label": "generatedArgs",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataset"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataBrewingArgument"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataBrewingArgument",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "An argument that was passed to a brewer to generate a dataset from another.",
+      "rdfs:label": "RealWorldDataset",
+      "rdfs:subClassOf": {
+        "@id": "schema:PropertyValue"
+      }
+    },
+    {
+      "@id": "dbp:argumentType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A type of an argument passed to a brewer.",
+      "rdfs:label": "argumentType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewingArgument"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:DataType"
+      }
+    },
+    {
       "@id": "dbp:collectionInfo",
       "@type": "rdf:Property",
       "rdfs:comment": "An information for collecting a real world data.",
@@ -175,7 +208,7 @@
       "@id": "dbp:inputType",
       "@type": "rdf:Property",
       "rdfs:comment": "A type of an input data entry in a real world dataset.",
-      "rdfs:label": "itemType",
+      "rdfs:label": "inputType",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataBrewer"
       },
@@ -187,7 +220,7 @@
       "@id": "dbp:inputCharacteristic",
       "@type": "rdf:Property",
       "rdfs:comment": "A characteristic of an input data entry in a real world dataset.",
-      "rdfs:label": "itemType",
+      "rdfs:label": "inputCharacteristic",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataBrewer"
       },
@@ -205,10 +238,22 @@
       }
     },
     {
+      "@id": "dbp:conversionArguments",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Arguments of data brewer.",
+      "rdfs:label": "conversionArguments",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewer"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:PropertyValue"
+      }
+    },
+    {
       "@id": "dbp:conversionCharacteristic",
       "@type": "rdf:Property",
       "rdfs:comment": "A characteristic of a conversion done by the brewer.",
-      "rdfs:label": "itemType",
+      "rdfs:label": "conversionCharacteristic",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataBrewer"
       },
@@ -229,7 +274,7 @@
       "@id": "dbp:outputType",
       "@type": "rdf:Property",
       "rdfs:comment": "A type of an output data entry in a real world dataset.",
-      "rdfs:label": "itemType",
+      "rdfs:label": "outputType",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataBrewer"
       },
@@ -241,7 +286,7 @@
       "@id": "dbp:outputCharacteristic",
       "@type": "rdf:Property",
       "rdfs:comment": "A characteristic of an output data entry in a real world dataset.",
-      "rdfs:label": "itemType",
+      "rdfs:label": "outputCharacteristic",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataBrewer"
       },
