@@ -208,6 +208,30 @@
       }
     },
     {
+      "@id": "dbp:listenAddress",
+      "@type": "rdf:Property",
+      "rdfs:comment": "An listen address for data collection (url).",
+      "rdfs:label": "listenAddress",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataCollectionInfo"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:serverAddress",
+      "@type": "rdf:Property",
+      "rdfs:comment": "An server address for data collection (url).",
+      "rdfs:label": "serverAddress",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataCollectionInfo"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
       "@id": "dbp:RealWorldDataBrewer",
       "@type": "rdfs:Class",
       "rdfs:comment": "A structure information of a microprogram that convert a real world data into another form.",
