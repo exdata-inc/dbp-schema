@@ -7,41 +7,56 @@ package dbp_schema;
 // import "google/protobuf/timestamp.proto";
 
 message RealWorldDataset {
-    string structureInfo = 1;
-    repeated RealWorldDataset generatedFrom = 2;
-    optional RealWorldDataBrewer generatedUsing = 3;
-    repeated RealWorldDataBrewingArgument generatedArgs = 4;
-    optional RealWorldDataCollectionInfo collectionInfo = 5;
+    optional string identifier = 1;
+    optional string name = 2;
+    optional string url = 3;
+    string structureInfo = 4;
+    repeated RealWorldDataset generatedFrom = 5;
+    optional RealWorldDataBrewer generatedUsing = 6;
+    repeated RealWorldDataBrewingArgument generatedArgs = 7;
+    optional RealWorldDataCollectionInfo collectionInfo = 8;
 }
 
 message RealWorldDataBrewerInput {
-    string key = 1;
-    optional string inputType = 2;
-    optional bytes value = 3;
-    VariableCharacteristicEnumeration inputCharacteristic = 4;
+    optional string identifier = 1;
+    optional string name = 2;
+    optional string url = 3;
+    string key = 4;
+    optional string inputType = 5;
+    optional bytes value = 6;
+    VariableCharacteristicEnumeration inputCharacteristic = 7;
 }
 
 message RealWorldDataBrewerOutput {
-    string key = 1;
-    optional string outputType = 2;
-    optional bytes value = 3;
-    VariableCharacteristicEnumeration outputCharacteristic = 4;
+    optional string identifier = 1;
+    optional string name = 2;
+    optional string url = 3;
+    string key = 4;
+    optional string outputType = 5;
+    optional bytes value = 6;
+    VariableCharacteristicEnumeration outputCharacteristic = 7;
 }
 
 message RealWorldDataBrewingArgument {
-    string key = 1;
-    optional string argumentType = 2;
-    optional bytes value = 3;
+    optional string identifier = 1;
+    optional string name = 2;
+    optional string url = 3;
+    string key = 4;
+    optional string argumentType = 5;
+    optional bytes value = 6;
 }
 
 message RealWorldDataBrewer {
-    string structureInfo = 1;
-    RealWorldDataset generatedFrom = 2;
-    RealWorldDataBrewer generatedUsing = 3;
-    repeated RealWorldDataBrewerInput inputSpecs = 4;
-    repeated RealWorldDataBrewerOutput outputSpecs = 5;
-    repeated RealWorldDataBrewingArgument argSpecs = 6;
-    ConversionCharacteristicEnumeration conversionCharacteristic = 7;
+    optional string identifier = 1;
+    optional string name = 2;
+    optional string url = 3;
+    string structureInfo = 4;
+    RealWorldDataset generatedFrom = 5;
+    RealWorldDataBrewer generatedUsing = 6;
+    repeated RealWorldDataBrewerInput inputSpecs = 7;
+    repeated RealWorldDataBrewerOutput outputSpecs = 8;
+    repeated RealWorldDataBrewingArgument argSpecs = 9;
+    ConversionCharacteristicEnumeration conversionCharacteristic = 10;
 }
 
 enum ConversionCharacteristicEnumeration {
@@ -58,8 +73,48 @@ enum VariableCharacteristicEnumeration {
 }
 
 message RealWorldDataCollectionInfo {
-    string collectionStyle = 1;
-    string collectionProtocol = 2;
-    string listenAddress = 3;
-    string serverAddres = 4;
+    optional string identifier = 1;
+    optional string name = 2;
+    optional string url = 3;
+    string collectionStyle = 4;
+    string collectionProtocol = 5;
+    optional string listenAddress = 6;
+    optional string serverAddres = 7;
+    optional EntryPoint entryPoint = 8;
+}
+
+message EntryPoint {  // https://schema.org/EntryPoint
+    optional string actionApplication = 1;
+    optional string actionPlatform = 2;
+    optional string contentType = 3;
+    optional string encodingType = 4;
+    optional string httpMethod = 5;
+    optional string urlTemplate = 6;
+    optional string additionalType = 7;
+    optional string alternateName = 8;
+    optional string description = 9;
+    optional string disambiguatingDescription = 10;
+    optional string identifier = 11;
+    optional string image = 12;
+    optional string mainEntityOfPage = 13;
+    optional string name = 14;
+    optional string potentialAction = 15;
+    optional string sameAs = 16;
+    optional string subjectOf = 17;
+    optional string url = 18;
+}
+
+message Thing {  // https://schema.org/Thing
+    optional string additionalType = 1;
+    optional string alternateName = 2;
+    optional string description = 3;
+    optional string disambiguatingDescription = 4;
+    optional string identifier = 5;
+    optional string image = 6;
+    optional string mainEntityOfPage = 7;
+    optional string name = 8;
+    optional string potentialAction = 9;
+    optional string sameAs = 10;
+    optional string subjectOf = 11;
+    optional string url = 12;
 }
