@@ -1,0 +1,15 @@
+[package]
+name = "dbp_schema"
+version = "0.0.1"
+edition = "2021"
+
+[build-dependencies]
+git2 = "0.17.2"
+protobuf-codegen = "3.2.0"
+protoc-bin-vendored = "3.0.0"
+tonic-build = "0.9.2"
+
+[dependencies]
+prost = "0.11.9"
+prost-types = "0.11.9"
+tonic = "0.9.2"

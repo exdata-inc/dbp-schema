@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package dbp_schema;
+
+//option go_package="github.com/synerex/proto_json";
+
+// import "google/protobuf/timestamp.proto";
+
+message RealWorldDataset {
+    string structureInfo = 1;
+    repeated RealWorldDataset generatedFrom = 2;
+    optional RealWorldDataBrewer generatedUsing = 3;
+    repeated RealWorldDataBrewingArgument generatedArgs = 4;
+    optional RealWorldDataCollectionInfo collectionInfo = 5;
+}
+
+message RealWorldDataBrewerInput {
+    string key = 1;
+    optional string inputType = 2;
+    optional bytes value = 3;
+    VariableCharacteristicEnumeration inputCharacteristic = 4;
+}
+
+message RealWorldDataBrewerOutput {
+    string key = 1;
+    optional string outputType = 2;
+    optional bytes value = 3;
+    VariableCharacteristicEnumeration outputCharacteristic = 4;
+}
+
+message RealWorldDataBrewingArgument {
+    string key = 1;
+    optional string argumentType = 2;
+    optional bytes value = 3;
+}
+
+message RealWorldDataBrewer {
+    string structureInfo = 1;
+    RealWorldDataset generatedFrom = 2;
+    RealWorldDataBrewer generatedUsing = 3;
+    repeated RealWorldDataBrewerInput inputSpecs = 4;
+    repeated RealWorldDataBrewerOutput outputSpecs = 5;
+    repeated RealWorldDataBrewingArgument argSpecs = 6;
+    ConversionCharacteristicEnumeration conversionCharacteristic = 7;
+}
+
+enum ConversionCharacteristicEnumeration {
+    // option allow_alias = true;
+    SINGLE_VALUE_REPLACE = 0;
+    COL_MERGE = 1;
+    ROW_MERGE = 2;
+}
+
+enum VariableCharacteristicEnumeration {
+    // option allow_alias = true;
+    QUALITATIVE = 0;
+    QUANTITATIVE = 1;
+}
+
+message RealWorldDataCollectionInfo {
+    string collectionStyle = 1;
+    string collectionProtocol = 2;
+    string listenAddress = 3;
+    string serverAddres = 4;
+}
