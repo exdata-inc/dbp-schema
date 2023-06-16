@@ -4,7 +4,7 @@ package dbp_schema;
 
 //option go_package="github.com/synerex/proto_json";
 
-// import "google/protobuf/timestamp.proto";
+import "google/protobuf/timestamp.proto";
 
 message RealWorldDataset {
     optional string identifier = 1;
@@ -15,6 +15,15 @@ message RealWorldDataset {
     optional RealWorldDataBrewer generatedUsing = 6;
     repeated RealWorldDataBrewingArgument generatedArgs = 7;
     optional RealWorldDataCollectionInfo collectionInfo = 8;
+    string distribution = 9;
+    optional string author = 10;
+    optional string contentLocation = 11;
+    optional google.protobuf.Timestamp dateCreated = 12;
+    optional google.protobuf.Timestamp dateModified = 13;
+    optional google.protobuf.Timestamp datePublished = 14;
+    optional string license = 15;
+    optional string locationCreated = 16;
+    optional string description = 17;
 }
 
 message RealWorldDataBrewerInput {
@@ -117,4 +126,8 @@ message Thing {  // https://schema.org/Thing
     optional string sameAs = 10;
     optional string subjectOf = 11;
     optional string url = 12;
+}
+
+message RealWorldDataBrewEvent {
+
 }
