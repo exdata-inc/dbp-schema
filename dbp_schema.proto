@@ -7,7 +7,7 @@ package dbp_schema;
 import "google/protobuf/timestamp.proto";
 
 message RealWorldDataset {
-    optional string identifier = 1;
+    optional string id = 1;
     optional string name = 2;
     optional string url = 3;
     string structureInfo = 4;
@@ -27,7 +27,7 @@ message RealWorldDataset {
 }
 
 message RealWorldDataBrewerInput {
-    optional string identifier = 1;
+    optional string id = 1;
     optional string name = 2;
     optional string url = 3;
     string key = 4;
@@ -37,7 +37,7 @@ message RealWorldDataBrewerInput {
 }
 
 message RealWorldDataBrewerOutput {
-    optional string identifier = 1;
+    optional string id = 1;
     optional string name = 2;
     optional string url = 3;
     string key = 4;
@@ -47,7 +47,7 @@ message RealWorldDataBrewerOutput {
 }
 
 message RealWorldDataBrewingArgument {
-    optional string identifier = 1;
+    optional string id = 1;
     optional string name = 2;
     optional string url = 3;
     string key = 4;
@@ -56,7 +56,7 @@ message RealWorldDataBrewingArgument {
 }
 
 message RealWorldDataBrewer {
-    optional string identifier = 1;
+    optional string id = 1;
     optional string name = 2;
     optional string url = 3;
     string structureInfo = 4;
@@ -82,7 +82,7 @@ enum VariableCharacteristicEnumeration {
 }
 
 message RealWorldDataCollectionInfo {
-    optional string identifier = 1;
+    optional string id = 1;
     optional string name = 2;
     optional string url = 3;
     string collectionStyle = 4;
@@ -103,7 +103,7 @@ message EntryPoint {  // https://schema.org/EntryPoint
     optional string alternateName = 8;
     optional string description = 9;
     optional string disambiguatingDescription = 10;
-    optional string identifier = 11;
+    optional string id = 11;
     optional string image = 12;
     optional string mainEntityOfPage = 13;
     optional string name = 14;
@@ -118,7 +118,7 @@ message Thing {  // https://schema.org/Thing
     optional string alternateName = 2;
     optional string description = 3;
     optional string disambiguatingDescription = 4;
-    optional string identifier = 5;
+    optional string id = 5;
     optional string image = 6;
     optional string mainEntityOfPage = 7;
     optional string name = 8;

@@ -2,7 +2,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataset {
     #[prost(string, optional, tag = "1")]
-    pub identifier: ::core::option::Option<::prost::alloc::string::String>,
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
@@ -42,7 +42,7 @@ pub struct RealWorldDataset {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataBrewerInput {
     #[prost(string, optional, tag = "1")]
-    pub identifier: ::core::option::Option<::prost::alloc::string::String>,
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
@@ -60,7 +60,7 @@ pub struct RealWorldDataBrewerInput {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataBrewerOutput {
     #[prost(string, optional, tag = "1")]
-    pub identifier: ::core::option::Option<::prost::alloc::string::String>,
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
@@ -78,7 +78,7 @@ pub struct RealWorldDataBrewerOutput {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataBrewingArgument {
     #[prost(string, optional, tag = "1")]
-    pub identifier: ::core::option::Option<::prost::alloc::string::String>,
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
@@ -94,7 +94,7 @@ pub struct RealWorldDataBrewingArgument {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataBrewer {
     #[prost(string, optional, tag = "1")]
-    pub identifier: ::core::option::Option<::prost::alloc::string::String>,
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
@@ -122,7 +122,7 @@ pub struct RealWorldDataBrewer {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataCollectionInfo {
     #[prost(string, optional, tag = "1")]
-    pub identifier: ::core::option::Option<::prost::alloc::string::String>,
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
@@ -165,7 +165,7 @@ pub struct EntryPoint {
         ::prost::alloc::string::String,
     >,
     #[prost(string, optional, tag = "11")]
-    pub identifier: ::core::option::Option<::prost::alloc::string::String>,
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "12")]
     pub image: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "13")]
@@ -196,7 +196,7 @@ pub struct Thing {
         ::prost::alloc::string::String,
     >,
     #[prost(string, optional, tag = "5")]
-    pub identifier: ::core::option::Option<::prost::alloc::string::String>,
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "6")]
     pub image: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "7")]
