@@ -10,12 +10,12 @@ message RealWorldDataset {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    string structureInfo = 4;
+    optional string structureInfo = 4;
     repeated RealWorldDataset generatedFrom = 5;
     optional RealWorldDataBrewer generatedUsing = 6;
     repeated RealWorldDataBrewingArgument generatedArgs = 7;
     optional RealWorldDataCollectionInfo collectionInfo = 8;
-    string distribution = 9;
+    optional string distribution = 9;
     optional string author = 10;
     optional string contentLocation = 11;
     optional google.protobuf.Timestamp dateCreated = 12;
@@ -30,27 +30,27 @@ message RealWorldDataBrewerInput {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    string key = 4;
+    optional string key = 4;
     optional string inputType = 5;
     optional bytes value = 6;
-    VariableCharacteristicEnumeration inputCharacteristic = 7;
+    optional VariableCharacteristicEnumeration inputCharacteristic = 7;
 }
 
 message RealWorldDataBrewerOutput {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    string key = 4;
+    optional string key = 4;
     optional string outputType = 5;
     optional bytes value = 6;
-    VariableCharacteristicEnumeration outputCharacteristic = 7;
+    optional VariableCharacteristicEnumeration outputCharacteristic = 7;
 }
 
 message RealWorldDataBrewingArgument {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    string key = 4;
+    optional string key = 4;
     optional string argumentType = 5;
     optional bytes value = 6;
 }
@@ -59,13 +59,13 @@ message RealWorldDataBrewer {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    string structureInfo = 4;
-    RealWorldDataset generatedFrom = 5;
-    RealWorldDataBrewer generatedUsing = 6;
+    optional string structureInfo = 4;
+    optional RealWorldDataset generatedFrom = 5;
+    optional RealWorldDataBrewer generatedUsing = 6;
     repeated RealWorldDataBrewerInput inputSpecs = 7;
     repeated RealWorldDataBrewerOutput outputSpecs = 8;
     repeated RealWorldDataBrewingArgument argSpecs = 9;
-    ConversionCharacteristicEnumeration conversionCharacteristic = 10;
+    optional ConversionCharacteristicEnumeration conversionCharacteristic = 10;
 }
 
 enum ConversionCharacteristicEnumeration {
@@ -85,8 +85,8 @@ message RealWorldDataCollectionInfo {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    string collectionStyle = 4;
-    string collectionProtocol = 5;
+    optional string collectionStyle = 4;
+    optional string collectionProtocol = 5;
     optional string listenAddress = 6;
     optional string serverAddres = 7;
     optional EntryPoint entryPoint = 8;
