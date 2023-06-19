@@ -10,16 +10,16 @@ message RealWorldDataset {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional string structureInfo = 4;
+    optional RealWorldDataStructureInfo structureInfo = 4;
     repeated RealWorldDataset generatedFrom = 5;
     optional RealWorldDataBrewer generatedUsing = 6;
     repeated RealWorldDataBrewingArgument generatedArgs = 7;
     optional RealWorldDataCollectionInfo collectionInfo = 8;
-    optional string distribution = 9;
-    optional string author = 10;
-    optional string contentLocation = 11;
-    optional google.protobuf.Timestamp dateCreated = 12;
-    optional google.protobuf.Timestamp dateModified = 13;
+    optional RealWorldDataStoringInfo distribution = 9;         // データの保存先
+    optional string author = 10;                                // データを集めている主体
+    optional string contentLocation = 11;                       // データを集めている場所
+    optional google.protobuf.Timestamp dateCreated = 12;        // データを集め始めた日時
+    optional google.protobuf.Timestamp dateModified = 13;       // 最新のデータを集め始めた日時
     optional google.protobuf.Timestamp datePublished = 14;
     optional string license = 15;
     optional string locationCreated = 16;
@@ -130,4 +130,31 @@ message Thing {  // https://schema.org/Thing
 
 message RealWorldDataBrewEvent {
 
+}
+
+message RealWorldDataStructureInfo {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional string encodingFormat = 4;
+    repeated RealWorldDataStructureItem structureItems = 5;
+}
+
+message RealWorldDataStructureItem {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional string structurePath = 4;
+    optional string itemType = 5;
+    optional string itemVocab = 6;
+}
+
+message RealWorldDataStoringInfo {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional google.protobuf.Timestamp startTime = 4;
+    optional google.protobuf.Timestamp endTime = 5;
+    optional string baseUrl = 6;
+    optional string pattern = 7;
 }

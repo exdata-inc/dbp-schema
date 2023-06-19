@@ -7,8 +7,8 @@ pub struct RealWorldDataset {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, tag = "4")]
-    pub structure_info: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "4")]
+    pub structure_info: ::core::option::Option<RealWorldDataStructureInfo>,
     #[prost(message, repeated, tag = "5")]
     pub generated_from: ::prost::alloc::vec::Vec<RealWorldDataset>,
     #[prost(message, optional, boxed, tag = "6")]
@@ -19,14 +19,19 @@ pub struct RealWorldDataset {
     pub generated_args: ::prost::alloc::vec::Vec<RealWorldDataBrewingArgument>,
     #[prost(message, optional, tag = "8")]
     pub collection_info: ::core::option::Option<RealWorldDataCollectionInfo>,
-    #[prost(string, tag = "9")]
-    pub distribution: ::prost::alloc::string::String,
+    /// データの保存先
+    #[prost(message, optional, tag = "9")]
+    pub distribution: ::core::option::Option<RealWorldDataStoringInfo>,
+    /// データを集めている主体
     #[prost(string, optional, tag = "10")]
     pub author: ::core::option::Option<::prost::alloc::string::String>,
+    /// データを集めている場所
     #[prost(string, optional, tag = "11")]
     pub content_location: ::core::option::Option<::prost::alloc::string::String>,
+    /// データを集め始めた日時
     #[prost(message, optional, tag = "12")]
     pub date_created: ::core::option::Option<::prost_types::Timestamp>,
+    /// 最新のデータを集め始めた日時
     #[prost(message, optional, tag = "13")]
     pub date_modified: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(message, optional, tag = "14")]
@@ -47,14 +52,14 @@ pub struct RealWorldDataBrewerInput {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, tag = "4")]
-    pub key: ::prost::alloc::string::String,
+    #[prost(string, optional, tag = "4")]
+    pub key: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "5")]
     pub input_type: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(bytes = "vec", optional, tag = "6")]
     pub value: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
-    #[prost(enumeration = "VariableCharacteristicEnumeration", tag = "7")]
-    pub input_characteristic: i32,
+    #[prost(enumeration = "VariableCharacteristicEnumeration", optional, tag = "7")]
+    pub input_characteristic: ::core::option::Option<i32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -65,14 +70,14 @@ pub struct RealWorldDataBrewerOutput {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, tag = "4")]
-    pub key: ::prost::alloc::string::String,
+    #[prost(string, optional, tag = "4")]
+    pub key: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "5")]
     pub output_type: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(bytes = "vec", optional, tag = "6")]
     pub value: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
-    #[prost(enumeration = "VariableCharacteristicEnumeration", tag = "7")]
-    pub output_characteristic: i32,
+    #[prost(enumeration = "VariableCharacteristicEnumeration", optional, tag = "7")]
+    pub output_characteristic: ::core::option::Option<i32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -83,8 +88,8 @@ pub struct RealWorldDataBrewingArgument {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, tag = "4")]
-    pub key: ::prost::alloc::string::String,
+    #[prost(string, optional, tag = "4")]
+    pub key: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "5")]
     pub argument_type: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(bytes = "vec", optional, tag = "6")]
@@ -99,8 +104,8 @@ pub struct RealWorldDataBrewer {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, tag = "4")]
-    pub structure_info: ::prost::alloc::string::String,
+    #[prost(string, optional, tag = "4")]
+    pub structure_info: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(message, optional, boxed, tag = "5")]
     pub generated_from: ::core::option::Option<
         ::prost::alloc::boxed::Box<RealWorldDataset>,
@@ -115,8 +120,8 @@ pub struct RealWorldDataBrewer {
     pub output_specs: ::prost::alloc::vec::Vec<RealWorldDataBrewerOutput>,
     #[prost(message, repeated, tag = "9")]
     pub arg_specs: ::prost::alloc::vec::Vec<RealWorldDataBrewingArgument>,
-    #[prost(enumeration = "ConversionCharacteristicEnumeration", tag = "10")]
-    pub conversion_characteristic: i32,
+    #[prost(enumeration = "ConversionCharacteristicEnumeration", optional, tag = "10")]
+    pub conversion_characteristic: ::core::option::Option<i32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -127,10 +132,10 @@ pub struct RealWorldDataCollectionInfo {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, tag = "4")]
-    pub collection_style: ::prost::alloc::string::String,
-    #[prost(string, tag = "5")]
-    pub collection_protocol: ::prost::alloc::string::String,
+    #[prost(string, optional, tag = "4")]
+    pub collection_style: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "5")]
+    pub collection_protocol: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "6")]
     pub listen_address: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "7")]
@@ -215,6 +220,54 @@ pub struct Thing {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataBrewEvent {}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataStructureInfo {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "4")]
+    pub encoding_format: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(message, repeated, tag = "5")]
+    pub structure_items: ::prost::alloc::vec::Vec<RealWorldDataStructureItem>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataStructureItem {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "4")]
+    pub structure_path: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "5")]
+    pub item_type: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "6")]
+    pub item_vocab: ::core::option::Option<::prost::alloc::string::String>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataStoringInfo {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(message, optional, tag = "4")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(message, optional, tag = "5")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(string, optional, tag = "6")]
+    pub base_url: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "7")]
+    pub pattern: ::core::option::Option<::prost::alloc::string::String>,
+}
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ConversionCharacteristicEnumeration {
