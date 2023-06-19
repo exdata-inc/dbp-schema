@@ -139,7 +139,7 @@ pub struct RealWorldDataCollectionInfo {
     #[prost(string, optional, tag = "6")]
     pub listen_address: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "7")]
-    pub server_addres: ::core::option::Option<::prost::alloc::string::String>,
+    pub server_address: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(message, optional, tag = "8")]
     pub entry_point: ::core::option::Option<EntryPoint>,
 }

@@ -88,7 +88,7 @@ message RealWorldDataCollectionInfo {
     optional string collectionStyle = 4;
     optional string collectionProtocol = 5;
     optional string listenAddress = 6;
-    optional string serverAddres = 7;
+    optional string serverAddress = 7;
     optional EntryPoint entryPoint = 8;
 }
 
