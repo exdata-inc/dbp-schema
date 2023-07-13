@@ -5,6 +5,7 @@ package dbp_schema;
 //option go_package="github.com/synerex/proto_json";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
 
 message RealWorldDataset {
     optional string id = 1;
