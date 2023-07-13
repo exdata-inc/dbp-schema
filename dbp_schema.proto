@@ -12,7 +12,7 @@ message RealWorldDataset {
     optional string url = 3;
     optional RealWorldDataStructureInfo structureInfo = 4;
     repeated RealWorldDataset generatedFrom = 5;
-    optional RealWorldDataBrewer generatedUsing = 6;
+    optional RealWorldDataBrewerInfo generatedUsing = 6;
     repeated RealWorldDataBrewingArgument generatedArgs = 7;
     optional RealWorldDataCollectionInfo collectionInfo = 8;
     optional RealWorldDataStoringInfo distribution = 9;         // データの保存先
@@ -55,17 +55,14 @@ message RealWorldDataBrewingArgument {
     optional bytes value = 6;
 }
 
-message RealWorldDataBrewer {
+message RealWorldDataBrewerInfo {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional string structureInfo = 4;
-    optional RealWorldDataset generatedFrom = 5;
-    optional RealWorldDataBrewer generatedUsing = 6;
-    repeated RealWorldDataBrewerInput inputSpecs = 7;
-    repeated RealWorldDataBrewerOutput outputSpecs = 8;
-    repeated RealWorldDataBrewingArgument argSpecs = 9;
-    optional ConversionCharacteristicEnumeration conversionCharacteristic = 10;
+    repeated RealWorldDataBrewerInput inputSpecs = 4;
+    repeated RealWorldDataBrewerOutput outputSpecs = 5;
+    repeated RealWorldDataBrewingArgument argSpecs = 6;
+    optional ConversionCharacteristicEnumeration conversionCharacteristic = 7;
 }
 
 enum ConversionCharacteristicEnumeration {
@@ -204,8 +201,9 @@ message RealWorldDataBrewingDemand {
     optional string name = 2;
     optional string url = 3;
     optional RealWorldDataBrewerInfo brewerInfo = 4;
-    optional RealWorldDataBrewerInput brewerInput = 5;
-    optional RealWorldDataBrewingArgument brewingArgument = 6;
+    repeated RealWorldDataBrewerInput brewerInput = 5;
+    repeated RealWorldDataBrewingArgument brewingArgument = 6;
+    repeated RealWorldDataStoringInfo brewerOutputStore = 7;
 }
 
 message RealWorldDataBrewingSupply {
@@ -213,12 +211,6 @@ message RealWorldDataBrewingSupply {
     optional string name = 2;
     optional string url = 3;
     optional RealWorldDataBrewerInfo brewerInfo = 4;
-    optional RealWorldDataBrewerOutput brewerOutput = 5;
-    optional RealWorldDataBrewingArgument brewingArgument = 6;
-}
-
-message RealWorldDataBrewerInfo {
-    optional string id = 1;
-    optional string name = 2;
-    optional string url = 3;
+    repeated RealWorldDataBrewerOutput brewerOutput = 5;
+    repeated RealWorldDataBrewingArgument brewingArgument = 6;
 }
