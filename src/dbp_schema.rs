@@ -221,6 +221,8 @@ pub struct RealWorldDataStructureInfo {
     pub encoding_format: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(message, repeated, tag = "5")]
     pub structure_items: ::prost::alloc::vec::Vec<RealWorldDataStructureItem>,
+    #[prost(string, optional, tag = "6")]
+    pub graphql_schema: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -371,8 +373,10 @@ pub struct RealWorldDataReadDemand {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(message, optional, tag = "4")]
     pub dataset: ::core::option::Option<RealWorldDataset>,
-    #[prost(string, repeated, tag = "5")]
-    pub query: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "5")]
+    pub graphql_query: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "6")]
+    pub timerange_query: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -385,10 +389,12 @@ pub struct RealWorldDataReadSupply {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(message, optional, tag = "4")]
     pub dataset: ::core::option::Option<RealWorldDataset>,
-    #[prost(string, repeated, tag = "5")]
-    pub query: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    #[prost(bytes = "vec", repeated, tag = "6")]
-    pub data: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+    #[prost(string, optional, tag = "5")]
+    pub graphql_query: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "6")]
+    pub timerange_query: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(bytes = "vec", optional, tag = "7")]
+    pub data: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
