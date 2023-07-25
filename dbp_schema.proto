@@ -215,3 +215,20 @@ message RealWorldDataBrewingSupply {
     repeated RealWorldDataBrewerOutput brewerOutput = 5;
     repeated RealWorldDataBrewingArgument brewingArgument = 6;
 }
+
+message RealWorldDataReadDemand {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataset dataset = 4;
+    repeated string query = 5;
+}
+
+message RealWorldDataReadSupply {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataset dataset = 4;
+    repeated string query = 5;
+    repeated bytes data = 6;
+}
