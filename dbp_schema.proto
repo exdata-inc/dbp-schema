@@ -224,6 +224,7 @@ message RealWorldDataReadDemand {
     optional RealWorldDataset dataset = 4;
     optional string graphqlQuery = 5;
     optional string timerangeQuery = 6;
+    optional string sparqlQuery = 7;
 }
 
 message RealWorldDataReadSupply {
@@ -233,5 +234,6 @@ message RealWorldDataReadSupply {
     optional RealWorldDataset dataset = 4;
     optional string graphqlQuery = 5;
     optional string timerangeQuery = 6;
-    optional bytes data = 7;
+    optional string sparqlQuery = 7;
+    optional bytes data = 8;
 }
