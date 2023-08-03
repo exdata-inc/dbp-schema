@@ -8,14 +8,14 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
 
 message RealWorldDataset {
-    optional string id = 1;
-    optional string name = 2;
-    optional string url = 3;
-    optional RealWorldDataStructureInfo structureInfo = 4;
-    repeated RealWorldDataset generatedFrom = 5;
-    optional RealWorldDataBrewerInfo generatedUsing = 6;
-    repeated RealWorldDataBrewingArgument generatedArgs = 7;
-    optional RealWorldDataCollectionInfo collectionInfo = 8;
+    optional string id = 1;                                     // 自身(このJSON-LD)のURL
+    optional string name = 2;                                   // (人間が見てわかりやすい)データセットの名前
+    optional string url = 3;                                    // (未使用)
+    optional RealWorldDataStructureInfo structureInfo = 4;      // 構造情報
+    repeated RealWorldDataset generatedFrom = 5;                // このデータセットの基になったデータセット(醸造時の入力データセット)
+    optional RealWorldDataBrewerInfo generatedUsing = 6;        // このデータセットを作った醸造プログラム
+    repeated RealWorldDataBrewingArgument generatedArgs = 7;    // このデータセットを作った際のパラメータ(醸造時の入力パラメータ)
+    optional RealWorldDataCollectionInfo collectionInfo = 8;    // 収集情報
     optional RealWorldDataStoringInfo distribution = 9;         // データの保存先
     optional string author = 10;                                // データを集めている主体
     optional string contentLocation = 11;                       // データを集めている場所
@@ -135,17 +135,8 @@ message RealWorldDataStructureInfo {
     optional string name = 2;
     optional string url = 3;
     optional string encodingFormat = 4;
-    repeated RealWorldDataStructureItem structureItems = 5;
+    optional google.protobuf.Struct structure = 5;  // JSON-LD schema ( including @graph )
     optional string graphqlSchema = 6;
-}
-
-message RealWorldDataStructureItem {
-    optional string id = 1;
-    optional string name = 2;
-    optional string url = 3;
-    optional string structurePath = 4;
-    optional string itemType = 5;
-    optional string itemVocab = 6;
 }
 
 message RealWorldDataStoringInfo {

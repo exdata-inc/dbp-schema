@@ -1,20 +1,28 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataset {
+    /// 自身(このJSON-LD)のURL
     #[prost(string, optional, tag = "1")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// (人間が見てわかりやすい)データセットの名前
     #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// (未使用)
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 構造情報
     #[prost(message, optional, tag = "4")]
     pub structure_info: ::core::option::Option<RealWorldDataStructureInfo>,
+    /// このデータセットの基になったデータセット(醸造時の入力データセット)
     #[prost(message, repeated, tag = "5")]
     pub generated_from: ::prost::alloc::vec::Vec<RealWorldDataset>,
+    /// このデータセットを作った醸造プログラム
     #[prost(message, optional, tag = "6")]
     pub generated_using: ::core::option::Option<RealWorldDataBrewerInfo>,
+    /// このデータセットを作った際のパラメータ(醸造時の入力パラメータ)
     #[prost(message, repeated, tag = "7")]
     pub generated_args: ::prost::alloc::vec::Vec<RealWorldDataBrewingArgument>,
+    /// 収集情報
     #[prost(message, optional, tag = "8")]
     pub collection_info: ::core::option::Option<RealWorldDataCollectionInfo>,
     /// データの保存先
@@ -219,26 +227,11 @@ pub struct RealWorldDataStructureInfo {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "4")]
     pub encoding_format: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, repeated, tag = "5")]
-    pub structure_items: ::prost::alloc::vec::Vec<RealWorldDataStructureItem>,
+    /// JSON-LD schema ( including @graph )
+    #[prost(message, optional, tag = "5")]
+    pub structure: ::core::option::Option<::prost_types::Struct>,
     #[prost(string, optional, tag = "6")]
     pub graphql_schema: ::core::option::Option<::prost::alloc::string::String>,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RealWorldDataStructureItem {
-    #[prost(string, optional, tag = "1")]
-    pub id: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag = "2")]
-    pub name: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag = "3")]
-    pub url: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag = "4")]
-    pub structure_path: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag = "5")]
-    pub item_type: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag = "6")]
-    pub item_vocab: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
