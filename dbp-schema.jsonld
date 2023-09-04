@@ -76,10 +76,139 @@
       }
     },
     {
+      "@id": "dbp:collectionInfo",
+      "@type": "rdf:Property",
+      "rdfs:comment": "An information for collecting a real world data.",
+      "rdfs:label": "collectionInfo",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataset"
+        },
+        {
+          "@id": "dbp:RealWorldDataCollectionDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataCollectionSupply"
+        },
+        {
+          "@id": "dbp:RealWorldDataCollectionStatus"
+        }
+    ],
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataCollectionInfo"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataBrewerInput",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "A structure information of a microprogram that convert a real world data into another form.",
+      "rdfs:label": "RealWorldDataBrewerInput",
+      "rdfs:subClassOf": {
+        "@id": "schema:SoftwareApplication"
+      }
+    },
+    {
+      "@id": "dbp:key",
+      "@type": "rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "key",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataBrewerInput"
+        },
+        {
+          "@id": "dbp:RealWorldDataBrewerOutput"
+        },
+        {
+          "@id": "dbp:RealWorldDataBrewingArgument"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:inputType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A type of an input data entry in a real world dataset.",
+      "rdfs:label": "inputType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewerInput"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:DataType"
+      }
+    },
+    {
+      "@id": "dbp:value",
+      "@type": "rdf:Property",
+      "rdfs:comment":"#chincha",
+      "rdfs:label": "value",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataBrewerInput"
+        },
+        {
+          "@id": "dbp:RealWorldDataBrewerOutput"
+        },
+        {
+          "@id": "dbp:RealWorldDataBrewingArgument"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:inputCharacteristic",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A characteristic of an input data entry in a real world dataset.",
+      "rdfs:label": "inputCharacteristic",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewerInput"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:VariableCharacteristicEnumeration"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataBrewerOutput",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "RealWorldDataBrewerOutput",
+      "rdfs:subClassOf": {
+        "@id": "schema:SoftwareApplication"
+      }
+    },
+    {
+      "@id": "dbp:outputType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A type of an output data entry in a real world dataset.",
+      "rdfs:label": "outputType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewerOutput"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:DataType"
+      }
+    },
+    {
+      "@id": "dbp:outputCharacteristic",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A characteristic of an output data entry in a real world dataset.",
+      "rdfs:label": "outputCharacteristic",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewerOutput"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:VariableCharacteristicEnumeration"
+      }
+    },
+    {
       "@id": "dbp:RealWorldDataBrewingArgument",
       "@type": "rdfs:Class",
       "rdfs:comment": "An argument that was passed to a brewer to generate a dataset from another.",
-      "rdfs:label": "RealWorldDataset",
+      "rdfs:label": "RealWorldDataBrewingArgument",
       "rdfs:subClassOf": {
         "@id": "schema:PropertyValue"
       }
@@ -97,69 +226,78 @@
       }
     },
     {
-      "@id": "dbp:collectionInfo",
-      "@type": "rdf:Property",
-      "rdfs:comment": "An information for collecting a real world data.",
-      "rdfs:label": "collectionInfo",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataset"
-      },
-      "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataCollectionInfo"
-      }
-    },
-    {
-      "@id": "dbp:RealWorldDataStructure",
+      "@id": "dbp:RealWorldDataBrewerInfo",
       "@type": "rdfs:Class",
-      "rdfs:comment": "A structure information of a real world data itself.",
-      "rdfs:label": "RealWorldDataStructure",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataBrewerInfo",
       "rdfs:subClassOf": {
-        "@id": "schema:CreativeWork"
+        "@id": "schema: #chincha"
       }
     },
     {
-      "@id": "dbp:structureItems",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A list of structure item.",
-      "rdfs:label": "structureItems",
+      "@id": "dbp:inputSpecs",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "inputSpecs",
       "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructure"
+        "@id": "dbp:RealWorldDataBrewerInfo"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataStructureItem"
+        "@id": "dbp:RealWorldDataBrewerInput"
       }
     },
     {
-      "@id": "dbp:RealWorldDataStructureItem",
+      "@id": "dbp:outputSpecs",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "outputSpecs",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewerInfo"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataBrewerOutput"
+      }
+    },
+    {
+      "@id": "dbp:argSpecs",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "argSpecs",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewerInfo"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataBrewingArgument"
+      }
+    },
+    {
+      "@id": "dbp:conversionCharacteristic",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A characteristic of a conversion done by the brewer.",
+      "rdfs:label": "conversionCharacteristic",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewer"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:ConversionCharacteristicEnumeration"
+      }
+    },
+    {
+      "@id": "dbp:ConversionCharacteristicEnumeration",
       "@type": "rdfs:Class",
-      "rdfs:comment": "An item that describe each data entry in a real world dataset.",
-      "rdfs:label": "RealWorldDataStructureItem",
+      "rdfs:comment": "Enumerates conversion characteristics, such as single-value-replace, col-merge, or row-merge.",
+      "rdfs:label": "ConversionCharacteristicEnumeration",
       "rdfs:subClassOf": {
-        "@id": "schema:Property"
+        "@id": "schema:Enumeration"
       }
     },
     {
-      "@id": "dbp:structurePath",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A path text of a data entry in a real world dataset.",
-      "rdfs:label": "structurePath",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureItem"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:Text"
-      }
-    },
-    {
-      "@id": "dbp:itemType",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A type of a data entry in a real world dataset.",
-      "rdfs:label": "itemType",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureItem"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:DataType"
+      "@id": "dbp:VariableCharacteristicEnumeration",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "Enumerates value characteristics, such as qualitative or quantitative.",
+      "rdfs:label": "VariableCharacteristicEnumeration",
+      "rdfs:subClassOf": {
+        "@id": "schema:Enumeration"
       }
     },
     {
@@ -196,18 +334,6 @@
       }
     },
     {
-      "@id": "dbp:entryPoint",
-      "@type": "rdf:Property",
-      "rdfs:comment": "An entryPoint of data collection (action_application, url).",
-      "rdfs:label": "entryPoint",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataCollectionInfo"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:EntryPoint"
-      }
-    },
-    {
       "@id": "dbp:listenAddress",
       "@type": "rdf:Property",
       "rdfs:comment": "An listen address for data collection (url).",
@@ -232,102 +358,414 @@
       }
     },
     {
-      "@id": "dbp:RealWorldDataBrewer",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "A structure information of a microprogram that convert a real world data into another form.",
-      "rdfs:label": "RealWorldDataBrewer",
+      "@id": "dbp:entryPoint",
+      "@type": "rdf:Property",
+      "rdfs:comment": "An entryPoint of data collection (action_application, url).",
+      "rdfs:label": "entryPoint",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataCollectionInfo"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:EntryPoint"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataBrewEvent",
+      "@type":"rdfs:Class",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataBrewEvent",
       "rdfs:subClassOf": {
-        "@id": "schema:SoftwareApplication"
+        "@id":"schema: #chincha"
       }
     },
     {
-      "@id": "dbp:inputType",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A type of an input data entry in a real world dataset.",
-      "rdfs:label": "inputType",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewer"
+      "@id": "dbp:RealWorldDataStructureInfo",
+      "@type":"rdfs:Class",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataStructureInfo",
+      "rdfs:subClassOf" : {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:structure",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "structure",
+      "schema:domainIncludes":{
+        "@id": "dbp:RealWorldDataStructureInfo"
       },
       "schema:rangeIncludes": {
-        "@id": "schema:DataType"
+        "@id": "schema:Text"
       }
     },
     {
-      "@id": "dbp:inputCharacteristic",
+      "@id": "dbp:graphqlSchema",
       "@type": "rdf:Property",
-      "rdfs:comment": "A characteristic of an input data entry in a real world dataset.",
-      "rdfs:label": "inputCharacteristic",
+      "rdfs:comment":"#chincha",
+      "rdfs:label": "graphqlSchema",
       "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewer"
+        "@id": "dbp:RealWorldDataStructureInfo"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:VariableCharacteristicEnumeration"
+        "@id": "schema:Text"
       }
     },
     {
-      "@id": "dbp:VariableCharacteristicEnumeration",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "Enumerates value characteristics, such as qualitative or quantitative.",
-      "rdfs:label": "VariableCharacteristicEnumeration",
+      "@id": "dbp:RealWorldDataStoringInfo",
+      "@type":"rdfs:Class",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataStoringInfo",
       "rdfs:subClassOf": {
-        "@id": "schema:Enumeration"
+        "@id": "schema:CreativeWork"
       }
     },
     {
-      "@id": "dbp:conversionArguments",
+      "@id": "dbp:startTime",
       "@type": "rdf:Property",
-      "rdfs:comment": "Arguments of data brewer.",
-      "rdfs:label": "conversionArguments",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "startTime",
       "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewer"
+        "@id": "dbp:RealWorldDataStoringInfo"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "schema:Date"
+        },
+        {
+          "@id": "schema:DateTime"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:endTime",
+      "@type": "rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "endTime",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStoringInfo"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "schema:Date"
+        },
+        {
+          "@id": "schema:DateTime"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:baseURL",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "baseURL",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStoringInfo"
       },
       "schema:rangeIncludes": {
-        "@id": "schema:PropertyValue"
+        "@id": "schema:URL"
       }
     },
     {
-      "@id": "dbp:conversionCharacteristic",
+      "@id": "dbp:pattern",
       "@type": "rdf:Property",
-      "rdfs:comment": "A characteristic of a conversion done by the brewer.",
-      "rdfs:label": "conversionCharacteristic",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "pattern",
       "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewer"
+        "@id": "dbp:RealWorldDataStoringInfo"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:ConversionCharacteristicEnumeration"
+        "@id": "schema:Text"
       }
     },
     {
-      "@id": "dbp:ConversionCharacteristicEnumeration",
+      "@id": "dbp:RealWorldDataRegisterDemand",
       "@type": "rdfs:Class",
-      "rdfs:comment": "Enumerates conversion characteristics, such as single-value-replace, col-merge, or row-merge.",
-      "rdfs:label": "ConversionCharacteristicEnumeration",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataRegisterDemand",
       "rdfs:subClassOf": {
-        "@id": "schema:Enumeration"
+        "@id": "schema:CreativeWork"
       }
     },
     {
-      "@id": "dbp:outputType",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A type of an output data entry in a real world dataset.",
-      "rdfs:label": "outputType",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewer"
-      },
+      "@id": "dbp:dataset",
+      "@type":"rdf:Property",
+      "rdfs:comment":"#chincha",
+      "rdfs:label": "dataset",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataRegisterDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataRegisterSupply"
+        },
+        {
+          "@id": "dbp:RealWorldDataReadDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataReadSupply"
+        }
+      ],
       "schema:rangeIncludes": {
-        "@id": "schema:DataType"
+        "@id": "dbp:RealWorldDataset"
       }
     },
     {
-      "@id": "dbp:outputCharacteristic",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A characteristic of an output data entry in a real world dataset.",
-      "rdfs:label": "outputCharacteristic",
+      "@id": "dbp:RealWorldDataRegisterSupply",
+      "@type":"rdfs:Class",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataRegisterSupply",
+      "rdfs:subClassOf": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:status",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "status",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataRegisterSupply"
+        },
+        {
+          "@id": "dbp:RealWorldDataCollectionSupply"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataCollectionDemand",
+      "@type":"rdfs:Class",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataCollectionDemand",
+      "rdfs:subClassOf": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataCollectionSupply",
+      "@type":"rdfs:Class",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataCollectionSupply",
+      "rdfs:subClassOf": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataCollectionStatus",
+      "@type":"rdfs:Class",
+      "rdfs:comment":"#chincha",
+      "rdfs:label": "RealWorldDataCollectionStatus",
+      "rdfs:subClassOf": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:contentReferenceTime",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "contentReferenceTime",
       "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewer"
+        "@id": "dbp:RealWorldDataCollectionStatus"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:VariableCharacteristicEnumeration"
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:activeConnections",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "activeConnections",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataCollectionStatus"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:trafficStatistics",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "trafficStatistics",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataCollectionStatus"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataBrewingDemand",
+      "@type":"rdfs:Class",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataBrewingDemand",
+      "rdfs:subClassOf": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:brewerInfo",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "brewerInfo",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataBrewingDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataBrewingSupply"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataBrewerInfo"
+      }
+    },
+    {
+      "@id": "dbp:brewerInput",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "brewerInput",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewingDemand"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataBrewerInput"
+      }
+    },
+    {
+      "@id": "dbp:brewingArgument",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "brewingArgument",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataBrewingDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataBrewingSupply"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataBrewingArgument"
+      }
+    },    
+    {
+      "@id": "dbp:brewerOutputStore",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "brewerOutputStore",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewingDemand"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataStoringInfo"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataBrewingSupply",
+      "@type":"rdfs:Class",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataBrewingSupply",
+      "rdfs:subClassOf": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:brewerOutput",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "brewerOutput",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewingSupply"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataBrewerOutput"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataReadDemand",
+      "@type":"rdfs:Class",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataReadDemand",
+      "rdfs:subClassOf": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:graphqlQuery",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "graphqlQuery",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataReadDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataReadSupply"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },    
+    {
+      "@id": "dbp:timerangeQuery",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "timerangeQuery",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataReadDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataReadSupply"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:sparqlQuery",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "sparqlQuery",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataReadDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataReadSupply"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataReadSupply",
+      "@type":"rdfs:Class",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "RealWorldDataReadSupply",
+      "rdfs:subClassOf": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:data",
+      "@type":"rdf:Property",
+      "rdfs:comment": "#chincha",
+      "rdfs:label": "data",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataReadSupply"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
       }
     }
   ]
