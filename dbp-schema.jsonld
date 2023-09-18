@@ -28,6 +28,9 @@
         },
         {
           "@id": "schema:Text"
+        },
+        {
+          "@id": "dbp:RealWorldDataStructureInfo"
         }
       ]
     },
