@@ -208,6 +208,26 @@ message RealWorldDataBrewingSupply {
     repeated RealWorldDataBrewingArgument brewingArgument = 6;
 }
 
+message RealWorldDataPeriodicBrewingConfig {                // RWDB システムが定期的に RealWorldDataBrewingDemand を投げる設定
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataBrewingDemand brewingConfig = 4;  // 投げる Demand
+    optional string timeInterval = 5;                       // 時間間隔 (Unixtime % timeInterval == 0 の時に実行)
+}
+
+message RealWorldDataPeriodicMoveConfig {                   // RWDB システムが定期的に RealWorldDataset を移動する設定
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataset moveTarget = 4;               // 移動する RealWorldDataset
+    optional string timeInterval = 5;                       // 時間間隔 (Unixtime % timeInterval == 0 の時に実行)
+    optional string targetTimePeriodStart = 6;              // 移動する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
+    optional string targetTimePeriodEnd = 7;                // 移動する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+    optional RealWorldDataStoringInfo moveFrom = 8;         // データの移動元
+    optional RealWorldDataStoringInfo moveTo = 9;           // データの移動先
+}
+
 message RealWorldDataReadDemand {
     optional string id = 1;
     optional string name = 2;
@@ -227,4 +247,64 @@ message RealWorldDataReadSupply {
     optional string timerangeQuery = 6;
     optional string sparqlQuery = 7;
     optional bytes data = 8;
+}
+
+message RealWorldDataWriteDemand {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataset dataset = 4;
+    optional string timePeriodStart = 5;                    // 書き込むデータがいつからのデータか
+    optional string timePeriodEnd = 6;                      // 書き込むデータがいつまでのデータか
+    optional bytes data = 7;
+}
+
+message RealWorldDataWriteSupply {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataset dataset = 4;
+    optional string timePeriodStart = 5;                    // 書き込んだデータがいつからのデータか
+    optional string timePeriodEnd = 6;                      // 書き込んだデータがいつまでのデータか
+}
+
+message RealWorldDataMoveDemand {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataset targetDataset = 4;            // 移動する RealWorldDataset
+    optional string targetTimePeriodStart = 5;              // 移動する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
+    optional string targetTimePeriodEnd = 6;                // 移動する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+    optional RealWorldDataStoringInfo moveFrom = 7;         // データの移動元
+    optional RealWorldDataStoringInfo moveTo = 8;           // データの移動先
+}
+
+message RealWorldDataMoveSupply {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataset targetDataset = 4;            // 移動した RealWorldDataset
+    optional string targetTimePeriodStart = 5;              // 移動した RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
+    optional string targetTimePeriodEnd = 6;                // 移動した RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+    optional RealWorldDataStoringInfo moveFrom = 7;         // データの移動元
+    optional RealWorldDataStoringInfo moveTo = 8;           // データの移動先
+    optional RealWorldDataset movedDataset = 9;             // 移動先の RealWorldDataset
+}
+
+message RealWorldDataRemoveDemand {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataset dataset = 4;                  // 削除する RealWorldDataset
+    optional string targetTimePeriodStart = 5;              // 削除する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
+    optional string targetTimePeriodEnd = 6;                // 削除する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+}
+
+message RealWorldDataRemoveSupply {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataset dataset = 4;                  // 削除した RealWorldDataset
+    optional string targetTimePeriodStart = 5;              // 削除した RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
+    optional string targetTimePeriodEnd = 6;                // 削除した RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
 }
