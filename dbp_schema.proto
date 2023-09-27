@@ -16,7 +16,7 @@ message RealWorldDataset {
     optional RealWorldDataBrewerInfo generatedUsing = 6;        // このデータセットを作った醸造プログラム
     repeated RealWorldDataBrewingArgument generatedArgs = 7;    // このデータセットを作った際のパラメータ(醸造時の入力パラメータ)
     optional RealWorldDataCollectionInfo collectionInfo = 8;    // 収集情報
-    optional RealWorldDataStoringInfo distribution = 9;         // データの保存先
+    repeated RealWorldDataStoringInfo distribution = 9;         // データの保存先（データの記録期間に応じて、複数の場所に置く場合もあるため repeated）
     optional string author = 10;                                // データを集めている主体
     optional string contentLocation = 11;                       // データを集めている場所
     optional google.protobuf.Timestamp dateCreated = 12;        // データを集め始めた日時
@@ -216,18 +216,6 @@ message RealWorldDataPeriodicBrewingConfig {                // RWDB システム
     optional string timeInterval = 5;                       // 時間間隔 (Unixtime % timeInterval == 0 の時に実行)
 }
 
-message RealWorldDataPeriodicMoveConfig {                   // RWDB システムが定期的に RealWorldDataset を移動する設定
-    optional string id = 1;
-    optional string name = 2;
-    optional string url = 3;
-    optional RealWorldDataset moveTarget = 4;               // 移動する RealWorldDataset
-    optional string timeInterval = 5;                       // 時間間隔 (Unixtime % timeInterval == 0 の時に実行)
-    optional string targetTimePeriodStart = 6;              // 移動する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
-    optional string targetTimePeriodEnd = 7;                // 移動する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
-    optional RealWorldDataStoringInfo moveFrom = 8;         // データの移動元
-    optional RealWorldDataStoringInfo moveTo = 9;           // データの移動先
-}
-
 message RealWorldDataReadDemand {
     optional string id = 1;
     optional string name = 2;
@@ -291,6 +279,14 @@ message RealWorldDataMoveSupply {
     optional RealWorldDataset movedDataset = 9;             // 移動先の RealWorldDataset
 }
 
+message RealWorldDataPeriodicMoveConfig {                   // RWDB システムが定期的に RealWorldDataset を移動する設定
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataMoveDemand moveConfig = 4;        // 移動設定
+    optional string timeInterval = 5;                       // 時間間隔 (Unixtime % timeInterval == 0 の時に実行)
+}
+
 message RealWorldDataRemoveDemand {
     optional string id = 1;
     optional string name = 2;
@@ -307,4 +303,12 @@ message RealWorldDataRemoveSupply {
     optional RealWorldDataset dataset = 4;                  // 削除した RealWorldDataset
     optional string targetTimePeriodStart = 5;              // 削除した RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     optional string targetTimePeriodEnd = 6;                // 削除した RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+}
+
+message RealWorldDataPeriodicRemoveConfig {                 // RWDB システムが定期的に RealWorldDataset を削除する設定
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional RealWorldDataRemoveDemand removeConfig = 4;    // 削除設定
+    optional string timeInterval = 5;                       // 時間間隔 (Unixtime % timeInterval == 0 の時に実行)
 }
