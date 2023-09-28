@@ -213,7 +213,7 @@ message RealWorldDataPeriodicBrewingConfig {                // RWDB システム
     optional string name = 2;
     optional string url = 3;
     optional RealWorldDataBrewingDemand brewingConfig = 4;  // 投げる Demand
-    optional string timeInterval = 5;                       // 時間間隔 (Unixtime % timeInterval == 0 の時に実行)
+    optional string timeInterval = 5;                       // 時間間隔 (cron format)
 }
 
 message RealWorldDataReadDemand {
@@ -284,7 +284,7 @@ message RealWorldDataPeriodicMoveConfig {                   // RWDB システム
     optional string name = 2;
     optional string url = 3;
     optional RealWorldDataMoveDemand moveConfig = 4;        // 移動設定
-    optional string timeInterval = 5;                       // 時間間隔 (Unixtime % timeInterval == 0 の時に実行)
+    optional string timeInterval = 5;                       // 時間間隔 (cron format)
 }
 
 message RealWorldDataRemoveDemand {
@@ -310,5 +310,5 @@ message RealWorldDataPeriodicRemoveConfig {                 // RWDB システム
     optional string name = 2;
     optional string url = 3;
     optional RealWorldDataRemoveDemand removeConfig = 4;    // 削除設定
-    optional string timeInterval = 5;                       // 時間間隔 (Unixtime % timeInterval == 0 の時に実行)
+    optional string timeInterval = 5;                       // 時間間隔 (cron format)
 }

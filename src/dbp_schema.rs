@@ -25,9 +25,9 @@ pub struct RealWorldDataset {
     /// 収集情報
     #[prost(message, optional, tag = "8")]
     pub collection_info: ::core::option::Option<RealWorldDataCollectionInfo>,
-    /// データの保存先
-    #[prost(message, optional, tag = "9")]
-    pub distribution: ::core::option::Option<RealWorldDataStoringInfo>,
+    /// データの保存先（データの記録期間に応じて、複数の場所に置く場合もあるため repeated）
+    #[prost(message, repeated, tag = "9")]
+    pub distribution: ::prost::alloc::vec::Vec<RealWorldDataStoringInfo>,
     /// データを集めている主体
     #[prost(string, optional, tag = "10")]
     pub author: ::core::option::Option<::prost::alloc::string::String>,
@@ -355,6 +355,23 @@ pub struct RealWorldDataBrewingSupply {
     #[prost(message, repeated, tag = "6")]
     pub brewing_argument: ::prost::alloc::vec::Vec<RealWorldDataBrewingArgument>,
 }
+/// RWDB システムが定期的に RealWorldDataBrewingDemand を投げる設定
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataPeriodicBrewingConfig {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 投げる Demand
+    #[prost(message, optional, tag = "4")]
+    pub brewing_config: ::core::option::Option<RealWorldDataBrewingDemand>,
+    /// 時間間隔 (cron format)
+    #[prost(string, optional, tag = "5")]
+    pub time_interval: ::core::option::Option<::prost::alloc::string::String>,
+}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataReadDemand {
@@ -392,6 +409,169 @@ pub struct RealWorldDataReadSupply {
     pub sparql_query: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(bytes = "vec", optional, tag = "8")]
     pub data: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataWriteDemand {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(message, optional, tag = "4")]
+    pub dataset: ::core::option::Option<RealWorldDataset>,
+    /// 書き込むデータがいつからのデータか
+    #[prost(string, optional, tag = "5")]
+    pub time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    /// 書き込むデータがいつまでのデータか
+    #[prost(string, optional, tag = "6")]
+    pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(bytes = "vec", optional, tag = "7")]
+    pub data: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataWriteSupply {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(message, optional, tag = "4")]
+    pub dataset: ::core::option::Option<RealWorldDataset>,
+    /// 書き込んだデータがいつからのデータか
+    #[prost(string, optional, tag = "5")]
+    pub time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    /// 書き込んだデータがいつまでのデータか
+    #[prost(string, optional, tag = "6")]
+    pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataMoveDemand {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 移動する RealWorldDataset
+    #[prost(message, optional, tag = "4")]
+    pub target_dataset: ::core::option::Option<RealWorldDataset>,
+    /// 移動する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
+    #[prost(string, optional, tag = "5")]
+    pub target_time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    /// 移動する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+    #[prost(string, optional, tag = "6")]
+    pub target_time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+    /// データの移動元
+    #[prost(message, optional, tag = "7")]
+    pub move_from: ::core::option::Option<RealWorldDataStoringInfo>,
+    /// データの移動先
+    #[prost(message, optional, tag = "8")]
+    pub move_to: ::core::option::Option<RealWorldDataStoringInfo>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataMoveSupply {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 移動した RealWorldDataset
+    #[prost(message, optional, tag = "4")]
+    pub target_dataset: ::core::option::Option<RealWorldDataset>,
+    /// 移動した RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
+    #[prost(string, optional, tag = "5")]
+    pub target_time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    /// 移動した RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+    #[prost(string, optional, tag = "6")]
+    pub target_time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+    /// データの移動元
+    #[prost(message, optional, tag = "7")]
+    pub move_from: ::core::option::Option<RealWorldDataStoringInfo>,
+    /// データの移動先
+    #[prost(message, optional, tag = "8")]
+    pub move_to: ::core::option::Option<RealWorldDataStoringInfo>,
+    /// 移動先の RealWorldDataset
+    #[prost(message, optional, tag = "9")]
+    pub moved_dataset: ::core::option::Option<RealWorldDataset>,
+}
+/// RWDB システムが定期的に RealWorldDataset を移動する設定
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataPeriodicMoveConfig {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 移動設定
+    #[prost(message, optional, tag = "4")]
+    pub move_config: ::core::option::Option<RealWorldDataMoveDemand>,
+    /// 時間間隔 (cron format)
+    #[prost(string, optional, tag = "5")]
+    pub time_interval: ::core::option::Option<::prost::alloc::string::String>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataRemoveDemand {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 削除する RealWorldDataset
+    #[prost(message, optional, tag = "4")]
+    pub dataset: ::core::option::Option<RealWorldDataset>,
+    /// 削除する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
+    #[prost(string, optional, tag = "5")]
+    pub target_time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    /// 削除する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+    #[prost(string, optional, tag = "6")]
+    pub target_time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataRemoveSupply {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 削除した RealWorldDataset
+    #[prost(message, optional, tag = "4")]
+    pub dataset: ::core::option::Option<RealWorldDataset>,
+    /// 削除した RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
+    #[prost(string, optional, tag = "5")]
+    pub target_time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    /// 削除した RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+    #[prost(string, optional, tag = "6")]
+    pub target_time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// RWDB システムが定期的に RealWorldDataset を削除する設定
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataPeriodicRemoveConfig {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 削除設定
+    #[prost(message, optional, tag = "4")]
+    pub remove_config: ::core::option::Option<RealWorldDataRemoveDemand>,
+    /// 時間間隔 (cron format)
+    #[prost(string, optional, tag = "5")]
+    pub time_interval: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
