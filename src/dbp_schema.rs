@@ -370,7 +370,7 @@ pub struct RealWorldDataPeriodicBrewingConfig {
     pub brewing_config: ::core::option::Option<RealWorldDataBrewingDemand>,
     /// 時間間隔 (cron format)
     #[prost(string, optional, tag = "5")]
-    pub time_interval: ::core::option::Option<::prost::alloc::string::String>,
+    pub cron_config: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -516,7 +516,7 @@ pub struct RealWorldDataPeriodicMoveConfig {
     pub move_config: ::core::option::Option<RealWorldDataMoveDemand>,
     /// 時間間隔 (cron format)
     #[prost(string, optional, tag = "5")]
-    pub time_interval: ::core::option::Option<::prost::alloc::string::String>,
+    pub cron_config: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -571,7 +571,7 @@ pub struct RealWorldDataPeriodicRemoveConfig {
     pub remove_config: ::core::option::Option<RealWorldDataRemoveDemand>,
     /// 時間間隔 (cron format)
     #[prost(string, optional, tag = "5")]
-    pub time_interval: ::core::option::Option<::prost::alloc::string::String>,
+    pub cron_config: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
