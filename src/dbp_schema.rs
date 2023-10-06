@@ -527,9 +527,9 @@ pub struct RealWorldDataRemoveDemand {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
-    /// 削除する RealWorldDataset
+    /// 削除する RealWorldDataset の RealWorldDataStoringInfo
     #[prost(message, optional, tag = "4")]
-    pub dataset: ::core::option::Option<RealWorldDataset>,
+    pub dataset_store: ::core::option::Option<RealWorldDataStoringInfo>,
     /// 削除する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     #[prost(string, optional, tag = "5")]
     pub target_time_period_start: ::core::option::Option<::prost::alloc::string::String>,
@@ -546,9 +546,9 @@ pub struct RealWorldDataRemoveSupply {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
-    /// 削除した RealWorldDataset
+    /// 削除した RealWorldDataset の RealWorldDataStoringInfo
     #[prost(message, optional, tag = "4")]
-    pub dataset: ::core::option::Option<RealWorldDataset>,
+    pub dataset_store: ::core::option::Option<RealWorldDataStoringInfo>,
     /// 削除した RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     #[prost(string, optional, tag = "5")]
     pub target_time_period_start: ::core::option::Option<::prost::alloc::string::String>,
