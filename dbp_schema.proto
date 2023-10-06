@@ -291,7 +291,7 @@ message RealWorldDataRemoveDemand {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional RealWorldDataset dataset = 4;                  // 削除する RealWorldDataset
+    optional RealWorldDataStoringInfo datasetStore = 4;     // 削除する RealWorldDataset の RealWorldDataStoringInfo
     optional string targetTimePeriodStart = 5;              // 削除する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     optional string targetTimePeriodEnd = 6;                // 削除する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
 }
@@ -300,7 +300,7 @@ message RealWorldDataRemoveSupply {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional RealWorldDataset dataset = 4;                  // 削除した RealWorldDataset
+    optional RealWorldDataStoringInfo datasetStore = 4;     // 削除した RealWorldDataset の RealWorldDataStoringInfo
     optional string targetTimePeriodStart = 5;              // 削除した RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     optional string targetTimePeriodEnd = 6;                // 削除した RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
 }
