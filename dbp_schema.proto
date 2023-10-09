@@ -198,6 +198,8 @@ message RealWorldDataBrewingDemand {
     repeated RealWorldDataBrewerInput brewerInput = 5;
     repeated RealWorldDataBrewingArgument brewingArgument = 6;
     repeated RealWorldDataStoringInfo brewerOutputStore = 7;
+    optional string timePeriodStart = 8;                    // 読み込むデータがいつからのデータか
+    optional string timePeriodEnd = 9;                      // 読み込むデータがいつまでのデータか
 }
 
 message RealWorldDataBrewingSupply {
@@ -207,6 +209,8 @@ message RealWorldDataBrewingSupply {
     optional RealWorldDataBrewerInfo brewerInfo = 4;
     repeated RealWorldDataBrewerOutput brewerOutput = 5;
     repeated RealWorldDataBrewingArgument brewingArgument = 6;
+    optional string timePeriodStart = 7;                    // 読み込むデータがいつからのデータか
+    optional string timePeriodEnd = 8;                      // 読み込むデータがいつまでのデータか
 }
 
 message RealWorldDataPeriodicBrewingConfig {                // RWDB システムが定期的に RealWorldDataBrewingDemand を投げる設定

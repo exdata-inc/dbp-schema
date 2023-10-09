@@ -340,6 +340,12 @@ pub struct RealWorldDataBrewingDemand {
     pub brewing_argument: ::prost::alloc::vec::Vec<RealWorldDataBrewingArgument>,
     #[prost(message, repeated, tag = "7")]
     pub brewer_output_store: ::prost::alloc::vec::Vec<RealWorldDataStoringInfo>,
+    /// 読み込むデータがいつからのデータか
+    #[prost(string, optional, tag = "8")]
+    pub time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    /// 読み込むデータがいつまでのデータか
+    #[prost(string, optional, tag = "9")]
+    pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -356,6 +362,12 @@ pub struct RealWorldDataBrewingSupply {
     pub brewer_output: ::prost::alloc::vec::Vec<RealWorldDataBrewerOutput>,
     #[prost(message, repeated, tag = "6")]
     pub brewing_argument: ::prost::alloc::vec::Vec<RealWorldDataBrewingArgument>,
+    /// 読み込むデータがいつからのデータか
+    #[prost(string, optional, tag = "7")]
+    pub time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    /// 読み込むデータがいつまでのデータか
+    #[prost(string, optional, tag = "8")]
+    pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// RWDB システムが定期的に RealWorldDataBrewingDemand を投げる設定
 #[allow(clippy::derive_partial_eq_without_eq)]
