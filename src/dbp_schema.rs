@@ -66,6 +66,8 @@ pub struct RealWorldDataBrewerInput {
     pub value: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
     #[prost(enumeration = "VariableCharacteristicEnumeration", optional, tag = "7")]
     pub input_characteristic: ::core::option::Option<i32>,
+    #[prost(message, optional, tag = "8")]
+    pub dataset: ::core::option::Option<RealWorldDataset>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -381,14 +383,21 @@ pub struct RealWorldDataReadDemand {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 読み込む実世界データセット
     #[prost(message, optional, tag = "4")]
     pub dataset: ::core::option::Option<RealWorldDataset>,
+    /// 読み込むデータがいつからのデータか
     #[prost(string, optional, tag = "5")]
-    pub graphql_query: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    /// 読み込むデータがいつまでのデータか
     #[prost(string, optional, tag = "6")]
-    pub timerange_query: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+    /// 構造クエリ（SPARQL）
     #[prost(string, optional, tag = "7")]
     pub sparql_query: ::core::option::Option<::prost::alloc::string::String>,
+    /// 構造クエリ（GraphQL）
+    #[prost(string, optional, tag = "8")]
+    pub graphql_query: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -399,15 +408,23 @@ pub struct RealWorldDataReadSupply {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 読み込む実世界データセット
     #[prost(message, optional, tag = "4")]
     pub dataset: ::core::option::Option<RealWorldDataset>,
+    /// 読み込むデータがいつからのデータか
     #[prost(string, optional, tag = "5")]
-    pub graphql_query: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    /// 読み込むデータがいつまでのデータか
     #[prost(string, optional, tag = "6")]
-    pub timerange_query: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+    /// 構造クエリ（SPARQL）
     #[prost(string, optional, tag = "7")]
     pub sparql_query: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(bytes = "vec", optional, tag = "8")]
+    /// 構造クエリ（GraphQL）
+    #[prost(string, optional, tag = "8")]
+    pub graphql_query: ::core::option::Option<::prost::alloc::string::String>,
+    /// 実際には MBUS で送る？
+    #[prost(bytes = "vec", optional, tag = "9")]
     pub data: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -419,6 +436,7 @@ pub struct RealWorldDataWriteDemand {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// 書き込む実世界データセット
     #[prost(message, optional, tag = "4")]
     pub dataset: ::core::option::Option<RealWorldDataset>,
     /// 書き込むデータがいつからのデータか
@@ -427,6 +445,7 @@ pub struct RealWorldDataWriteDemand {
     /// 書き込むデータがいつまでのデータか
     #[prost(string, optional, tag = "6")]
     pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+    /// 実際には MBUS で送る？
     #[prost(bytes = "vec", optional, tag = "7")]
     pub data: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
 }

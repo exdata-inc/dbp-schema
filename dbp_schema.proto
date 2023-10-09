@@ -35,6 +35,7 @@ message RealWorldDataBrewerInput {
     optional string inputType = 5;
     optional bytes value = 6;
     optional VariableCharacteristicEnumeration inputCharacteristic = 7;
+    optional RealWorldDataset dataset = 8;
 }
 
 message RealWorldDataBrewerOutput {
@@ -213,38 +214,40 @@ message RealWorldDataPeriodicBrewingConfig {                // RWDB システム
     optional string name = 2;
     optional string url = 3;
     optional RealWorldDataBrewingDemand brewingConfig = 4;  // 投げる Demand
-    optional string cronConfig = 5;                       // 時間間隔 (cron format)
+    optional string cronConfig = 5;                         // 時間間隔 (cron format)
 }
 
 message RealWorldDataReadDemand {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional RealWorldDataset dataset = 4;
-    optional string graphqlQuery = 5;
-    optional string timerangeQuery = 6;
-    optional string sparqlQuery = 7;
+    optional RealWorldDataset dataset = 4;                  // 読み込む実世界データセット
+    optional string timePeriodStart = 5;                    // 読み込むデータがいつからのデータか
+    optional string timePeriodEnd = 6;                      // 読み込むデータがいつまでのデータか
+    optional string sparqlQuery = 7;                        // 構造クエリ（SPARQL）
+    optional string graphqlQuery = 8;                       // 構造クエリ（GraphQL）
 }
 
 message RealWorldDataReadSupply {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional RealWorldDataset dataset = 4;
-    optional string graphqlQuery = 5;
-    optional string timerangeQuery = 6;
-    optional string sparqlQuery = 7;
-    optional bytes data = 8;
+    optional RealWorldDataset dataset = 4;                  // 読み込む実世界データセット
+    optional string timePeriodStart = 5;                    // 読み込むデータがいつからのデータか
+    optional string timePeriodEnd = 6;                      // 読み込むデータがいつまでのデータか
+    optional string sparqlQuery = 7;                        // 構造クエリ（SPARQL）
+    optional string graphqlQuery = 8;                       // 構造クエリ（GraphQL）
+    optional bytes data = 9;                                // 実際には MBUS で送る？
 }
 
 message RealWorldDataWriteDemand {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional RealWorldDataset dataset = 4;
+    optional RealWorldDataset dataset = 4;                  // 書き込む実世界データセット
     optional string timePeriodStart = 5;                    // 書き込むデータがいつからのデータか
     optional string timePeriodEnd = 6;                      // 書き込むデータがいつまでのデータか
-    optional bytes data = 7;
+    optional bytes data = 7;                                // 実際には MBUS で送る？
 }
 
 message RealWorldDataWriteSupply {
