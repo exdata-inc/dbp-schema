@@ -490,13 +490,13 @@ pub struct RealWorldDataMoveDemand {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
     /// 移動する RealWorldDataset
     #[prost(message, optional, tag = "4")]
-    pub target_dataset: ::core::option::Option<RealWorldDataset>,
+    pub dataset: ::core::option::Option<RealWorldDataset>,
     /// 移動する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     #[prost(string, optional, tag = "5")]
-    pub target_time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_start: ::core::option::Option<::prost::alloc::string::String>,
     /// 移動する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
     #[prost(string, optional, tag = "6")]
-    pub target_time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
     /// データの移動元
     #[prost(message, optional, tag = "7")]
     pub move_from: ::core::option::Option<RealWorldDataStoringInfo>,
@@ -515,13 +515,13 @@ pub struct RealWorldDataMoveSupply {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
     /// 移動した RealWorldDataset
     #[prost(message, optional, tag = "4")]
-    pub target_dataset: ::core::option::Option<RealWorldDataset>,
+    pub dataset: ::core::option::Option<RealWorldDataset>,
     /// 移動した RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     #[prost(string, optional, tag = "5")]
-    pub target_time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_start: ::core::option::Option<::prost::alloc::string::String>,
     /// 移動した RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
     #[prost(string, optional, tag = "6")]
-    pub target_time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
     /// データの移動元
     #[prost(message, optional, tag = "7")]
     pub move_from: ::core::option::Option<RealWorldDataStoringInfo>,
@@ -563,10 +563,10 @@ pub struct RealWorldDataRemoveDemand {
     pub dataset_store: ::core::option::Option<RealWorldDataStoringInfo>,
     /// 削除する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     #[prost(string, optional, tag = "5")]
-    pub target_time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_start: ::core::option::Option<::prost::alloc::string::String>,
     /// 削除する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
     #[prost(string, optional, tag = "6")]
-    pub target_time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -582,10 +582,10 @@ pub struct RealWorldDataRemoveSupply {
     pub dataset_store: ::core::option::Option<RealWorldDataStoringInfo>,
     /// 削除した RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     #[prost(string, optional, tag = "5")]
-    pub target_time_period_start: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_start: ::core::option::Option<::prost::alloc::string::String>,
     /// 削除した RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
     #[prost(string, optional, tag = "6")]
-    pub target_time_period_end: ::core::option::Option<::prost::alloc::string::String>,
+    pub time_period_end: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// RWDB システムが定期的に RealWorldDataset を削除する設定
 #[allow(clippy::derive_partial_eq_without_eq)]
