@@ -1,54 +1,84 @@
+import json
+
+with open('schemaorg-current-https.jsonld', 'r', encoding='UTF-8') as f:
+    origin = json.load(f)
+
+    schemalist = origin['@graph']
+    schemaids = []
+    schemacomments = []
+    schemasubClassOfs = []
+
+    for elm in schemalist:
+        schemaids.append(elm['@id'])
+        schemacomments.append(elm['rdfs:comment'])
+        if 'rdfs:subClassOf' in elm.keys():
+            schemasubClassOfs.append(elm['rdfs:subClassOf'])
+        else:
+            schemasubClassOfs.append({'@id': '#chincha'})
+
+
 class DataSchema:
 
     def __init__(self, name, type):
-        self.subClassOf = '"#chincha"'
+        self.key = SearchSchema(name)
+        self.subClassOf = {'@id': '#chincha'}
+        if self.key != -1:
+            self.subClassOf = schemasubClassOfs[self.key]
         self.domainIncludes = []
         self.rangeIncludes = []
         self.type = ''
         self.name = name
-        self.id = '"dbp:' + name + '"'
+        self.id = 'dbp:' + name
+        if self.key != -1:
+            self.id = schemaids[self.key]
         if type == 'Class':
-            self.type = '"rdfs:' + type + '"'
+            self.type = 'rdfs:' + type
         elif type == 'Property':
-            self.type = '"rdf:' + type + '"'
-        self.comment = '"#chincha"'
-        self.label = '"' + name + '"'
+            self.type = 'rdf:' + type
+        self.comment = '#chincha'
+        if self.key != -1:
+            self.comment = schemacomments[self.key]
+        self.label = name
 
     def addParentClass(self, domainInclude):
-        t = '"dbp:' + domainInclude + '"'
+        t = {'@id': DbpOrSchema(domainInclude)}
         self.domainIncludes.append(t)
 
     def addChildClass(self, rangeInclude):
         if rangeInclude == 'string':
-            t = '"schema:Text"'
+            t = {'@id': 'schema:Text'}
         elif rangeInclude == 'google.protobuf.Struct':
-            t = '"schema:CreativeWork"'
+            t = {'@id': 'schema:CreativeWork'}
         elif rangeInclude == 'google.protobuf.Timestamp':
-            t = '"schema:DateTime"'
+            t = {'@id': 'schema:DateTime'}
         else:
-            t = '"dbp:' + rangeInclude + '"'
+            t = {'@id': DbpOrSchema(rangeInclude)}
         self.rangeIncludes.append(t)
 
     def getJsonld(self):
-        jsonld = '\t\t{\n\t\t\t"@id": ' + self.id + ',\n\t\t\t"@type": ' + self.type + ',\n\t\t\t"@rdfs:comment": ' + self.comment + ',\n\t\t\t"@label": ' + self.label + ',\n'
-
-        if self.type == '"rdfs:Class"':
-            jsonld += '\t\t\t"rdfs:subClassOf": {\n\t\t\t\t"@id": ' + self.subClassOf + '\n\t\t\t},\n'
-        
-        jsonld += '\t\t\t"schema:domainIncludes": [\n'
-        for parent in self.domainIncludes:
-            jsonld += '\t\t\t\t{\n\t\t\t\t\t"@id": ' + parent + '\n\t\t\t\t},\n'
-        jsonld = jsonld.removesuffix(',\n')
-        jsonld += '\n\t\t\t],\n'
-
-        jsonld += '\t\t\t"schema:rangeIncludes": [\n'
-        for child in self.rangeIncludes:
-            jsonld += '\t\t\t\t{\n\t\t\t\t\t"@id": ' + child + '\n\t\t\t\t},\n'
-        jsonld = jsonld.removesuffix(',\n')
-        jsonld += '\n\t\t\t]\n\t\t},\n'
+        if self.type == 'rdfs:Class':
+            jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'rdfs:subClassOf': self.subClassOf,'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
+        elif self.type == 'rdf:Property':
+            jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
 
         return jsonld
- 
+
+
+
+def SearchSchema(name):
+    for i in range(len(schemaids)):
+        if schemaids[i] == 'schema:' + name:
+            return i
+    return -1
+
+
+
+def DbpOrSchema(name):
+    for filter in schemaids:
+        if filter == 'schema:' + name:
+            return filter
+    return 'dbp:' + name
+
 
 
 def ParseProto(protofile):
@@ -118,21 +148,19 @@ def ParseProto(protofile):
 
 
 def WriteJsonld(items, jsonldfile):
-    f = open(jsonldfile, 'w', encoding='UTF-8')
+    with open(jsonldfile, 'w', encoding='UTF-8') as f:
+        context = {'dbp': 'http://exdata.co.jp/dbp/schema/', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'schema': 'https://schema.org/'}
+        graph = []
+        for item in items:
+            graph.append(item.getJsonld())
+        text = {'@context': context, '@graph': graph}
 
-    text = '{\n\t"@context": {\n\t\t"dbp": "http://exdata.co.jp/dbp/schema/",\n\t\t"rdfs": "http://www.w3.org/2000/01/rdf-schema#",\n\t\t"schema": "https://schema.org/"\n\t},\n\t"@graph": [\n'    
-    for item in items:
-        text += item.getJsonld()
-    text = text.removesuffix(',\n')
-    text += '\n\t]\n}'
+        json.dump(text, f, indent = 2)
 
-    f.write(text)
-
-    f.close()
 
 
 
 if __name__ == "__main__":
     test = ParseProto('dbp_schema.proto') #入力する.protoファイル名
 
-    WriteJsonld(test, 'sampleto1.jsonld') #出力する.jsonldファイル名
+    WriteJsonld(test, 'sampleto2.jsonld') #出力する.jsonldファイル名
