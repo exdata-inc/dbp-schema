@@ -1,20 +1,25 @@
 import json
+import requests
 
-with open('schemaorg-current-https.jsonld', 'r', encoding='UTF-8') as f:
-    origin = json.load(f)
+URL = 'https://github.com/schemaorg/schemaorg/blob/main/data/releases/21.0/schemaorg-current-https.jsonld?raw=true'
+response = requests.get(URL)
+origin = json.loads(response.text)
+#with open('sampleto3.jsonld', 'w', encoding='UTF-8') as fj:
+#        json.dump(origin, fj, indent = 2)
 
-    schemalist = origin['@graph']
-    schemaids = []
-    schemacomments = []
-    schemasubClassOfs = []
+schemalist = origin['@graph']
+schemaids = []
+schemacomments = []
+schemasubClassOfs = []
 
-    for elm in schemalist:
-        schemaids.append(elm['@id'])
-        schemacomments.append(elm['rdfs:comment'])
-        if 'rdfs:subClassOf' in elm.keys():
-            schemasubClassOfs.append(elm['rdfs:subClassOf'])
-        else:
-            schemasubClassOfs.append({'@id': '#chincha'})
+for elm in schemalist:
+    schemaids.append(elm['@id'])
+    schemacomments.append(elm['rdfs:comment'])
+    if 'rdfs:subClassOf' in elm.keys():
+        schemasubClassOfs.append(elm['rdfs:subClassOf'])
+    else:
+        schemasubClassOfs.append({'@id': '#chincha'})
+
 
 
 class DataSchema:
