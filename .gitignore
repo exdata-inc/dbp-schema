@@ -17,3 +17,6 @@ Cargo.lock
 # Added by cargo
 
 /target
+
+sampleto2.jsonld
+sampleto3.jsonld
