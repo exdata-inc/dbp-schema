@@ -61,11 +61,17 @@ class DataSchema:
         self.rangeIncludes.append(t)
 
     def getJsonld(self):
+        if len(self.domainIncludes) == 1:
+            self.domainIncludes = self.domainIncludes[0]
+        if len(self.rangeIncludes) == 1:
+            self.rangeIncludes = self.rangeIncludes[0]
         if self.type == 'rdfs:Class':
             jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'rdfs:subClassOf': self.subClassOf,'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
         elif self.type == 'rdf:Property':
             jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
-
+        self.domainIncludes = [self.domainIncludes]
+        self.rangeIncludes = [self.rangeIncludes]
+        
         return jsonld
 
 
@@ -157,7 +163,8 @@ def WriteJsonld(items, jsonldfile):
         context = {'dbp': 'http://exdata.co.jp/dbp/schema/', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'schema': 'https://schema.org/'}
         graph = []
         for item in items:
-            graph.append(item.getJsonld())
+            if item.key == -1:
+                graph.append(item.getJsonld())
         text = {'@context': context, '@graph': graph}
 
         json.dump(text, f, indent = 2)
