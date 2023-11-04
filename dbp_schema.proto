@@ -149,6 +149,7 @@ message RealWorldDataStoringInfo {
     optional string baseUrl = 6;
     optional string pattern = 7;
     optional int32 transmissionSpeed = 8;   // ストレージの転送速度
+    optional string storageType = 9;        // ストレージの種別 SSD、HDD、光学ディスク、磁気テープなどなど
 }
 
 message RealWorldDataRegisterDemand {
