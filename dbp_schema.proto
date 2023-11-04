@@ -148,6 +148,8 @@ message RealWorldDataStoringInfo {
     optional google.protobuf.Timestamp endTime = 5;
     optional string baseUrl = 6;
     optional string pattern = 7;
+    optional int32 transmissionSpeed = 8;   // ストレージの転送速度
+    optional string storageType = 9;        // ストレージの種別 SSD、HDD、光学ディスク、磁気テープなどなど
 }
 
 message RealWorldDataRegisterDemand {
@@ -219,6 +221,7 @@ message RealWorldDataPeriodicBrewingConfig {                // RWDB システム
     optional string url = 3;
     optional RealWorldDataBrewingDemand brewingConfig = 4;  // 投げる Demand
     optional string cronConfig = 5;                         // 時間間隔 (cron format)
+    optional bool enabled = 6;
 }
 
 message RealWorldDataReadDemand {
@@ -292,6 +295,7 @@ message RealWorldDataPeriodicMoveConfig {                   // RWDB システム
     optional string url = 3;
     optional RealWorldDataMoveDemand moveConfig = 4;        // 移動設定
     optional string cronConfig = 5;                       // 時間間隔 (cron format)
+    optional bool enabled = 6;
 }
 
 message RealWorldDataRemoveDemand {
@@ -318,4 +322,5 @@ message RealWorldDataPeriodicRemoveConfig {                 // RWDB システム
     optional string url = 3;
     optional RealWorldDataRemoveDemand removeConfig = 4;    // 削除設定
     optional string cronConfig = 5;                       // 時間間隔 (cron format)
+    optional bool enabled = 6;
 }
