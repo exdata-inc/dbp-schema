@@ -146,10 +146,11 @@ message RealWorldDataStoringInfo {
     optional string url = 3;
     optional google.protobuf.Timestamp startTime = 4;
     optional google.protobuf.Timestamp endTime = 5;
-    optional string baseUrl = 6;
-    optional string pattern = 7;
+    optional string baseUrl = 6;            // ファイルシステムやデータベースの URL
+    optional string pattern = 7;            // ファイルシステムなら URL の後に続くパターン、データベースなら日時指定のためのクエリのパターン
     optional int32 transmissionSpeed = 8;   // ストレージの転送速度
     optional string storageType = 9;        // ストレージの種別 SSD、HDD、光学ディスク、磁気テープなどなど
+    optional EntryPoint entryPoint = 10;    // HTTP エントリポイント（ schema:EntryPoint を参照 ）
 }
 
 message RealWorldDataRegisterDemand {
