@@ -6,7 +6,7 @@
   },
   "@graph": [
     {
-      "@id": "dbp:id",
+      "@id": "@id",
       "@type": "rdf:Property",
       "rdfs:comment": "自身(このJSON-LD)のURL",
       "rdfs:label": "id",
@@ -113,7 +113,7 @@
       },
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -174,7 +174,7 @@
       ],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -229,7 +229,7 @@
       ],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -273,7 +273,7 @@
       },
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -348,7 +348,7 @@
       ],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -382,7 +382,7 @@
     {
       "@id": "dbp:RealWorldDataset",
       "@type": "rdfs:Class",
-      "rdfs:comment": "",
+      "rdfs:comment": "実世界データセットを表す JSON-LD",
       "rdfs:label": "RealWorldDataset",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
@@ -400,7 +400,7 @@
       ],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -532,7 +532,7 @@
       ],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -599,7 +599,7 @@
       ],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -654,7 +654,7 @@
       ],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -752,7 +752,7 @@
       ],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -852,7 +852,7 @@
       },
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -925,7 +925,7 @@
       },
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1020,7 +1020,7 @@
       ],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1062,7 +1062,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1086,7 +1086,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1113,7 +1113,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1137,7 +1137,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1188,7 +1188,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1363,7 +1363,7 @@
       },
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1414,7 +1414,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1507,7 +1507,7 @@
     {
       "@id": "dbp:RealWorldDataPeriodicBrewingConfig",
       "@type": "rdfs:Class",
-      "rdfs:comment": "",
+      "rdfs:comment": "RWDB システムが定期的に RealWorldDataBrewingDemand を投げる設定",
       "rdfs:label": "RealWorldDataPeriodicBrewingConfig",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
@@ -1515,7 +1515,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1579,7 +1579,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1632,7 +1632,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1671,7 +1671,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1704,7 +1704,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1770,7 +1770,7 @@
       },
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1818,7 +1818,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1861,7 +1861,7 @@
     {
       "@id": "dbp:RealWorldDataPeriodicMoveConfig",
       "@type": "rdfs:Class",
-      "rdfs:comment": "",
+      "rdfs:comment": "RWDB システムが定期的に RealWorldDataset を移動する設定",
       "rdfs:label": "RealWorldDataPeriodicMoveConfig",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
@@ -1869,7 +1869,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1918,7 +1918,7 @@
       },
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1948,7 +1948,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"
@@ -1982,7 +1982,7 @@
     {
       "@id": "dbp:RealWorldDataPeriodicRemoveConfig",
       "@type": "rdfs:Class",
-      "rdfs:comment": "",
+      "rdfs:comment": "RWDB システムが定期的に RealWorldDataset を削除する設定",
       "rdfs:label": "RealWorldDataPeriodicRemoveConfig",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
@@ -1990,7 +1990,7 @@
       "schema:domainIncludes": [],
       "schema:rangeIncludes": [
         {
-          "@id": "dbp:id"
+          "@id": "@id"
         },
         {
           "@id": "schema:name"

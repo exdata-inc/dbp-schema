@@ -7,7 +7,7 @@ package dbp_schema;
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
 
-message RealWorldDataset {
+message RealWorldDataset {                                      // 実世界データセットを表す JSON-LD
     optional string id = 1;                                     // 自身(このJSON-LD)のURL
     optional string name = 2;                                   // 名前
     optional string url = 3;                                    // URL(未使用)
@@ -131,7 +131,7 @@ message RealWorldDataBrewEvent {
 
 }
 
-message RealWorldDataStructureInfo {
+message RealWorldDataStructureInfo {        // 実世界データの構造を表す JSON-LD
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;

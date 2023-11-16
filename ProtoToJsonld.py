@@ -36,6 +36,8 @@ class DataSchema:
         self.id = 'dbp:' + name
         if self.key != -1:
             self.id = schemaids[self.key]
+        if name == 'id':
+            self.id = '@id'
         if type == 'Class':
             self.type = 'rdfs:' + type
         elif type == 'Property':
@@ -85,6 +87,8 @@ def SearchSchema(name):
 
 
 def DbpOrSchema(name):
+    if name == 'id':
+        return '@id'
     for filter in schemaids:
         if filter == 'schema:' + name:
             return filter
@@ -115,7 +119,10 @@ def ParseProto(protofile):
                         flag3 = 1
                         break
                 if flag3 == 0:
-                    tmp_class = DataSchema(line[1], 'Class')
+                    if len(line) > 4:
+                        tmp_class = DataSchema(line[1], 'Class', ' '.join(line[4:]))
+                    else:
+                        tmp_class = DataSchema(line[1], 'Class')
                 flag3 = 0
 
             elif flag_in_message == 1 and line[0] != '}':
