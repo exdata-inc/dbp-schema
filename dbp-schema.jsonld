@@ -517,7 +517,7 @@
     {
       "@id": "dbp:RealWorldDataBrewerInput",
       "@type": "rdfs:Class",
-      "rdfs:comment": "",
+      "rdfs:comment": "実世界データ醸造を行う際の入力データの仕様を表す JSON-LD",
       "rdfs:label": "RealWorldDataBrewerInput",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
@@ -584,7 +584,7 @@
     {
       "@id": "dbp:RealWorldDataBrewerOutput",
       "@type": "rdfs:Class",
-      "rdfs:comment": "",
+      "rdfs:comment": "実世界データ醸造を行う際の出力データの仕様を表す JSON-LD",
       "rdfs:label": "RealWorldDataBrewerOutput",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
