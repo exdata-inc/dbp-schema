@@ -27,7 +27,7 @@ message RealWorldDataset {                                      // 実世界デ�
     optional string description = 17;                           // 説明
 }
 
-message RealWorldDataBrewerInput {
+message RealWorldDataBrewerInput {                                      // 実世界データ醸造を行う際の入力データの仕様を表す JSON-LD
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
@@ -38,7 +38,7 @@ message RealWorldDataBrewerInput {
     optional RealWorldDataset dataset = 8;                              // 対象のデータセット
 }
 
-message RealWorldDataBrewerOutput {
+message RealWorldDataBrewerOutput {                                         // 実世界データ醸造を行う際の出力データの仕様を表す JSON-LD
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
@@ -57,7 +57,7 @@ message RealWorldDataBrewingArgument {  // An argument that was passed to a brew
     optional bytes value = 6;
 }
 
-message RealWorldDataBrewerInfo {
+message RealWorldDataBrewerInfo {                                               // 実世界データ醸造を行う際の酵母（マイクロプログラム）の仕様を表す JSON-LD
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
@@ -140,7 +140,7 @@ message RealWorldDataStructureInfo {        // 実世界データの構造を表
     optional string graphqlSchema = 6;
 }
 
-message RealWorldDataStoringInfo {
+message RealWorldDataStoringInfo {          // 実世界データの保存先を表す JSON-LD
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
