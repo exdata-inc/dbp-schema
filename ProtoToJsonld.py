@@ -18,15 +18,15 @@ for elm in schemalist:
     if 'rdfs:subClassOf' in elm.keys():
         schemasubClassOfs.append(elm['rdfs:subClassOf'])
     else:
-        schemasubClassOfs.append({'@id': '#chincha'})
+        schemasubClassOfs.append({'@id': 'schema:Thing'})
 
 
 
 class DataSchema:
 
-    def __init__(self, name, type):
+    def __init__(self, name, type, comment=''):
         self.key = SearchSchema(name)
-        self.subClassOf = {'@id': '#chincha'}
+        self.subClassOf = {'@id': 'schema:Thing'}
         if self.key != -1:
             self.subClassOf = schemasubClassOfs[self.key]
         self.domainIncludes = []
@@ -40,7 +40,7 @@ class DataSchema:
             self.type = 'rdfs:' + type
         elif type == 'Property':
             self.type = 'rdf:' + type
-        self.comment = '#chincha'
+        self.comment = comment
         if self.key != -1:
             self.comment = schemacomments[self.key]
         self.label = name
@@ -95,8 +95,8 @@ def DbpOrSchema(name):
 def ParseProto(protofile):
     f = open(protofile, 'r', encoding='UTF-8')
 
-    flag1 = 0
-    flag2 = 0
+    flag_in_message = 0
+    flag_already_added = 0
     flag3 = 0
     jsondata = []
     count = 0
@@ -107,29 +107,32 @@ def ParseProto(protofile):
         #print([count,flag3])
         line = data.split()
         if line: 
-            if flag1 == 0 and line[0] == 'message':
-                flag1 = 1
+            if flag_in_message == 0 and line[0] == 'message':
+                flag_in_message = 1
                 for i in range(len(jsondata)):
                     if jsondata[i].name == line[1]:
-                        tmp1 = jsondata[i]
+                        tmp_class = jsondata[i]
                         flag3 = 1
                         break
                 if flag3 == 0:
-                    tmp1 = DataSchema(line[1], 'Class')
+                    tmp_class = DataSchema(line[1], 'Class')
                 flag3 = 0
 
-            elif flag1 == 1 and line[0] != '}':
+            elif flag_in_message == 1 and line[0] != '}':
                 for i in range(len(jsondata)):
-                    if jsondata[i].name == line[2]:
-                        jsondata[i].addParentClass(tmp1.name)
-                        tmp1.addChildClass(jsondata[i].name)
-                        flag2 = 1
+                    if jsondata[i].name == line[2]:                 # 現在の message Class に含まれる Property が既に存在
+                        jsondata[i].addParentClass(tmp_class.name)  # 既にある Property に現在の message Class を親として追加
+                        tmp_class.addChildClass(jsondata[i].name)   # 現在の message Class に既にある Property を子として追加
+                        flag_already_added = 1
                         break
-                if flag2 == 0:
-                    tmp2 = DataSchema(line[2], 'Property')
-                    tmp2.addChildClass(line[1])
-                    tmp2.addParentClass(tmp1.name)
-                    tmp1.addChildClass(tmp2.name)
+                if flag_already_added == 0:
+                    if len(line) > 6:
+                        tmp_prop = DataSchema(line[2], 'Property', ' '.join(line[6:]))
+                    else:
+                        tmp_prop = DataSchema(line[2], 'Property')
+                    tmp_prop.addChildClass(line[1])                 # 新しい Property の中身の Class を追加
+                    tmp_prop.addParentClass(tmp_class.name)         # 新しい Property の親として現在の message Class を追加
+                    tmp_class.addChildClass(tmp_prop.name)          # 現在の message Class に新しい Property を子として追加
                     for k in range(len(jsondata)):
                         if jsondata[k].name == line[1]:
                             jsondata[k].addParentClass(line[2])
@@ -137,22 +140,22 @@ def ParseProto(protofile):
                             break
                     if flag3 == 0:
                         if line[1] != 'string' and line[1] != 'bytes' and line[1] != 'google.protobuf.Struct' and line[1] != 'google.protobuf.Timestamp':
-                            if line[1] == tmp1.name:
-                                tmp1.addParentClass(line[2])
+                            if line[1] == tmp_class.name:
+                                tmp_class.addParentClass(line[2])
                             else:
                                 tmp3 = DataSchema(line[1], 'Class')
                                 tmp3.addParentClass(line[2])
                                 jsondata.append(tmp3)
                                 del tmp3
                     flag3 = 0
-                    jsondata.append(tmp2)
-                    del tmp2
-                flag2 = 0
+                    jsondata.append(tmp_prop)
+                    del tmp_prop
+                flag_already_added = 0
 
-            elif flag1 == 1 and line[0] == '}':
-                flag1 = 0
-                jsondata.append(tmp1)
-                del tmp1
+            elif flag_in_message == 1 and line[0] == '}':
+                flag_in_message = 0
+                jsondata.append(tmp_class)
+                del tmp_class
 
     return jsondata
 
@@ -167,7 +170,7 @@ def WriteJsonld(items, jsonldfile):
                 graph.append(item.getJsonld())
         text = {'@context': context, '@graph': graph}
 
-        json.dump(text, f, indent = 2)
+        json.dump(text, f, indent = 2, ensure_ascii=False)
 
 
 
@@ -175,4 +178,4 @@ def WriteJsonld(items, jsonldfile):
 if __name__ == "__main__":
     test = ParseProto('dbp_schema.proto') #入力する.protoファイル名
 
-    WriteJsonld(test, 'sampleto2.jsonld') #出力する.jsonldファイル名
+    WriteJsonld(test, 'dbp-schema.jsonld') #出力する.jsonldファイル名

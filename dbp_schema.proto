@@ -9,8 +9,8 @@ import "google/protobuf/struct.proto";
 
 message RealWorldDataset {
     optional string id = 1;                                     // 自身(このJSON-LD)のURL
-    optional string name = 2;                                   // (人間が見てわかりやすい)データセットの名前
-    optional string url = 3;                                    // (未使用)
+    optional string name = 2;                                   // 名前
+    optional string url = 3;                                    // URL(未使用)
     optional RealWorldDataStructureInfo structureInfo = 4;      // 構造情報
     repeated RealWorldDataset generatedFrom = 5;                // このデータセットの基になったデータセット(醸造時の入力データセット)
     optional RealWorldDataBrewerInfo generatedUsing = 6;        // このデータセットを作った醸造プログラム
@@ -21,21 +21,21 @@ message RealWorldDataset {
     optional string contentLocation = 11;                       // データを集めている場所
     optional google.protobuf.Timestamp dateCreated = 12;        // データを集め始めた日時
     optional google.protobuf.Timestamp dateModified = 13;       // 最新のデータを集め始めた日時
-    optional google.protobuf.Timestamp datePublished = 14;
-    optional string license = 15;
+    optional google.protobuf.Timestamp datePublished = 14;      // データを公開した日時
+    optional string license = 15;                               // ライセンス
     optional string locationCreated = 16;
-    optional string description = 17;
+    optional string description = 17;                           // 説明
 }
 
 message RealWorldDataBrewerInput {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional string key = 4;
-    optional string inputType = 5;
-    optional bytes value = 6;
-    optional VariableCharacteristicEnumeration inputCharacteristic = 7;
-    optional RealWorldDataset dataset = 8;
+    optional string key = 4;                                            // 醸造入力の引数のキー（名前）
+    optional string inputType = 5;                                      // 醸造入力データの型
+    optional bytes value = 6;                                           // 醸造入力の値（Demand を送信する際に使用）
+    optional VariableCharacteristicEnumeration inputCharacteristic = 7; // A characteristic of an input data entry in a real world dataset.
+    optional RealWorldDataset dataset = 8;                              // 対象のデータセット
 }
 
 message RealWorldDataBrewerOutput {
@@ -43,17 +43,17 @@ message RealWorldDataBrewerOutput {
     optional string name = 2;
     optional string url = 3;
     optional string key = 4;
-    optional string outputType = 5;
+    optional string outputType = 5;                                         // A type of an output data entry in a real world dataset.
     optional bytes value = 6;
-    optional VariableCharacteristicEnumeration outputCharacteristic = 7;
+    optional VariableCharacteristicEnumeration outputCharacteristic = 7;    // A characteristic of an output data entry in a real world dataset.
 }
 
-message RealWorldDataBrewingArgument {
+message RealWorldDataBrewingArgument {  // An argument that was passed to a brewer to generate a dataset from another.
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
     optional string key = 4;
-    optional string argumentType = 5;
+    optional string argumentType = 5;   // A type of an argument passed to a brewer.
     optional bytes value = 6;
 }
 
@@ -64,31 +64,31 @@ message RealWorldDataBrewerInfo {
     repeated RealWorldDataBrewerInput inputSpecs = 4;
     repeated RealWorldDataBrewerOutput outputSpecs = 5;
     repeated RealWorldDataBrewingArgument argSpecs = 6;
-    optional ConversionCharacteristicEnumeration conversionCharacteristic = 7;
+    optional ConversionCharacteristicEnumeration conversionCharacteristic = 7;  // A characteristic of a conversion done by the brewer.
 }
 
-enum ConversionCharacteristicEnumeration {
+enum ConversionCharacteristicEnumeration {      // Enumerates conversion characteristics, such as single-value-replace, col-merge, or row-merge.
     // option allow_alias = true;
     SINGLE_VALUE_REPLACE = 0;
     COL_MERGE = 1;
     ROW_MERGE = 2;
 }
 
-enum VariableCharacteristicEnumeration {
+enum VariableCharacteristicEnumeration {        // Enumerates value characteristics, such as qualitative or quantitative.
     // option allow_alias = true;
     QUALITATIVE = 0;
     QUANTITATIVE = 1;
 }
 
-message RealWorldDataCollectionInfo {
+message RealWorldDataCollectionInfo {           // An information for collecting a real world data.
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional string collectionStyle = 4;
-    optional string collectionProtocol = 5;
-    optional string listenAddress = 6;
-    optional string serverAddress = 7;
-    optional EntryPoint entryPoint = 8;
+    optional string collectionStyle = 4;        // A style of data collection (Server, Client, Pub/Sub).
+    optional string collectionProtocol = 5;     // A protocol of data collection (HTTP, HTTPS, FTP, etc.).
+    optional string listenAddress = 6;          // An listen address for data collection (url).
+    optional string serverAddress = 7;          // An server address for data collection (url).
+    optional EntryPoint entryPoint = 8;         // An entryPoint of data collection (action_application, url).
 }
 
 message EntryPoint {  // https://schema.org/EntryPoint
