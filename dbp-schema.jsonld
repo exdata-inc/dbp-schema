@@ -770,6 +770,97 @@
       "schema:rangeIncludes": {
         "@id": "schema:Text"
       }
+    },
+    {
+      "@id": "dbp:MainDataSegment",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A main segment of the data, which excludes a meta data of the data.",
+      "rdfs:label": "mainDataSegment",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataset"
+        },
+        {
+          "@id": "dbp:RealWorldDataStructureInfo"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "dbp:DataSegment"
+      }
+    },
+    {
+      "@id": "dbp:MetaDataSegment",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A meta data of the data, which excludes a main dats of the data.",
+      "rdfs:label": "metaDataSegment",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataset"
+        },
+        {
+          "@id": "dbp:RealWorldDataStructureInfo"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "dbp:DataSegment"
+      }
+    },
+    {
+      "@id": "dbp:DataSegment",
+      "@type": "rdf:Class",
+      "rdfs:comment": "A segment of the data.",
+      "rdfs:label": "dataSegment",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:MainDataSegment"
+        },
+        {
+          "@id": "dbp:MetaDataSegment"
+        }
+      ],
+      "schema:rangeIncludes": [
+        {
+          "@id": "dbp:RealWorldDataTableSegment"
+        },
+        {
+          "@id": "dbp:RealWorldDataJsonSegment"
+        },
+        {
+          "@id": "dbp:RealWorldDataset"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:RealWorldDataTableSegment",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "A notation of the segment of the table data (includes CSV data).",
+      "rdfs:label": "RealWorldDataTableSegment",
+      "rdfs:subClassOf": {
+        "@id": "dbp:DataSegment"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "schema:name"
+        },
+        {
+          "@id": "schema:url"
+        },
+        {
+          "@id": "dbp:minRow"
+        },
+        {
+          "@id": "dbp:maxRow"
+        },
+        {
+          "@id": "dbp:minColumn"
+        },
+        {
+          "@id": "dbp:maxColumn"
+        }
+      ]
     }
   ]
 }
