@@ -248,10 +248,21 @@ pub struct RealWorldDataStoringInfo {
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(message, optional, tag = "5")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// ファイルシステムやデータベースの URL
     #[prost(string, optional, tag = "6")]
     pub base_url: ::core::option::Option<::prost::alloc::string::String>,
+    /// ファイルシステムなら URL の後に続くパターン、データベースなら日時指定のためのクエリのパターン
     #[prost(string, optional, tag = "7")]
     pub pattern: ::core::option::Option<::prost::alloc::string::String>,
+    /// ストレージの転送速度
+    #[prost(int32, optional, tag = "8")]
+    pub transmission_speed: ::core::option::Option<i32>,
+    /// ストレージの種別 SSD、HDD、光学ディスク、磁気テープなどなど
+    #[prost(string, optional, tag = "9")]
+    pub storage_type: ::core::option::Option<::prost::alloc::string::String>,
+    /// HTTP エントリポイント（ schema:EntryPoint を参照 ）
+    #[prost(message, optional, tag = "10")]
+    pub entry_point: ::core::option::Option<EntryPoint>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -385,6 +396,8 @@ pub struct RealWorldDataPeriodicBrewingConfig {
     /// 時間間隔 (cron format)
     #[prost(string, optional, tag = "5")]
     pub cron_config: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(bool, optional, tag = "6")]
+    pub enabled: ::core::option::Option<bool>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -548,6 +561,8 @@ pub struct RealWorldDataPeriodicMoveConfig {
     /// 時間間隔 (cron format)
     #[prost(string, optional, tag = "5")]
     pub cron_config: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(bool, optional, tag = "6")]
+    pub enabled: ::core::option::Option<bool>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -603,6 +618,8 @@ pub struct RealWorldDataPeriodicRemoveConfig {
     /// 時間間隔 (cron format)
     #[prost(string, optional, tag = "5")]
     pub cron_config: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(bool, optional, tag = "6")]
+    pub enabled: ::core::option::Option<bool>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
