@@ -6,225 +6,19 @@
   },
   "@graph": [
     {
-      "@id": "@id",
-      "@type": "rdf:Property",
-      "rdfs:comment": "自身(このJSON-LD)のURL",
-      "rdfs:label": "id",
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:RealWorldDataset"
-        },
-        {
-          "@id": "dbp:RealWorldDataBrewerInput"
-        },
-        {
-          "@id": "dbp:RealWorldDataBrewerOutput"
-        },
-        {
-          "@id": "dbp:RealWorldDataBrewingArgument"
-        },
-        {
-          "@id": "dbp:RealWorldDataBrewerInfo"
-        },
-        {
-          "@id": "dbp:RealWorldDataCollectionInfo"
-        },
-        {
-          "@id": "schema:EntryPoint"
-        },
-        {
-          "@id": "schema:Thing"
-        },
-        {
-          "@id": "dbp:RealWorldDataStructureInfo"
-        },
-        {
-          "@id": "dbp:RealWorldDataStoringInfo"
-        },
-        {
-          "@id": "dbp:RealWorldDataRegisterDemand"
-        },
-        {
-          "@id": "dbp:RealWorldDataRegisterSupply"
-        },
-        {
-          "@id": "dbp:RealWorldDataCollectionDemand"
-        },
-        {
-          "@id": "dbp:RealWorldDataCollectionSupply"
-        },
-        {
-          "@id": "dbp:RealWorldDataCollectionStatus"
-        },
-        {
-          "@id": "dbp:RealWorldDataBrewingDemand"
-        },
-        {
-          "@id": "dbp:RealWorldDataBrewingSupply"
-        },
-        {
-          "@id": "dbp:RealWorldDataPeriodicBrewingConfig"
-        },
-        {
-          "@id": "dbp:RealWorldDataReadDemand"
-        },
-        {
-          "@id": "dbp:RealWorldDataReadSupply"
-        },
-        {
-          "@id": "dbp:RealWorldDataWriteDemand"
-        },
-        {
-          "@id": "dbp:RealWorldDataWriteSupply"
-        },
-        {
-          "@id": "dbp:RealWorldDataMoveDemand"
-        },
-        {
-          "@id": "dbp:RealWorldDataMoveSupply"
-        },
-        {
-          "@id": "dbp:RealWorldDataPeriodicMoveConfig"
-        },
-        {
-          "@id": "dbp:RealWorldDataRemoveDemand"
-        },
-        {
-          "@id": "dbp:RealWorldDataRemoveSupply"
-        },
-        {
-          "@id": "dbp:RealWorldDataPeriodicRemoveConfig"
-        }
-      ],
-      "schema:rangeIncludes": {
-        "@id": "schema:Text"
-      }
-    },
-    {
-      "@id": "dbp:RealWorldDataStructureInfo",
+      "@id": "dbp:RealWorldDataBrewerInput",
       "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataStructureInfo",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": {
-        "@id": "dbp:structureInfo"
-      },
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
-        {
-          "@id": "schema:encodingFormat"
-        },
-        {
-          "@id": "dbp:structure"
-        },
-        {
-          "@id": "dbp:graphqlSchema"
-        }
-      ]
-    },
-    {
-      "@id": "dbp:structureInfo",
-      "@type": "rdf:Property",
-      "rdfs:comment": "構造情報",
-      "rdfs:label": "structureInfo",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataset"
-      },
-      "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataStructureInfo"
-      }
-    },
-    {
-      "@id": "dbp:generatedFrom",
-      "@type": "rdf:Property",
-      "rdfs:comment": "このデータセットの基になったデータセット(醸造時の入力データセット)",
-      "rdfs:label": "generatedFrom",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataset"
-      },
-      "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataset"
-      }
-    },
-    {
-      "@id": "dbp:RealWorldDataBrewerInfo",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataBrewerInfo",
+      "rdfs:comment": "実世界データ醸造を行う際の入力データの仕様を表す JSON-LD",
+      "rdfs:label": "RealWorldDataBrewerInput",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
       },
       "schema:domainIncludes": [
-        {
-          "@id": "dbp:generatedUsing"
-        },
-        {
-          "@id": "dbp:brewerInfo"
-        }
-      ],
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
         {
           "@id": "dbp:inputSpecs"
         },
         {
-          "@id": "dbp:outputSpecs"
-        },
-        {
-          "@id": "dbp:argSpecs"
-        },
-        {
-          "@id": "dbp:conversionCharacteristic"
-        }
-      ]
-    },
-    {
-      "@id": "dbp:generatedUsing",
-      "@type": "rdf:Property",
-      "rdfs:comment": "このデータセットを作った醸造プログラム",
-      "rdfs:label": "generatedUsing",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataset"
-      },
-      "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataBrewerInfo"
-      }
-    },
-    {
-      "@id": "dbp:RealWorldDataBrewingArgument",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataBrewingArgument",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:generatedArgs"
-        },
-        {
-          "@id": "dbp:argSpecs"
-        },
-        {
-          "@id": "dbp:brewingArgument"
+          "@id": "dbp:brewerInput"
         }
       ],
       "schema:rangeIncludes": [
@@ -241,151 +35,176 @@
           "@id": "dbp:key"
         },
         {
-          "@id": "dbp:argumentType"
+          "@id": "dbp:inputType"
         },
         {
           "@id": "schema:value"
+        },
+        {
+          "@id": "dbp:inputCharacteristic"
+        },
+        {
+          "@id": "schema:dataset"
         }
       ]
     },
     {
-      "@id": "dbp:generatedArgs",
+      "@id": "dbp:key",
       "@type": "rdf:Property",
-      "rdfs:comment": "このデータセットを作った際のパラメータ(醸造時の入力パラメータ)",
-      "rdfs:label": "generatedArgs",
+      "rdfs:comment": "醸造入力の引数のキー（名前）",
+      "rdfs:label": "key",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataBrewerInput"
+        },
+        {
+          "@id": "dbp:RealWorldDataBrewerOutput"
+        },
+        {
+          "@id": "dbp:RealWorldDataBrewingArgument"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:inputCharacteristic",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A characteristic of an input data entry in a real world dataset.",
+      "rdfs:label": "inputCharacteristic",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewerInput"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:VariableCharacteristicEnumeration"
+      }
+    },
+    {
+      "@id": "dbp:VariableCharacteristicEnumeration",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "VariableCharacteristicEnumeration",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:inputCharacteristic"
+        },
+        {
+          "@id": "dbp:outputCharacteristic"
+        }
+      ],
+      "schema:rangeIncludes": []
+    },
+    {
+      "@id": "dbp:inputType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "醸造入力データの型",
+      "rdfs:label": "inputType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewerInput"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataBrewerOutput",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "実世界データ醸造を行う際の出力データの仕様を表す JSON-LD",
+      "rdfs:label": "RealWorldDataBrewerOutput",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:outputSpecs"
+        },
+        {
+          "@id": "dbp:brewerOutput"
+        }
+      ],
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "schema:name"
+        },
+        {
+          "@id": "schema:url"
+        },
+        {
+          "@id": "dbp:key"
+        },
+        {
+          "@id": "dbp:outputType"
+        },
+        {
+          "@id": "schema:value"
+        },
+        {
+          "@id": "dbp:outputCharacteristic"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:outputType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A type of an output data entry in a real world dataset.",
+      "rdfs:label": "outputType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewerOutput"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:outputCharacteristic",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A characteristic of an output data entry in a real world dataset.",
+      "rdfs:label": "outputCharacteristic",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewerOutput"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:VariableCharacteristicEnumeration"
+      }
+    },
+    {
+      "@id": "dbp:generatedUsing",
+      "@type": "rdf:Property",
+      "rdfs:comment": "このデータセットを作った醸造プログラム",
+      "rdfs:label": "generatedUsing",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataset"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataBrewingArgument"
+        "@id": "dbp:RealWorldDataBrewerInfo"
       }
     },
     {
-      "@id": "dbp:RealWorldDataCollectionInfo",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataCollectionInfo",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": {
-        "@id": "dbp:collectionInfo"
-      },
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
-        {
-          "@id": "dbp:collectionStyle"
-        },
-        {
-          "@id": "dbp:collectionProtocol"
-        },
-        {
-          "@id": "dbp:listenAddress"
-        },
-        {
-          "@id": "dbp:serverAddress"
-        },
-        {
-          "@id": "dbp:entryPoint"
-        }
-      ]
-    },
-    {
-      "@id": "dbp:collectionInfo",
+      "@id": "dbp:argumentType",
       "@type": "rdf:Property",
-      "rdfs:comment": "収集情報",
-      "rdfs:label": "collectionInfo",
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:RealWorldDataset"
-        },
-        {
-          "@id": "dbp:RealWorldDataCollectionDemand"
-        },
-        {
-          "@id": "dbp:RealWorldDataCollectionSupply"
-        },
-        {
-          "@id": "dbp:RealWorldDataCollectionStatus"
-        }
-      ],
-      "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataCollectionInfo"
-      }
-    },
-    {
-      "@id": "dbp:RealWorldDataStoringInfo",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataStoringInfo",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
+      "rdfs:comment": "A type of an argument passed to a brewer.",
+      "rdfs:label": "argumentType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewingArgument"
       },
-      "schema:domainIncludes": [
-        {
-          "@id": "schema:distribution"
-        },
-        {
-          "@id": "dbp:brewerOutputStore"
-        },
-        {
-          "@id": "dbp:moveFrom"
-        },
-        {
-          "@id": "dbp:moveTo"
-        },
-        {
-          "@id": "dbp:datasetStore"
-        }
-      ],
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
-        {
-          "@id": "schema:startTime"
-        },
-        {
-          "@id": "schema:endTime"
-        },
-        {
-          "@id": "dbp:baseUrl"
-        },
-        {
-          "@id": "schema:pattern"
-        },
-        {
-          "@id": "dbp:transmissionSpeed"
-        },
-        {
-          "@id": "dbp:storageType"
-        },
-        {
-          "@id": "dbp:entryPoint"
-        }
-      ]
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
     },
     {
       "@id": "dbp:RealWorldDataset",
       "@type": "rdfs:Class",
-      "rdfs:comment": "実世界データセットを表す JSON-LD",
+      "rdfs:comment": "実世界データセットを表す JSON-LD (subclass of: \"schema:Dataset\")",
       "rdfs:label": "RealWorldDataset",
       "rdfs:subClassOf": {
-        "@id": "schema:Thing"
+        "@id": "schema:Dataset"
       },
       "schema:domainIncludes": [
         {
@@ -453,227 +272,6 @@
       ]
     },
     {
-      "@id": "dbp:key",
-      "@type": "rdf:Property",
-      "rdfs:comment": "醸造入力の引数のキー（名前）",
-      "rdfs:label": "key",
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:RealWorldDataBrewerInput"
-        },
-        {
-          "@id": "dbp:RealWorldDataBrewerOutput"
-        },
-        {
-          "@id": "dbp:RealWorldDataBrewingArgument"
-        }
-      ],
-      "schema:rangeIncludes": {
-        "@id": "schema:Text"
-      }
-    },
-    {
-      "@id": "dbp:inputType",
-      "@type": "rdf:Property",
-      "rdfs:comment": "醸造入力データの型",
-      "rdfs:label": "inputType",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewerInput"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:Text"
-      }
-    },
-    {
-      "@id": "dbp:VariableCharacteristicEnumeration",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "VariableCharacteristicEnumeration",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:inputCharacteristic"
-        },
-        {
-          "@id": "dbp:outputCharacteristic"
-        }
-      ],
-      "schema:rangeIncludes": []
-    },
-    {
-      "@id": "dbp:inputCharacteristic",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A characteristic of an input data entry in a real world dataset.",
-      "rdfs:label": "inputCharacteristic",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewerInput"
-      },
-      "schema:rangeIncludes": {
-        "@id": "dbp:VariableCharacteristicEnumeration"
-      }
-    },
-    {
-      "@id": "dbp:RealWorldDataBrewerInput",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "実世界データ醸造を行う際の入力データの仕様を表す JSON-LD",
-      "rdfs:label": "RealWorldDataBrewerInput",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:inputSpecs"
-        },
-        {
-          "@id": "dbp:brewerInput"
-        }
-      ],
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
-        {
-          "@id": "dbp:key"
-        },
-        {
-          "@id": "dbp:inputType"
-        },
-        {
-          "@id": "schema:value"
-        },
-        {
-          "@id": "dbp:inputCharacteristic"
-        },
-        {
-          "@id": "schema:dataset"
-        }
-      ]
-    },
-    {
-      "@id": "dbp:outputType",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A type of an output data entry in a real world dataset.",
-      "rdfs:label": "outputType",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewerOutput"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:Text"
-      }
-    },
-    {
-      "@id": "dbp:outputCharacteristic",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A characteristic of an output data entry in a real world dataset.",
-      "rdfs:label": "outputCharacteristic",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewerOutput"
-      },
-      "schema:rangeIncludes": {
-        "@id": "dbp:VariableCharacteristicEnumeration"
-      }
-    },
-    {
-      "@id": "dbp:RealWorldDataBrewerOutput",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "実世界データ醸造を行う際の出力データの仕様を表す JSON-LD",
-      "rdfs:label": "RealWorldDataBrewerOutput",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:outputSpecs"
-        },
-        {
-          "@id": "dbp:brewerOutput"
-        }
-      ],
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
-        {
-          "@id": "dbp:key"
-        },
-        {
-          "@id": "dbp:outputType"
-        },
-        {
-          "@id": "schema:value"
-        },
-        {
-          "@id": "dbp:outputCharacteristic"
-        }
-      ]
-    },
-    {
-      "@id": "dbp:argumentType",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A type of an argument passed to a brewer.",
-      "rdfs:label": "argumentType",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewingArgument"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:Text"
-      }
-    },
-    {
-      "@id": "dbp:RealWorldDataBrewingArgument",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataBrewingArgument",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:generatedArgs"
-        },
-        {
-          "@id": "dbp:argSpecs"
-        },
-        {
-          "@id": "dbp:brewingArgument"
-        }
-      ],
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
-        {
-          "@id": "dbp:key"
-        },
-        {
-          "@id": "dbp:argumentType"
-        },
-        {
-          "@id": "schema:value"
-        }
-      ]
-    },
-    {
       "@id": "dbp:inputSpecs",
       "@type": "rdf:Property",
       "rdfs:comment": "",
@@ -710,19 +308,6 @@
       }
     },
     {
-      "@id": "dbp:ConversionCharacteristicEnumeration",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "ConversionCharacteristicEnumeration",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": {
-        "@id": "dbp:conversionCharacteristic"
-      },
-      "schema:rangeIncludes": []
-    },
-    {
       "@id": "dbp:conversionCharacteristic",
       "@type": "rdf:Property",
       "rdfs:comment": "A characteristic of a conversion done by the brewer.",
@@ -735,44 +320,17 @@
       }
     },
     {
-      "@id": "dbp:RealWorldDataBrewerInfo",
+      "@id": "dbp:ConversionCharacteristicEnumeration",
       "@type": "rdfs:Class",
       "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataBrewerInfo",
+      "rdfs:label": "ConversionCharacteristicEnumeration",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
       },
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:generatedUsing"
-        },
-        {
-          "@id": "dbp:brewerInfo"
-        }
-      ],
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
-        {
-          "@id": "dbp:inputSpecs"
-        },
-        {
-          "@id": "dbp:outputSpecs"
-        },
-        {
-          "@id": "dbp:argSpecs"
-        },
-        {
-          "@id": "dbp:conversionCharacteristic"
-        }
-      ]
+      "schema:domainIncludes": {
+        "@id": "dbp:conversionCharacteristic"
+      },
+      "schema:rangeIncludes": []
     },
     {
       "@id": "dbp:collectionStyle",
@@ -840,16 +398,21 @@
       }
     },
     {
-      "@id": "dbp:RealWorldDataCollectionInfo",
+      "@id": "dbp:RealWorldDataBrewerInfo",
       "@type": "rdfs:Class",
       "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataCollectionInfo",
+      "rdfs:label": "RealWorldDataBrewerInfo",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
       },
-      "schema:domainIncludes": {
-        "@id": "dbp:collectionInfo"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:generatedUsing"
+        },
+        {
+          "@id": "dbp:brewerInfo"
+        }
+      ],
       "schema:rangeIncludes": [
         {
           "@id": "@id"
@@ -861,19 +424,80 @@
           "@id": "schema:url"
         },
         {
-          "@id": "dbp:collectionStyle"
+          "@id": "dbp:inputSpecs"
         },
         {
-          "@id": "dbp:collectionProtocol"
+          "@id": "dbp:outputSpecs"
         },
         {
-          "@id": "dbp:listenAddress"
+          "@id": "dbp:argSpecs"
         },
         {
-          "@id": "dbp:serverAddress"
+          "@id": "dbp:conversionCharacteristic"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:generatedArgs",
+      "@type": "rdf:Property",
+      "rdfs:comment": "このデータセットを作った際のパラメータ(醸造時の入力パラメータ)",
+      "rdfs:label": "generatedArgs",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataset"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataBrewingArgument"
+      }
+    },
+    {
+      "@id": "dbp:generatedFrom",
+      "@type": "rdf:Property",
+      "rdfs:comment": "このデータセットの基になったデータセット(醸造時の入力データセット)",
+      "rdfs:label": "generatedFrom",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataset"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataset"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataBrewingArgument",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "RealWorldDataBrewingArgument",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:generatedArgs"
         },
         {
-          "@id": "dbp:entryPoint"
+          "@id": "dbp:argSpecs"
+        },
+        {
+          "@id": "dbp:brewingArgument"
+        }
+      ],
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "schema:name"
+        },
+        {
+          "@id": "schema:url"
+        },
+        {
+          "@id": "dbp:key"
+        },
+        {
+          "@id": "dbp:argumentType"
+        },
+        {
+          "@id": "schema:value"
         }
       ]
     },
@@ -894,34 +518,22 @@
       "rdfs:comment": "JSON-LD schema ( including @graph )",
       "rdfs:label": "structure",
       "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureInfo"
+        "@id": "dbp:RealWorldDataFieldProfile"
       },
       "schema:rangeIncludes": {
-        "@id": "schema:CreativeWork"
+        "@id": "dbp:RealWorldDataStructureGraph"
       }
     },
     {
-      "@id": "dbp:graphqlSchema",
-      "@type": "rdf:Property",
-      "rdfs:comment": "",
-      "rdfs:label": "graphqlSchema",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureInfo"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:Text"
-      }
-    },
-    {
-      "@id": "dbp:RealWorldDataStructureInfo",
+      "@id": "dbp:RealWorldDataStructureGraph",
       "@type": "rdfs:Class",
       "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataStructureInfo",
+      "rdfs:label": "RealWorldDataStructureGraph",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
       },
       "schema:domainIncludes": {
-        "@id": "dbp:structureInfo"
+        "@id": "dbp:structure"
       },
       "schema:rangeIncludes": [
         {
@@ -934,15 +546,21 @@
           "@id": "schema:url"
         },
         {
-          "@id": "schema:encodingFormat"
-        },
-        {
-          "@id": "dbp:structure"
-        },
-        {
-          "@id": "dbp:graphqlSchema"
+          "@id": "@graph"
         }
       ]
+    },
+    {
+      "@id": "dbp:graphqlSchema",
+      "@type": "rdf:Property",
+      "rdfs:comment": "",
+      "rdfs:label": "graphqlSchema",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
     },
     {
       "@id": "dbp:baseUrl",
@@ -954,6 +572,18 @@
       },
       "schema:rangeIncludes": {
         "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:transmissionSpeed",
+      "@type": "rdf:Property",
+      "rdfs:comment": "ストレージの転送速度",
+      "rdfs:label": "transmissionSpeed",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStoringInfo"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
       }
     },
     {
@@ -970,18 +600,6 @@
       "schema:rangeIncludes": []
     },
     {
-      "@id": "dbp:transmissionSpeed",
-      "@type": "rdf:Property",
-      "rdfs:comment": "ストレージの転送速度",
-      "rdfs:label": "transmissionSpeed",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStoringInfo"
-      },
-      "schema:rangeIncludes": {
-        "@id": "dbp:int32"
-      }
-    },
-    {
       "@id": "dbp:storageType",
       "@type": "rdf:Property",
       "rdfs:comment": "ストレージの種別 SSD、HDD、光学ディスク、磁気テープなどなど",
@@ -992,64 +610,6 @@
       "schema:rangeIncludes": {
         "@id": "schema:Text"
       }
-    },
-    {
-      "@id": "dbp:RealWorldDataStoringInfo",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataStoringInfo",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": [
-        {
-          "@id": "schema:distribution"
-        },
-        {
-          "@id": "dbp:brewerOutputStore"
-        },
-        {
-          "@id": "dbp:moveFrom"
-        },
-        {
-          "@id": "dbp:moveTo"
-        },
-        {
-          "@id": "dbp:datasetStore"
-        }
-      ],
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
-        {
-          "@id": "schema:startTime"
-        },
-        {
-          "@id": "schema:endTime"
-        },
-        {
-          "@id": "dbp:baseUrl"
-        },
-        {
-          "@id": "schema:pattern"
-        },
-        {
-          "@id": "dbp:transmissionSpeed"
-        },
-        {
-          "@id": "dbp:storageType"
-        },
-        {
-          "@id": "dbp:entryPoint"
-        }
-      ]
     },
     {
       "@id": "dbp:RealWorldDataRegisterDemand",
@@ -1154,30 +714,6 @@
       ]
     },
     {
-      "@id": "dbp:activeConnections",
-      "@type": "rdf:Property",
-      "rdfs:comment": "",
-      "rdfs:label": "activeConnections",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataCollectionStatus"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:CreativeWork"
-      }
-    },
-    {
-      "@id": "dbp:trafficStatistics",
-      "@type": "rdf:Property",
-      "rdfs:comment": "",
-      "rdfs:label": "trafficStatistics",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataCollectionStatus"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:CreativeWork"
-      }
-    },
-    {
       "@id": "dbp:RealWorldDataCollectionStatus",
       "@type": "rdfs:Class",
       "rdfs:comment": "",
@@ -1207,6 +743,71 @@
         },
         {
           "@id": "dbp:trafficStatistics"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:activeConnections",
+      "@type": "rdf:Property",
+      "rdfs:comment": "",
+      "rdfs:label": "activeConnections",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataCollectionStatus"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:trafficStatistics",
+      "@type": "rdf:Property",
+      "rdfs:comment": "",
+      "rdfs:label": "trafficStatistics",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataCollectionStatus"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:CreativeWork"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataBrewingDemand",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "RealWorldDataBrewingDemand",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": {
+        "@id": "dbp:brewingConfig"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "schema:name"
+        },
+        {
+          "@id": "schema:url"
+        },
+        {
+          "@id": "dbp:brewerInfo"
+        },
+        {
+          "@id": "dbp:brewerInput"
+        },
+        {
+          "@id": "dbp:brewingArgument"
+        },
+        {
+          "@id": "dbp:brewerOutputStore"
+        },
+        {
+          "@id": "dbp:timePeriodStart"
+        },
+        {
+          "@id": "dbp:timePeriodEnd"
         }
       ]
     },
@@ -1351,59 +952,6 @@
       }
     },
     {
-      "@id": "dbp:RealWorldDataBrewingDemand",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "RealWorldDataBrewingDemand",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": {
-        "@id": "dbp:brewingConfig"
-      },
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
-        {
-          "@id": "dbp:brewerInfo"
-        },
-        {
-          "@id": "dbp:brewerInput"
-        },
-        {
-          "@id": "dbp:brewingArgument"
-        },
-        {
-          "@id": "dbp:brewerOutputStore"
-        },
-        {
-          "@id": "dbp:timePeriodStart"
-        },
-        {
-          "@id": "dbp:timePeriodEnd"
-        }
-      ]
-    },
-    {
-      "@id": "dbp:brewerOutput",
-      "@type": "rdf:Property",
-      "rdfs:comment": "",
-      "rdfs:label": "brewerOutput",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataBrewingSupply"
-      },
-      "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataBrewerOutput"
-      }
-    },
-    {
       "@id": "dbp:RealWorldDataBrewingSupply",
       "@type": "rdfs:Class",
       "rdfs:comment": "",
@@ -1440,68 +988,15 @@
       ]
     },
     {
-      "@id": "dbp:brewingConfig",
-      "@type": "rdf:Property",
-      "rdfs:comment": "投げる Demand",
-      "rdfs:label": "brewingConfig",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataPeriodicBrewingConfig"
-      },
-      "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataBrewingDemand"
-      }
-    },
-    {
-      "@id": "dbp:cronConfig",
-      "@type": "rdf:Property",
-      "rdfs:comment": "時間間隔 (cron format)",
-      "rdfs:label": "cronConfig",
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:RealWorldDataPeriodicBrewingConfig"
-        },
-        {
-          "@id": "dbp:RealWorldDataPeriodicMoveConfig"
-        },
-        {
-          "@id": "dbp:RealWorldDataPeriodicRemoveConfig"
-        }
-      ],
-      "schema:rangeIncludes": {
-        "@id": "schema:Text"
-      }
-    },
-    {
-      "@id": "dbp:bool",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "bool",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": {
-        "@id": "dbp:enabled"
-      },
-      "schema:rangeIncludes": []
-    },
-    {
-      "@id": "dbp:enabled",
+      "@id": "dbp:brewerOutput",
       "@type": "rdf:Property",
       "rdfs:comment": "",
-      "rdfs:label": "enabled",
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:RealWorldDataPeriodicBrewingConfig"
-        },
-        {
-          "@id": "dbp:RealWorldDataPeriodicMoveConfig"
-        },
-        {
-          "@id": "dbp:RealWorldDataPeriodicRemoveConfig"
-        }
-      ],
+      "rdfs:label": "brewerOutput",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataBrewingSupply"
+      },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "dbp:RealWorldDataBrewerOutput"
       }
     },
     {
@@ -1535,16 +1030,31 @@
       ]
     },
     {
-      "@id": "dbp:sparqlQuery",
+      "@id": "dbp:brewingConfig",
       "@type": "rdf:Property",
-      "rdfs:comment": "構造クエリ（SPARQL）",
-      "rdfs:label": "sparqlQuery",
+      "rdfs:comment": "投げる Demand",
+      "rdfs:label": "brewingConfig",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataPeriodicBrewingConfig"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataBrewingDemand"
+      }
+    },
+    {
+      "@id": "dbp:cronConfig",
+      "@type": "rdf:Property",
+      "rdfs:comment": "時間間隔 (cron format)",
+      "rdfs:label": "cronConfig",
       "schema:domainIncludes": [
         {
-          "@id": "dbp:RealWorldDataReadDemand"
+          "@id": "dbp:RealWorldDataPeriodicBrewingConfig"
         },
         {
-          "@id": "dbp:RealWorldDataReadSupply"
+          "@id": "dbp:RealWorldDataPeriodicMoveConfig"
+        },
+        {
+          "@id": "dbp:RealWorldDataPeriodicRemoveConfig"
         }
       ],
       "schema:rangeIncludes": {
@@ -1552,80 +1062,37 @@
       }
     },
     {
-      "@id": "dbp:graphqlQuery",
+      "@id": "dbp:enabled",
       "@type": "rdf:Property",
-      "rdfs:comment": "構造クエリ（GraphQL）",
-      "rdfs:label": "graphqlQuery",
+      "rdfs:comment": "",
+      "rdfs:label": "enabled",
       "schema:domainIncludes": [
         {
-          "@id": "dbp:RealWorldDataReadDemand"
+          "@id": "dbp:RealWorldDataPeriodicBrewingConfig"
         },
         {
-          "@id": "dbp:RealWorldDataReadSupply"
+          "@id": "dbp:RealWorldDataPeriodicMoveConfig"
+        },
+        {
+          "@id": "dbp:RealWorldDataPeriodicRemoveConfig"
         }
       ],
       "schema:rangeIncludes": {
-        "@id": "schema:Text"
+        "@id": "dbp:bool"
       }
     },
     {
-      "@id": "dbp:MainDataSegment",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A main segment of the data, which excludes a meta data of the data.",
-      "rdfs:label": "mainDataSegment",
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:RealWorldDataset"
-        },
-        {
-          "@id": "dbp:RealWorldDataStructureInfo"
-        }
-      ],
-      "schema:rangeIncludes": {
-        "@id": "dbp:DataSegment"
-      }
-    },
-    {
-      "@id": "dbp:MetaDataSegment",
-      "@type": "rdf:Property",
-      "rdfs:comment": "A meta data of the data, which excludes a main dats of the data.",
-      "rdfs:label": "metaDataSegment",
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:RealWorldDataset"
-        },
-        {
-          "@id": "dbp:RealWorldDataStructureInfo"
-        }
-      ],
-      "schema:rangeIncludes": {
-        "@id": "dbp:DataSegment"
-      }
-    },
-    {
-      "@id": "dbp:DataSegment",
-      "@type": "rdf:Class",
-      "rdfs:comment": "A segment of the data.",
-      "rdfs:label": "dataSegment",
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:MainDataSegment"
-        },
-        {
-          "@id": "dbp:MetaDataSegment"
-        }
-      ],
-      "schema:rangeIncludes": [
-        {
-          "@id": "dbp:RealWorldDataTableSegment"
-        },
-        {
-          "@id": "dbp:RealWorldDataJsonSegment"
-        },
-        {
-          "@id": "dbp:RealWorldDataset"
-        }
-      ]
+      "@id": "dbp:bool",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "bool",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": {
+        "@id": "dbp:enabled"
+      },
+      "schema:rangeIncludes": []
     },
     {
       "@id": "dbp:RealWorldDataReadDemand",
@@ -1664,52 +1131,37 @@
       ]
     },
     {
-      "@id": "dbp:RealWorldDataTableSegment",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "A notation of the segment of the table data (includes CSV data).",
-      "rdfs:label": "RealWorldDataTableSegment",
-      "rdfs:subClassOf": {
-        "@id": "dbp:DataSegment"
-      },
-      "schema:rangeIncludes": [
-        {
-          "@id": "@id"
-        },
-        {
-          "@id": "schema:name"
-        },
-        {
-          "@id": "schema:url"
-        },
-        {
-          "@id": "dbp:minRow"
-        },
-        {
-          "@id": "dbp:maxRow"
-        },
-        {
-          "@id": "dbp:minColumn"
-        },
-        {
-          "@id": "dbp:maxColumn"
-        }
-      ]
-    },
-    {
-      "@id": "dbp:data",
+      "@id": "dbp:sparqlQuery",
       "@type": "rdf:Property",
-      "rdfs:comment": "実際には MBUS で送る？",
-      "rdfs:label": "data",
+      "rdfs:comment": "構造クエリ（SPARQL）",
+      "rdfs:label": "sparqlQuery",
       "schema:domainIncludes": [
         {
-          "@id": "dbp:RealWorldDataReadSupply"
+          "@id": "dbp:RealWorldDataReadDemand"
         },
         {
-          "@id": "dbp:RealWorldDataWriteDemand"
+          "@id": "dbp:RealWorldDataReadSupply"
         }
       ],
       "schema:rangeIncludes": {
-        "@id": "dbp:bytes"
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:graphqlQuery",
+      "@type": "rdf:Property",
+      "rdfs:comment": "構造クエリ（GraphQL）",
+      "rdfs:label": "graphqlQuery",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataReadDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataReadSupply"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
       }
     },
     {
@@ -1750,6 +1202,23 @@
           "@id": "dbp:data"
         }
       ]
+    },
+    {
+      "@id": "dbp:data",
+      "@type": "rdf:Property",
+      "rdfs:comment": "実際には MBUS で送る？",
+      "rdfs:label": "data",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataReadSupply"
+        },
+        {
+          "@id": "dbp:RealWorldDataWriteDemand"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "dbp:bytes"
+      }
     },
     {
       "@id": "dbp:RealWorldDataWriteDemand",
@@ -1815,40 +1284,6 @@
       ]
     },
     {
-      "@id": "dbp:moveFrom",
-      "@type": "rdf:Property",
-      "rdfs:comment": "データの移動元",
-      "rdfs:label": "moveFrom",
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:RealWorldDataMoveDemand"
-        },
-        {
-          "@id": "dbp:RealWorldDataMoveSupply"
-        }
-      ],
-      "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataStoringInfo"
-      }
-    },
-    {
-      "@id": "dbp:moveTo",
-      "@type": "rdf:Property",
-      "rdfs:comment": "データの移動先",
-      "rdfs:label": "moveTo",
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:RealWorldDataMoveDemand"
-        },
-        {
-          "@id": "dbp:RealWorldDataMoveSupply"
-        }
-      ],
-      "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataStoringInfo"
-      }
-    },
-    {
       "@id": "dbp:RealWorldDataMoveDemand",
       "@type": "rdfs:Class",
       "rdfs:comment": "",
@@ -1887,16 +1322,96 @@
       ]
     },
     {
-      "@id": "dbp:movedDataset",
+      "@id": "dbp:moveFrom",
       "@type": "rdf:Property",
-      "rdfs:comment": "移動先の RealWorldDataset",
-      "rdfs:label": "movedDataset",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataMoveSupply"
-      },
+      "rdfs:comment": "データの移動元",
+      "rdfs:label": "moveFrom",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataMoveDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataMoveSupply"
+        }
+      ],
       "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataset"
+        "@id": "dbp:RealWorldDataStoringInfo"
       }
+    },
+    {
+      "@id": "dbp:moveTo",
+      "@type": "rdf:Property",
+      "rdfs:comment": "データの移動先",
+      "rdfs:label": "moveTo",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataMoveDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataMoveSupply"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataStoringInfo"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataStoringInfo",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "RealWorldDataStoringInfo",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "schema:distribution"
+        },
+        {
+          "@id": "dbp:brewerOutputStore"
+        },
+        {
+          "@id": "dbp:moveFrom"
+        },
+        {
+          "@id": "dbp:moveTo"
+        },
+        {
+          "@id": "dbp:datasetStore"
+        }
+      ],
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "schema:name"
+        },
+        {
+          "@id": "schema:url"
+        },
+        {
+          "@id": "schema:startTime"
+        },
+        {
+          "@id": "schema:endTime"
+        },
+        {
+          "@id": "dbp:baseUrl"
+        },
+        {
+          "@id": "schema:pattern"
+        },
+        {
+          "@id": "dbp:transmissionSpeed"
+        },
+        {
+          "@id": "dbp:storageType"
+        },
+        {
+          "@id": "dbp:entryPoint"
+        }
+      ]
     },
     {
       "@id": "dbp:RealWorldDataMoveSupply",
@@ -1938,15 +1453,15 @@
       ]
     },
     {
-      "@id": "dbp:moveConfig",
+      "@id": "dbp:movedDataset",
       "@type": "rdf:Property",
-      "rdfs:comment": "移動設定",
-      "rdfs:label": "moveConfig",
+      "rdfs:comment": "移動先の RealWorldDataset",
+      "rdfs:label": "movedDataset",
       "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataPeriodicMoveConfig"
+        "@id": "dbp:RealWorldDataMoveSupply"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataMoveDemand"
+        "@id": "dbp:RealWorldDataset"
       }
     },
     {
@@ -1980,20 +1495,76 @@
       ]
     },
     {
-      "@id": "dbp:datasetStore",
-      "@type": "rdf:Property",
-      "rdfs:comment": "削除する RealWorldDataset の RealWorldDataStoringInfo",
-      "rdfs:label": "datasetStore",
-      "schema:domainIncludes": [
+      "@id": "dbp:RealWorldDataCollectionInfo",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "RealWorldDataCollectionInfo",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": {
+        "@id": "dbp:collectionInfo"
+      },
+      "schema:rangeIncludes": [
         {
-          "@id": "dbp:RealWorldDataRemoveDemand"
+          "@id": "@id"
         },
         {
-          "@id": "dbp:RealWorldDataRemoveSupply"
+          "@id": "schema:name"
+        },
+        {
+          "@id": "schema:url"
+        },
+        {
+          "@id": "dbp:collectionStyle"
+        },
+        {
+          "@id": "dbp:collectionProtocol"
+        },
+        {
+          "@id": "dbp:listenAddress"
+        },
+        {
+          "@id": "dbp:serverAddress"
+        },
+        {
+          "@id": "dbp:entryPoint"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:moveConfig",
+      "@type": "rdf:Property",
+      "rdfs:comment": "移動設定",
+      "rdfs:label": "moveConfig",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataPeriodicMoveConfig"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataMoveDemand"
+      }
+    },
+    {
+      "@id": "dbp:collectionInfo",
+      "@type": "rdf:Property",
+      "rdfs:comment": "収集情報",
+      "rdfs:label": "collectionInfo",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataset"
+        },
+        {
+          "@id": "dbp:RealWorldDataCollectionDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataCollectionSupply"
+        },
+        {
+          "@id": "dbp:RealWorldDataCollectionStatus"
         }
       ],
       "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataStoringInfo"
+        "@id": "dbp:RealWorldDataCollectionInfo"
       }
     },
     {
@@ -2029,6 +1600,35 @@
       ]
     },
     {
+      "@id": "dbp:structureInfo",
+      "@type": "rdf:Property",
+      "rdfs:comment": "構造情報",
+      "rdfs:label": "structureInfo",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataset"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      }
+    },
+    {
+      "@id": "dbp:datasetStore",
+      "@type": "rdf:Property",
+      "rdfs:comment": "削除する RealWorldDataset の RealWorldDataStoringInfo",
+      "rdfs:label": "datasetStore",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataRemoveDemand"
+        },
+        {
+          "@id": "dbp:RealWorldDataRemoveSupply"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataStoringInfo"
+      }
+    },
+    {
       "@id": "dbp:RealWorldDataRemoveSupply",
       "@type": "rdfs:Class",
       "rdfs:comment": "",
@@ -2059,18 +1659,6 @@
       ]
     },
     {
-      "@id": "dbp:removeConfig",
-      "@type": "rdf:Property",
-      "rdfs:comment": "削除設定",
-      "rdfs:label": "removeConfig",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataPeriodicRemoveConfig"
-      },
-      "schema:rangeIncludes": {
-        "@id": "dbp:RealWorldDataRemoveDemand"
-      }
-    },
-    {
       "@id": "dbp:RealWorldDataPeriodicRemoveConfig",
       "@type": "rdfs:Class",
       "rdfs:comment": "RWDB システムが定期的に RealWorldDataset を削除する設定",
@@ -2097,6 +1685,50 @@
         },
         {
           "@id": "dbp:enabled"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:removeConfig",
+      "@type": "rdf:Property",
+      "rdfs:comment": "削除設定",
+      "rdfs:label": "removeConfig",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataPeriodicRemoveConfig"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:RealWorldDataRemoveDemand"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataFieldProfile",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "RealWorldDataFieldProfile",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": {
+        "@id": "dbp:structureInfo"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "schema:name"
+        },
+        {
+          "@id": "schema:url"
+        },
+        {
+          "@id": "schema:encodingFormat"
+        },
+        {
+          "@id": "dbp:structure"
+        },
+        {
+          "@id": "dbp:graphqlSchema"
         }
       ]
     }

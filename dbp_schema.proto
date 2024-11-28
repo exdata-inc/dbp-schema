@@ -7,11 +7,11 @@ package dbp_schema;
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
 
-message RealWorldDataset {                                      // 実世界データセットを表す JSON-LD
+message RealWorldDataset {                                      // 実世界データセットを表す JSON-LD (subclass of: "schema:Dataset")
     optional string id = 1;                                     // 自身(このJSON-LD)のURL
     optional string name = 2;                                   // 名前
     optional string url = 3;                                    // URL(未使用)
-    optional RealWorldDataStructureInfo structureInfo = 4;      // 構造情報
+    optional RealWorldDataFieldProfile structureInfo = 4;       // 構造情報
     repeated RealWorldDataset generatedFrom = 5;                // このデータセットの基になったデータセット(醸造時の入力データセット)
     optional RealWorldDataBrewerInfo generatedUsing = 6;        // このデータセットを作った醸造プログラム
     repeated RealWorldDataBrewingArgument generatedArgs = 7;    // このデータセットを作った際のパラメータ(醸造時の入力パラメータ)
@@ -131,13 +131,20 @@ message RealWorldDataBrewEvent {
 
 }
 
-message RealWorldDataStructureInfo {        // 実世界データの構造を表す JSON-LD
+message RealWorldDataFieldProfile {        // 実世界データのフィールドプロファイルを表す JSON-LD
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
     optional string encodingFormat = 4;
-    optional google.protobuf.Struct structure = 5;  // JSON-LD schema ( including @graph )
+    optional RealWorldDataStructureGraph structure = 5;  // JSON-LD schema ( including @graph )
     optional string graphqlSchema = 6;
+}
+
+message RealWorldDataStructureGraph {        // 実世界データの構造を表す JSON-LD
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional google.protobuf.Struct at_graph = 4;  // JSON-LD schema ( @graph )
 }
 
 message RealWorldDataStoringInfo {          // 実世界データの保存先を表す JSON-LD

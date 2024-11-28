@@ -1,5 +1,6 @@
 import json
 import requests
+import re
 
 URL = 'https://github.com/schemaorg/schemaorg/blob/main/data/releases/21.0/schemaorg-current-https.jsonld?raw=true'
 response = requests.get(URL)
@@ -24,9 +25,9 @@ for elm in schemalist:
 
 class DataSchema:
 
-    def __init__(self, name, type, comment=''):
+    def __init__(self, name, type, subclass_of, comment=''):
         self.key = SearchSchema(name)
-        self.subClassOf = {'@id': 'schema:Thing'}
+        self.subClassOf = {'@id': subclass_of if subclass_of is not None else 'schema:Thing'}
         if self.key != -1:
             self.subClassOf = schemasubClassOfs[self.key]
         self.domainIncludes = []
@@ -38,6 +39,8 @@ class DataSchema:
             self.id = schemaids[self.key]
         if name == 'id':
             self.id = '@id'
+        if name == 'at_graph':
+            self.id = '@graph'
         if type == 'Class':
             self.type = 'rdfs:' + type
         elif type == 'Property':
@@ -89,10 +92,20 @@ def SearchSchema(name):
 def DbpOrSchema(name):
     if name == 'id':
         return '@id'
+    if name == 'at_graph':
+        return '@graph'
     for filter in schemaids:
         if filter == 'schema:' + name:
             return filter
     return 'dbp:' + name
+
+
+def extract_subclass_of(text: str) -> str | None:
+    # 正規表現パターンを定義
+    pattern = r'\(subclass of: "([^"]+)"\)'
+    match = re.search(pattern, text)
+    # 一致があれば <hoge> の部分を返し、無ければ None を返す
+    return match.group(1) if match else None
 
 
 
@@ -119,10 +132,11 @@ def ParseProto(protofile):
                         flag3 = 1
                         break
                 if flag3 == 0:
+                    subclass_of = extract_subclass_of(data)
                     if len(line) > 4:
-                        tmp_class = DataSchema(line[1], 'Class', ' '.join(line[4:]))
+                        tmp_class = DataSchema(line[1], 'Class', subclass_of, ' '.join(line[4:]))
                     else:
-                        tmp_class = DataSchema(line[1], 'Class')
+                        tmp_class = DataSchema(line[1], 'Class', subclass_of)
                 flag3 = 0
 
             elif flag_in_message == 1 and line[0] != '}':
@@ -134,9 +148,9 @@ def ParseProto(protofile):
                         break
                 if flag_already_added == 0:
                     if len(line) > 6:
-                        tmp_prop = DataSchema(line[2], 'Property', ' '.join(line[6:]))
+                        tmp_prop = DataSchema(line[2], 'Property', None, ' '.join(line[6:]))
                     else:
-                        tmp_prop = DataSchema(line[2], 'Property')
+                        tmp_prop = DataSchema(line[2], 'Property', None)
                     tmp_prop.addChildClass(line[1])                 # 新しい Property の中身の Class を追加
                     tmp_prop.addParentClass(tmp_class.name)         # 新しい Property の親として現在の message Class を追加
                     tmp_class.addChildClass(tmp_prop.name)          # 現在の message Class に新しい Property を子として追加
@@ -150,7 +164,8 @@ def ParseProto(protofile):
                             if line[1] == tmp_class.name:
                                 tmp_class.addParentClass(line[2])
                             else:
-                                tmp3 = DataSchema(line[1], 'Class')
+                                subclass_of = extract_subclass_of(data)
+                                tmp3 = DataSchema(line[1], 'Class', subclass_of)
                                 tmp3.addParentClass(line[2])
                                 jsondata.append(tmp3)
                                 del tmp3
@@ -172,8 +187,9 @@ def WriteJsonld(items, jsonldfile):
     with open(jsonldfile, 'w', encoding='UTF-8') as f:
         context = {'dbp': 'http://exdata.co.jp/dbp/schema/', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'schema': 'https://schema.org/'}
         graph = []
-        for item in items:
-            if item.key == -1:
+        for item in list(set(items)):
+            if item.key == -1 and item.id != '@id' and item.id != '@graph':
+                print(item.id)
                 graph.append(item.getJsonld())
         text = {'@context': context, '@graph': graph}
 
