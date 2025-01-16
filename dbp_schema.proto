@@ -144,7 +144,32 @@ message RealWorldDataStructureGraph {        // 実世界データの構造を�
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional google.protobuf.Struct at_graph = 4;  // JSON-LD schema ( @graph )
+    repeated RealWorldDataStructureNode at_graph = 4;  // JSON-LD schema ( @graph )
+}
+
+message RealWorldDataStructureNode {        // 実世界データの構造ノードを表す
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional string label = 4;                              // 構造の名前（例: JSONやCSVのキー名や列名）例えば、@id は一意だが、JSONやCSV内に重複するキーや列名が存在する場合、rdfs:label は一意でない場合がある
+    optional string comment = 5;                            // プロパティ（フィールド）の説明
+    optional string itemType = 6;                           // プロパティ（フィールド）のセマンティックタイプについて、たとえば、値の型が文字列であっても、意味的には日時を表す場合がある
+    optional string unitText = 7;                           // 数値プロパティ（フィールド）の単位は、国際貿易で使用される測定単位のための UN/CEFACT 共通コード から選択する必要がある
+    optional string VariableCharacteristicEnumeration = 8;  // 変数の質的データ ( 例：名目尺度, 順序尺度, 区間尺度, 比率尺度 )
+    optional string dbpaDataTimeFormat = 9;                 // 日時プロパティのフォーマットについて、これはPythonやRustのパーサーと互換性のある形式で指定される
+    optional bool dbpaCompress = 10;                        // 提案された圧縮レイヤーがリストに対して有効かどうかを示す
+    optional int32 dbpaCompressListID = 11;                 // 提案された方法で圧縮されるリストの一意のIDを指定する
+    optional int32 dbpaCompressRowID = 12;                  // 圧縮対象リスト内の行の構造IDを表し、共有される dbp:dbpaCompressListID に対応する
+    optional int32 dbpaCompressParentListID = 13;           // 圧縮のためにこのデータ構造が属するリストのIDを示す
+    optional int32 dbpaCompressColumnID = 14;               // 圧縮されるリスト内のプロパティ（フィールド）に割り当てられた一意のID
+    optional string RangeMin = 15;                          // 数値プロパティ（フィールド）の最小値（内包）
+    optional string RangeMax = 16;                          // 数値プロパティ（フィールド）の最大値（除外）
+    optional int32 PrecisionBytes = 17;                     // 数値プロパティ（フィールド）の精度を確保するために必要なバイト数
+    optional bool isMostlyConstant = 18;                    // プロパティ（フィールド）の値がほぼ一定であるかどうかを示す
+    optional bool isEnumValue = 19;                         // プロパティ（フィールド）の値が256のユニークなパターンに限定されるかどうかを示す
+    optional int32 DecimalPalces = 20;                      // 数値プロパティ（フィールド）の精度を保つために保持する小数点以下の桁数
+    optional string BaseIncrement = 21;                     // 数値プロパティ（フィールド）の最も頻繁な差分値
+    optional bool UseBaseIncrement = 22;                    // 数値プロパティ（フィールド）の値の75%以上が一貫した差分を持つ連続した順序を形成するかどうかを示す
 }
 
 message RealWorldDataStoringInfo {          // 実世界データの保存先を表す JSON-LD
