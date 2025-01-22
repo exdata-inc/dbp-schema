@@ -170,6 +170,7 @@ message RealWorldDataStructureNode {        // 実世界データの構造ノー
     optional int32 DecimalPalces = 20;                      // 数値プロパティ（フィールド）の精度を保つために保持する小数点以下の桁数
     optional string BaseIncrement = 21;                     // 数値プロパティ（フィールド）の最も頻繁な差分値
     optional bool UseBaseIncrement = 22;                    // 数値プロパティ（フィールド）の値の75%以上が一貫した差分を持つ連続した順序を形成するかどうかを示す
+    repeated int32 dbpaChildenLists = 23;                   // プロパティ（フィールド）に含まれるサブリストのID
 }
 
 message RealWorldDataStoringInfo {          // 実世界データの保存先を表す JSON-LD
