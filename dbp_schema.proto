@@ -339,6 +339,14 @@ message RealWorldDataPathPatternFormat {
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional string pattern = 4;                        // 置き換える前のパスパターン
-    optional string datasetProperty = 5;                // 置き換える(RealWorldDataset中の)dbp:tagsのキー名
+    optional string pattern = 4;                            // 置き換える前のパスパターン
+    optional string datasetProperty = 5;                    // 置き換える(RealWorldDataset中の)dbp:tagsのキー名
+}
+
+message RealWorldDataTags {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional string key = 4;                                // タグのキー
+    optional string value = 5;                              // タグの値
 }
