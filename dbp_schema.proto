@@ -158,6 +158,8 @@ message RealWorldDataStoringInfo {          // 実世界データの保存先を
     optional int32 transmissionSpeed = 8;   // ストレージの転送速度
     optional string storageType = 9;        // ストレージの種別 SSD、HDD、光学ディスク、磁気テープなどなど
     optional EntryPoint entryPoint = 10;    // HTTP エントリポイント（ schema:EntryPoint を参照 ）
+    optional string serverAddress = 11;     // サーバのアドレス
+    repeated RealWorldDataPathPatternFormat extendedPathPatternFormats = 12;  // 拡張パスパターンフォーマット
 }
 
 message RealWorldDataRegisterDemand {
@@ -331,4 +333,12 @@ message RealWorldDataPeriodicRemoveConfig {                 // RWDB システム
     optional RealWorldDataRemoveDemand removeConfig = 4;    // 削除設定
     optional string cronConfig = 5;                       // 時間間隔 (cron format)
     optional bool enabled = 6;
+}
+
+message RealWorldDataPathPatternFormat {
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional string pattern = 4;                        // 置き換える前のパスパターン
+    optional string datasetProperty = 5;                // 置き換える(RealWorldDataset中の)dbp:tagsのキー名
 }
