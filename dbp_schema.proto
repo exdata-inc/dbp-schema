@@ -25,6 +25,7 @@ message RealWorldDataset {                                      // 実世界デ�
     optional string license = 15;                               // ライセンス
     optional string locationCreated = 16;
     optional string description = 17;                           // 説明
+    repeated RealWorldDataTags tags = 18;
 }
 
 message RealWorldDataBrewerInput {                                      // 実世界データ醸造を行う際の入力データの仕様を表す JSON-LD
@@ -36,6 +37,7 @@ message RealWorldDataBrewerInput {                                      // 実�
     optional bytes value = 6;                                           // 醸造入力の値（Demand を送信する際に使用）
     optional VariableCharacteristicEnumeration inputCharacteristic = 7; // A characteristic of an input data entry in a real world dataset.
     optional RealWorldDataset dataset = 8;                              // 対象のデータセット
+    repeated RealWorldDataTags tags = 9;
 }
 
 message RealWorldDataBrewerOutput {                                         // 実世界データ醸造を行う際の出力データの仕様を表す JSON-LD
@@ -46,6 +48,7 @@ message RealWorldDataBrewerOutput {                                         // �
     optional string outputType = 5;                                         // A type of an output data entry in a real world dataset.
     optional bytes value = 6;
     optional VariableCharacteristicEnumeration outputCharacteristic = 7;    // A characteristic of an output data entry in a real world dataset.
+    repeated RealWorldDataTags tags = 8;
 }
 
 message RealWorldDataBrewingArgument {  // An argument that was passed to a brewer to generate a dataset from another.
@@ -55,6 +58,7 @@ message RealWorldDataBrewingArgument {  // An argument that was passed to a brew
     optional string key = 4;
     optional string argumentType = 5;   // A type of an argument passed to a brewer.
     optional bytes value = 6;
+    repeated RealWorldDataTags tags = 7;
 }
 
 message RealWorldDataBrewerInfo {                                               // 実世界データ醸造を行う際の酵母（マイクロプログラム）の仕様を表す JSON-LD
@@ -65,6 +69,7 @@ message RealWorldDataBrewerInfo {                                               
     repeated RealWorldDataBrewerOutput outputSpecs = 5;
     repeated RealWorldDataBrewingArgument argSpecs = 6;
     optional ConversionCharacteristicEnumeration conversionCharacteristic = 7;  // A characteristic of a conversion done by the brewer.
+    repeated RealWorldDataTags tags = 8;
 }
 
 enum ConversionCharacteristicEnumeration {      // Enumerates conversion characteristics, such as single-value-replace, col-merge, or row-merge.
@@ -89,6 +94,7 @@ message RealWorldDataCollectionInfo {           // An information for collecting
     optional string listenAddress = 6;          // An listen address for data collection (url).
     optional string serverAddress = 7;          // An server address for data collection (url).
     optional EntryPoint entryPoint = 8;         // An entryPoint of data collection (action_application, url).
+    repeated RealWorldDataTags tags = 9;
 }
 
 message EntryPoint {  // https://schema.org/EntryPoint
@@ -138,6 +144,7 @@ message RealWorldDataFieldProfile {        // 実世界データのフィール�
     optional string encodingFormat = 4;
     optional RealWorldDataStructureGraph structure = 5;  // JSON-LD schema ( including @graph )
     optional string graphqlSchema = 6;
+    repeated RealWorldDataTags tags = 7;
 }
 
 message RealWorldDataStructureGraph {        // 実世界データの構造を表す JSON-LD
@@ -145,6 +152,7 @@ message RealWorldDataStructureGraph {        // 実世界データの構造を�
     optional string name = 2;
     optional string url = 3;
     optional google.protobuf.Struct at_graph = 4;  // JSON-LD schema ( @graph )
+    repeated RealWorldDataTags tags = 5;
 }
 
 message RealWorldDataStoringInfo {          // 実世界データの保存先を表す JSON-LD
@@ -160,6 +168,7 @@ message RealWorldDataStoringInfo {          // 実世界データの保存先を
     optional EntryPoint entryPoint = 10;    // HTTP エントリポイント（ schema:EntryPoint を参照 ）
     optional string serverAddress = 11;     // サーバのアドレス
     repeated RealWorldDataPathPatternFormat extendedPathPatternFormats = 12;  // 拡張パスパターンフォーマット
+    repeated RealWorldDataTags tags = 13;
 }
 
 message RealWorldDataRegisterDemand {
@@ -167,6 +176,7 @@ message RealWorldDataRegisterDemand {
     optional string name = 2;
     optional string url = 3;
     optional RealWorldDataset dataset = 4;
+    repeated RealWorldDataTags tags = 5;
 }
 
 message RealWorldDataRegisterSupply {
@@ -175,6 +185,7 @@ message RealWorldDataRegisterSupply {
     optional string url = 3;
     optional RealWorldDataset dataset = 4;
     optional string status = 5;
+    repeated RealWorldDataTags tags = 6;
 }
 
 message RealWorldDataCollectionDemand {
@@ -182,6 +193,7 @@ message RealWorldDataCollectionDemand {
     optional string name = 2;
     optional string url = 3;
     optional RealWorldDataCollectionInfo collectionInfo = 4;
+    repeated RealWorldDataTags tags = 5;
 }
 
 message RealWorldDataCollectionSupply {
@@ -190,6 +202,7 @@ message RealWorldDataCollectionSupply {
     optional string url = 3;
     optional RealWorldDataCollectionInfo collectionInfo = 4;
     optional string status = 5;
+    repeated RealWorldDataTags tags = 6;
 }
 
 message RealWorldDataCollectionStatus {
@@ -200,6 +213,7 @@ message RealWorldDataCollectionStatus {
     optional string contentReferenceTime = 5;
     repeated google.protobuf.Struct activeConnections = 6;
     repeated google.protobuf.Struct trafficStatistics = 7;
+    repeated RealWorldDataTags tags = 8;
 }
 
 message RealWorldDataBrewingDemand {
@@ -212,6 +226,7 @@ message RealWorldDataBrewingDemand {
     repeated RealWorldDataStoringInfo brewerOutputStore = 7;
     optional string timePeriodStart = 8;                    // 読み込むデータがいつからのデータか
     optional string timePeriodEnd = 9;                      // 読み込むデータがいつまでのデータか
+    repeated RealWorldDataTags tags = 10;
 }
 
 message RealWorldDataBrewingSupply {
@@ -223,6 +238,7 @@ message RealWorldDataBrewingSupply {
     repeated RealWorldDataBrewingArgument brewingArgument = 6;
     optional string timePeriodStart = 7;                    // 読み込むデータがいつからのデータか
     optional string timePeriodEnd = 8;                      // 読み込むデータがいつまでのデータか
+    repeated RealWorldDataTags tags = 9;
 }
 
 message RealWorldDataPeriodicBrewingConfig {                // RWDB システムが定期的に RealWorldDataBrewingDemand を投げる設定
@@ -232,6 +248,7 @@ message RealWorldDataPeriodicBrewingConfig {                // RWDB システム
     optional RealWorldDataBrewingDemand brewingConfig = 4;  // 投げる Demand
     optional string cronConfig = 5;                         // 時間間隔 (cron format)
     optional bool enabled = 6;
+    repeated RealWorldDataTags tags = 7;
 }
 
 message RealWorldDataReadDemand {
@@ -243,6 +260,7 @@ message RealWorldDataReadDemand {
     optional string timePeriodEnd = 6;                      // 読み込むデータがいつまでのデータか
     optional string sparqlQuery = 7;                        // 構造クエリ（SPARQL）
     optional string graphqlQuery = 8;                       // 構造クエリ（GraphQL）
+    repeated RealWorldDataTags tags = 9;
 }
 
 message RealWorldDataReadSupply {
@@ -255,6 +273,7 @@ message RealWorldDataReadSupply {
     optional string sparqlQuery = 7;                        // 構造クエリ（SPARQL）
     optional string graphqlQuery = 8;                       // 構造クエリ（GraphQL）
     optional bytes data = 9;                                // 実際には MBUS で送る？
+    repeated RealWorldDataTags tags = 10;
 }
 
 message RealWorldDataWriteDemand {
@@ -265,6 +284,7 @@ message RealWorldDataWriteDemand {
     optional string timePeriodStart = 5;                    // 書き込むデータがいつからのデータか
     optional string timePeriodEnd = 6;                      // 書き込むデータがいつまでのデータか
     optional bytes data = 7;                                // 実際には MBUS で送る？
+    repeated RealWorldDataTags tags = 8;
 }
 
 message RealWorldDataWriteSupply {
@@ -274,6 +294,7 @@ message RealWorldDataWriteSupply {
     optional RealWorldDataset dataset = 4;
     optional string timePeriodStart = 5;                    // 書き込んだデータがいつからのデータか
     optional string timePeriodEnd = 6;                      // 書き込んだデータがいつまでのデータか
+    repeated RealWorldDataTags tags = 7;
 }
 
 message RealWorldDataMoveDemand {
@@ -285,6 +306,7 @@ message RealWorldDataMoveDemand {
     optional string timePeriodEnd = 6;                      // 移動する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
     optional RealWorldDataStoringInfo moveFrom = 7;         // データの移動元
     optional RealWorldDataStoringInfo moveTo = 8;           // データの移動先
+    repeated RealWorldDataTags tags = 9;
 }
 
 message RealWorldDataMoveSupply {
@@ -297,6 +319,7 @@ message RealWorldDataMoveSupply {
     optional RealWorldDataStoringInfo moveFrom = 7;         // データの移動元
     optional RealWorldDataStoringInfo moveTo = 8;           // データの移動先
     optional RealWorldDataset movedDataset = 9;             // 移動先の RealWorldDataset
+    repeated RealWorldDataTags tags = 10;
 }
 
 message RealWorldDataPeriodicMoveConfig {                   // RWDB システムが定期的に RealWorldDataset を移動する設定
@@ -306,6 +329,7 @@ message RealWorldDataPeriodicMoveConfig {                   // RWDB システム
     optional RealWorldDataMoveDemand moveConfig = 4;        // 移動設定
     optional string cronConfig = 5;                       // 時間間隔 (cron format)
     optional bool enabled = 6;
+    repeated RealWorldDataTags tags = 7;
 }
 
 message RealWorldDataRemoveDemand {
@@ -315,6 +339,7 @@ message RealWorldDataRemoveDemand {
     optional RealWorldDataStoringInfo datasetStore = 4;     // 削除する RealWorldDataset の RealWorldDataStoringInfo
     optional string timePeriodStart = 5;                    // 削除する RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     optional string timePeriodEnd = 6;                      // 削除する RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+    repeated RealWorldDataTags tags = 7;
 }
 
 message RealWorldDataRemoveSupply {
@@ -324,6 +349,7 @@ message RealWorldDataRemoveSupply {
     optional RealWorldDataStoringInfo datasetStore = 4;     // 削除した RealWorldDataset の RealWorldDataStoringInfo
     optional string timePeriodStart = 5;                    // 削除した RealWorldDataset のうち対象となるデータの開始時刻はどれだけ前か (ex. 8d → 8日前)
     optional string timePeriodEnd = 6;                      // 削除した RealWorldDataset のうち対象となるデータの終了時刻はどれだけ前か (ex. 7d → 7日前)
+    repeated RealWorldDataTags tags = 7;
 }
 
 message RealWorldDataPeriodicRemoveConfig {                 // RWDB システムが定期的に RealWorldDataset を削除する設定
@@ -333,6 +359,7 @@ message RealWorldDataPeriodicRemoveConfig {                 // RWDB システム
     optional RealWorldDataRemoveDemand removeConfig = 4;    // 削除設定
     optional string cronConfig = 5;                       // 時間間隔 (cron format)
     optional bool enabled = 6;
+    repeated RealWorldDataTags tags = 7;
 }
 
 message RealWorldDataPathPatternFormat {
@@ -341,9 +368,10 @@ message RealWorldDataPathPatternFormat {
     optional string url = 3;
     optional string pattern = 4;                            // 置き換える前のパスパターン
     optional string datasetProperty = 5;                    // 置き換える(RealWorldDataset中の)dbp:tagsのキー名
+    repeated RealWorldDataTags tags = 6;
 }
 
-message RealWorldDataTags {
+message RealWorldDataTags {                                 // RealWorldData* の拡張プロパティを表現
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
