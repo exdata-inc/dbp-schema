@@ -110,7 +110,8 @@ def extract_subclass_of(text: str) -> str | None:
 
 
 def ParseProto(protofile):
-    f = open(protofile, 'r', encoding='UTF-8')
+    with open(protofile, 'r', encoding='UTF-8') as f:
+        datalist = f.readlines()
 
     flag_in_message = 0
     flag_already_added = 0
@@ -118,12 +119,11 @@ def ParseProto(protofile):
     jsondata = []
     count = 0
 
-    datalist = f.readlines()
     for data in datalist:
         #count += 1
         #print([count,flag3])
         line = data.split()
-        if line: 
+        if line:
             if flag_in_message == 0 and line[0] == 'message':
                 flag_in_message = 1
                 for i in range(len(jsondata)):
@@ -187,7 +187,7 @@ def WriteJsonld(items, jsonldfile):
     with open(jsonldfile, 'w', encoding='UTF-8') as f:
         context = {'dbp': 'http://exdata.co.jp/dbp/schema/', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'schema': 'https://schema.org/'}
         graph = []
-        for item in list(set(items)):
+        for item in sorted(set(items), key=items.index):
             if item.key == -1 and item.id != '@id' and item.id != '@graph':
                 print(item.id)
                 graph.append(item.getJsonld())
