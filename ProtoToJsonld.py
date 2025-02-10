@@ -129,6 +129,8 @@ def ParseProto(protofile):
                 for i in range(len(jsondata)):
                     if jsondata[i].name == line[1]:
                         tmp_class = jsondata[i]
+                        if len(line) > 4:
+                            tmp_class.comment = ' '.join(line[4:])
                         flag3 = 1
                         break
                 if flag3 == 0:
