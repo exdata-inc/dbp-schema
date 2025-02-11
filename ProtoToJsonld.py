@@ -139,6 +139,7 @@ def ParseProto(protofile):
                         tmp_class = DataSchema(line[1], 'Class', subclass_of, ' '.join(line[4:]))
                     else:
                         tmp_class = DataSchema(line[1], 'Class', subclass_of)
+                    jsondata.append(tmp_class)
                 flag3 = 0
 
             elif flag_in_message == 1 and line[0] != '}':
@@ -156,6 +157,7 @@ def ParseProto(protofile):
                     tmp_prop.addChildClass(line[1])                 # 新しい Property の中身の Class を追加
                     tmp_prop.addParentClass(tmp_class.name)         # 新しい Property の親として現在の message Class を追加
                     tmp_class.addChildClass(tmp_prop.name)          # 現在の message Class に新しい Property を子として追加
+                    jsondata.append(tmp_prop)
                     for k in range(len(jsondata)):
                         if jsondata[k].name == line[1]:
                             jsondata[k].addParentClass(line[2])
@@ -172,13 +174,11 @@ def ParseProto(protofile):
                                 jsondata.append(tmp3)
                                 del tmp3
                     flag3 = 0
-                    jsondata.append(tmp_prop)
                     del tmp_prop
                 flag_already_added = 0
 
             elif flag_in_message == 1 and line[0] == '}':
                 flag_in_message = 0
-                jsondata.append(tmp_class)
                 del tmp_class
 
     return jsondata
