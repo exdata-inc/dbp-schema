@@ -110,7 +110,8 @@ def extract_subclass_of(text: str) -> str | None:
 
 
 def ParseProto(protofile):
-    f = open(protofile, 'r', encoding='UTF-8')
+    with open(protofile, 'r', encoding='UTF-8') as f:
+        datalist = f.readlines()
 
     flag_in_message = 0
     flag_already_added = 0
@@ -118,17 +119,18 @@ def ParseProto(protofile):
     jsondata = []
     count = 0
 
-    datalist = f.readlines()
     for data in datalist:
         #count += 1
         #print([count,flag3])
         line = data.split()
-        if line: 
+        if line:
             if flag_in_message == 0 and line[0] == 'message':
                 flag_in_message = 1
                 for i in range(len(jsondata)):
                     if jsondata[i].name == line[1]:
                         tmp_class = jsondata[i]
+                        if len(line) > 4:
+                            tmp_class.comment = ' '.join(line[4:])
                         flag3 = 1
                         break
                 if flag3 == 0:
@@ -137,6 +139,7 @@ def ParseProto(protofile):
                         tmp_class = DataSchema(line[1], 'Class', subclass_of, ' '.join(line[4:]))
                     else:
                         tmp_class = DataSchema(line[1], 'Class', subclass_of)
+                    jsondata.append(tmp_class)
                 flag3 = 0
 
             elif flag_in_message == 1 and line[0] != '}':
@@ -154,6 +157,7 @@ def ParseProto(protofile):
                     tmp_prop.addChildClass(line[1])                 # 新しい Property の中身の Class を追加
                     tmp_prop.addParentClass(tmp_class.name)         # 新しい Property の親として現在の message Class を追加
                     tmp_class.addChildClass(tmp_prop.name)          # 現在の message Class に新しい Property を子として追加
+                    jsondata.append(tmp_prop)
                     for k in range(len(jsondata)):
                         if jsondata[k].name == line[1]:
                             jsondata[k].addParentClass(line[2])
@@ -170,13 +174,11 @@ def ParseProto(protofile):
                                 jsondata.append(tmp3)
                                 del tmp3
                     flag3 = 0
-                    jsondata.append(tmp_prop)
                     del tmp_prop
                 flag_already_added = 0
 
             elif flag_in_message == 1 and line[0] == '}':
                 flag_in_message = 0
-                jsondata.append(tmp_class)
                 del tmp_class
 
     return jsondata
@@ -187,7 +189,7 @@ def WriteJsonld(items, jsonldfile):
     with open(jsonldfile, 'w', encoding='UTF-8') as f:
         context = {'dbp': 'http://exdata.co.jp/dbp/schema/', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'schema': 'https://schema.org/'}
         graph = []
-        for item in list(set(items)):
+        for item in sorted(set(items), key=items.index):
             if item.key == -1 and item.id != '@id' and item.id != '@graph':
                 print(item.id)
                 graph.append(item.getJsonld())
