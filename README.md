@@ -192,8 +192,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
 ### JSON
 
 - Data
-
-  ```
+  ```.json
   [
     {
       "dateStart": "2023-01-01T00:00:00",
@@ -234,7 +233,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
   ```
 
 - RWD Profile
-  ```
+  ```.json
   {
     "@id": "https://path.to/this.jsonld",
     "@type": "dbp:RealWorldDataFieldProfile",
