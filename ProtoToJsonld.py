@@ -202,5 +202,7 @@ def WriteJsonld(items, jsonldfile):
 
 if __name__ == "__main__":
     test = ParseProto('dbp_schema.proto') #入力する.protoファイル名
-
     WriteJsonld(test, 'dbp-schema.jsonld') #出力する.jsonldファイル名
+
+    test_ja = ParseProto('dbp_schema.ja.proto') #入力する.protoファイル名
+    WriteJsonld(test_ja, 'dbp-schema.ja.jsonld') #出力する.jsonldファイル名
