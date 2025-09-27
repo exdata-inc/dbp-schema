@@ -2,7 +2,7 @@ Table RWDataset [headercolor: #FF7700] {
     id URL [pk]                                 // 自身(このJSON-LD)のURL
     name VARCHAR(256)                           // (人間が見てわかりやすい)データセットの名前
     url URL                                     // (未使用)
-    structureInfo RWDataStructureInfo    // 構造情報
+    structureInfo RWDataFieldProfile    // 構造情報
     generatedFrom RWDataset              // このデータセットの基になったデータセット(醸造時の入力データセット)
     generatedUsing RWDataBrewerInfo      // このデータセットを作った醸造プログラム
     generatedArgs RWDataBrewingArgument  // このデータセットを作った際のパラメータ(醸造時の入力パラメータ)
@@ -18,7 +18,7 @@ Table RWDataset [headercolor: #FF7700] {
     description VARCHAR(256) 
 }
 
-Ref: RWDataset.structureInfo  > RWDataStructureInfo.id
+Ref: RWDataset.structureInfo  > RWDataFieldProfile.id
 Ref: RWDataset.generatedFrom  > RWDataset.id
 Ref: RWDataset.generatedUsing > RWDataBrewerInfo.id
 Ref: RWDataset.generatedArgs  > RWDataBrewingArgument.id
@@ -90,7 +90,7 @@ Table RWDataCollectionInfo [headercolor: #00B0F0] {
 }
 
 
-Table RWDataStructureInfo [headercolor: #00B0F0] {
+Table RWDataFieldProfile [headercolor: #00B0F0] {
     id URL [pk]
     name VARCHAR(256)
     url URL

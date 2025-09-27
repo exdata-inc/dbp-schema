@@ -127,7 +127,7 @@ type RealWorldDataset struct {
 	Id              *string                         `protobuf:"bytes,1,opt,name=id,proto3,oneof" json:"id,omitempty"`                            // 自身(このJSON-LD)のURL
 	Name            *string                         `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`                        // (人間が見てわかりやすい)データセットの名前
 	Url             *string                         `protobuf:"bytes,3,opt,name=url,proto3,oneof" json:"url,omitempty"`                          // (未使用)
-	StructureInfo   *RealWorldDataStructureInfo     `protobuf:"bytes,4,opt,name=structureInfo,proto3,oneof" json:"structureInfo,omitempty"`      // 構造情報
+	StructureInfo   *RealWorldDataFieldProfile     `protobuf:"bytes,4,opt,name=structureInfo,proto3,oneof" json:"structureInfo,omitempty"`      // 構造情報
 	GeneratedFrom   []*RealWorldDataset             `protobuf:"bytes,5,rep,name=generatedFrom,proto3" json:"generatedFrom,omitempty"`            // このデータセットの基になったデータセット(醸造時の入力データセット)
 	GeneratedUsing  *RealWorldDataBrewerInfo        `protobuf:"bytes,6,opt,name=generatedUsing,proto3,oneof" json:"generatedUsing,omitempty"`    // このデータセットを作った醸造プログラム
 	GeneratedArgs   []*RealWorldDataBrewingArgument `protobuf:"bytes,7,rep,name=generatedArgs,proto3" json:"generatedArgs,omitempty"`            // このデータセットを作った際のパラメータ(醸造時の入力パラメータ)
@@ -196,7 +196,7 @@ func (x *RealWorldDataset) GetUrl() string {
 	return ""
 }
 
-func (x *RealWorldDataset) GetStructureInfo() *RealWorldDataStructureInfo {
+func (x *RealWorldDataset) GetStructureInfo() *RealWorldDataFieldProfile {
 	if x != nil {
 		return x.StructureInfo
 	}
@@ -1133,7 +1133,7 @@ func (*RealWorldDataBrewEvent) Descriptor() ([]byte, []int) {
 	return file_dbp_schema_proto_rawDescGZIP(), []int{8}
 }
 
-type RealWorldDataStructureInfo struct {
+type RealWorldDataFieldProfile struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -1146,8 +1146,8 @@ type RealWorldDataStructureInfo struct {
 	GraphqlSchema  *string         `protobuf:"bytes,6,opt,name=graphqlSchema,proto3,oneof" json:"graphqlSchema,omitempty"`
 }
 
-func (x *RealWorldDataStructureInfo) Reset() {
-	*x = RealWorldDataStructureInfo{}
+func (x *RealWorldDataFieldProfile) Reset() {
+	*x = RealWorldDataFieldProfile{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_dbp_schema_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1155,13 +1155,13 @@ func (x *RealWorldDataStructureInfo) Reset() {
 	}
 }
 
-func (x *RealWorldDataStructureInfo) String() string {
+func (x *RealWorldDataFieldProfile) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RealWorldDataStructureInfo) ProtoMessage() {}
+func (*RealWorldDataFieldProfile) ProtoMessage() {}
 
-func (x *RealWorldDataStructureInfo) ProtoReflect() protoreflect.Message {
+func (x *RealWorldDataFieldProfile) ProtoReflect() protoreflect.Message {
 	mi := &file_dbp_schema_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1173,47 +1173,47 @@ func (x *RealWorldDataStructureInfo) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RealWorldDataStructureInfo.ProtoReflect.Descriptor instead.
-func (*RealWorldDataStructureInfo) Descriptor() ([]byte, []int) {
+// Deprecated: Use RealWorldDataFieldProfile.ProtoReflect.Descriptor instead.
+func (*RealWorldDataFieldProfile) Descriptor() ([]byte, []int) {
 	return file_dbp_schema_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *RealWorldDataStructureInfo) GetId() string {
+func (x *RealWorldDataFieldProfile) GetId() string {
 	if x != nil && x.Id != nil {
 		return *x.Id
 	}
 	return ""
 }
 
-func (x *RealWorldDataStructureInfo) GetName() string {
+func (x *RealWorldDataFieldProfile) GetName() string {
 	if x != nil && x.Name != nil {
 		return *x.Name
 	}
 	return ""
 }
 
-func (x *RealWorldDataStructureInfo) GetUrl() string {
+func (x *RealWorldDataFieldProfile) GetUrl() string {
 	if x != nil && x.Url != nil {
 		return *x.Url
 	}
 	return ""
 }
 
-func (x *RealWorldDataStructureInfo) GetEncodingFormat() string {
+func (x *RealWorldDataFieldProfile) GetEncodingFormat() string {
 	if x != nil && x.EncodingFormat != nil {
 		return *x.EncodingFormat
 	}
 	return ""
 }
 
-func (x *RealWorldDataStructureInfo) GetStructure() *_struct.Struct {
+func (x *RealWorldDataFieldProfile) GetStructure() *_struct.Struct {
 	if x != nil {
 		return x.Structure
 	}
 	return nil
 }
 
-func (x *RealWorldDataStructureInfo) GetGraphqlSchema() string {
+func (x *RealWorldDataFieldProfile) GetGraphqlSchema() string {
 	if x != nil && x.GraphqlSchema != nil {
 		return *x.GraphqlSchema
 	}
@@ -3823,7 +3823,7 @@ var file_dbp_schema_proto_goTypes = []interface{}{
 	(*EntryPoint)(nil),                         // 8: dbp_schema.EntryPoint
 	(*Thing)(nil),                              // 9: dbp_schema.Thing
 	(*RealWorldDataBrewEvent)(nil),             // 10: dbp_schema.RealWorldDataBrewEvent
-	(*RealWorldDataStructureInfo)(nil),         // 11: dbp_schema.RealWorldDataStructureInfo
+	(*RealWorldDataFieldProfile)(nil),         // 11: dbp_schema.RealWorldDataFieldProfile
 	(*RealWorldDataStoringInfo)(nil),           // 12: dbp_schema.RealWorldDataStoringInfo
 	(*RealWorldDataRegisterDemand)(nil),        // 13: dbp_schema.RealWorldDataRegisterDemand
 	(*RealWorldDataRegisterSupply)(nil),        // 14: dbp_schema.RealWorldDataRegisterSupply
@@ -3847,7 +3847,7 @@ var file_dbp_schema_proto_goTypes = []interface{}{
 	(*_struct.Struct)(nil),                     // 32: google.protobuf.Struct
 }
 var file_dbp_schema_proto_depIdxs = []int32{
-	11, // 0: dbp_schema.RealWorldDataset.structureInfo:type_name -> dbp_schema.RealWorldDataStructureInfo
+	11, // 0: dbp_schema.RealWorldDataset.structureInfo:type_name -> dbp_schema.RealWorldDataFieldProfile
 	2,  // 1: dbp_schema.RealWorldDataset.generatedFrom:type_name -> dbp_schema.RealWorldDataset
 	6,  // 2: dbp_schema.RealWorldDataset.generatedUsing:type_name -> dbp_schema.RealWorldDataBrewerInfo
 	5,  // 3: dbp_schema.RealWorldDataset.generatedArgs:type_name -> dbp_schema.RealWorldDataBrewingArgument
@@ -3864,7 +3864,7 @@ var file_dbp_schema_proto_depIdxs = []int32{
 	5,  // 14: dbp_schema.RealWorldDataBrewerInfo.argSpecs:type_name -> dbp_schema.RealWorldDataBrewingArgument
 	0,  // 15: dbp_schema.RealWorldDataBrewerInfo.conversionCharacteristic:type_name -> dbp_schema.ConversionCharacteristicEnumeration
 	8,  // 16: dbp_schema.RealWorldDataCollectionInfo.entryPoint:type_name -> dbp_schema.EntryPoint
-	32, // 17: dbp_schema.RealWorldDataStructureInfo.structure:type_name -> google.protobuf.Struct
+	32, // 17: dbp_schema.RealWorldDataFieldProfile.structure:type_name -> google.protobuf.Struct
 	31, // 18: dbp_schema.RealWorldDataStoringInfo.startTime:type_name -> google.protobuf.Timestamp
 	31, // 19: dbp_schema.RealWorldDataStoringInfo.endTime:type_name -> google.protobuf.Timestamp
 	8,  // 20: dbp_schema.RealWorldDataStoringInfo.entryPoint:type_name -> dbp_schema.EntryPoint
@@ -4020,7 +4020,7 @@ func file_dbp_schema_proto_init() {
 			}
 		}
 		file_dbp_schema_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RealWorldDataStructureInfo); i {
+			switch v := v.(*RealWorldDataFieldProfile); i {
 			case 0:
 				return &v.state
 			case 1:
