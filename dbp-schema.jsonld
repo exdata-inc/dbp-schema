@@ -96,7 +96,7 @@
     {
       "@id": "dbp:RealWorldDataFieldProfile",
       "@type": "rdfs:Class",
-      "rdfs:comment": "JSON-LD representing the field profile of a real-world data",
+      "rdfs:comment": "JSON-LD representing a real-world data field profile",
       "rdfs:label": "RealWorldDataFieldProfile",
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
@@ -115,13 +115,46 @@
           "@id": "schema:url"
         },
         {
-          "@id": "schema:encodingFormat"
-        },
-        {
           "@id": "dbp:structure"
         },
         {
+          "@id": "schema:encodingFormat"
+        },
+        {
+          "@id": "dbp:newLineCharacter"
+        },
+        {
+          "@id": "dbp:textEncoding"
+        },
+        {
+          "@id": "dbp:rwdProfileGeneratorVersion"
+        },
+        {
+          "@id": "dbp:semantiPackVersion"
+        },
+        {
+          "@id": "dbp:jsonHasIndent"
+        },
+        {
+          "@id": "dbp:jsonIndentCharacter"
+        },
+        {
+          "@id": "dbp:csvHasHeader"
+        },
+        {
+          "@id": "dbp:csvQuoting"
+        },
+        {
+          "@id": "dbp:csvSeparator"
+        },
+        {
+          "@id": "dbp:csvVariableColumnsStripTrailingCommas"
+        },
+        {
           "@id": "dbp:graphqlSchema"
+        },
+        {
+          "@id": "schema:dateCreated"
         },
         {
           "@id": "dbp:tags"
@@ -612,6 +645,9 @@
         },
         {
           "@id": "dbp:outputCharacteristic"
+        },
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
         }
       ],
       "schema:rangeIncludes": []
@@ -850,6 +886,14 @@
       }
     },
     {
+      "@id": "dbp:containsNode",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A node contained in the structure(@graph).",
+      "rdfs:label": "containsNode",
+      "schema:domainIncludes": [],
+      "schema:rangeIncludes": []
+    },
+    {
       "@id": "dbp:RealWorldDataStructureGraph",
       "@type": "rdfs:Class",
       "rdfs:comment": "JSON-LD representing the structure of real-world data",
@@ -857,6 +901,17 @@
       "rdfs:subClassOf": {
         "@id": "schema:Thing"
       },
+      "dbp:containsNode": [
+        {
+          "@id": "dbp:DbpClass"
+        },
+        {
+          "@id": "dbp:DbpList"
+        },
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        }
+      ],
       "schema:domainIncludes": {
         "@id": "dbp:structure"
       },
@@ -879,12 +934,829 @@
       ]
     },
     {
+      "@id": "dbp:newLineCharacter",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Newline character in the file",
+      "rdfs:label": "newLineCharacter",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:textEncoding",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Character encoding in the file",
+      "rdfs:label": "textEncoding",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:rwdProfileGeneratorVersion",
+      "@type": "rdf:Property",
+      "rdfs:comment": "SemantiPack version used for metadata generation",
+      "rdfs:label": "rwdProfileGeneratorVersion",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:semantiPackVersion",
+      "@type": "rdf:Property",
+      "rdfs:comment": "SemantiPack version used for compression",
+      "rdfs:label": "semantiPackVersion",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:jsonHasIndent",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether JSON file has indentation",
+      "rdfs:label": "jsonHasIndent",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:bool",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "bool",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:jsonHasIndent"
+        },
+        {
+          "@id": "dbp:csvHasHeader"
+        },
+        {
+          "@id": "dbp:csvVariableColumnsStripTrailingCommas"
+        },
+        {
+          "@id": "dbp:dbpaCompress"
+        },
+        {
+          "@id": "dbp:StripTrailingZeros"
+        },
+        {
+          "@id": "dbp:UseRunLength"
+        },
+        {
+          "@id": "dbp:isMostlyConstant"
+        },
+        {
+          "@id": "dbp:isEnumValue"
+        },
+        {
+          "@id": "dbp:isMostlyIncremental"
+        },
+        {
+          "@id": "dbp:isNullable"
+        },
+        {
+          "@id": "dbp:isOptional"
+        },
+        {
+          "@id": "dbp:dbpaDateTimeFormatUtcIsUTCinRFC3339"
+        },
+        {
+          "@id": "dbp:dbpaDateTimeFormatUtcIsZinRFC3339"
+        },
+        {
+          "@id": "dbp:UseBaseIncrement"
+        },
+        {
+          "@id": "dbp:enabled"
+        }
+      ],
+      "schema:rangeIncludes": []
+    },
+    {
+      "@id": "dbp:jsonIndentCharacter",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Indent character string for JSON file with indentation",
+      "rdfs:label": "jsonIndentCharacter",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:csvHasHeader",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether CSV file has header",
+      "rdfs:label": "csvHasHeader",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:csvQuoting",
+      "@type": "rdf:Property",
+      "rdfs:comment": "CSV quoting format (usage of \")",
+      "rdfs:label": "csvQuoting",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:csvSeparator",
+      "@type": "rdf:Property",
+      "rdfs:comment": "CSV separator character",
+      "rdfs:label": "csvSeparator",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:csvVariableColumnsStripTrailingCommas",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether trailing columns can be omitted per row in CSV (when trailing column data is empty)",
+      "rdfs:label": "csvVariableColumnsStripTrailingCommas",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
       "@id": "dbp:graphqlSchema",
       "@type": "rdf:Property",
-      "rdfs:comment": "",
+      "rdfs:comment": "GraphQL schema",
       "rdfs:label": "graphqlSchema",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataFieldProfile"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:DbpClass",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "Extension of rdfs:Class (subclass of: \"rdfs:Class\")",
+      "rdfs:label": "DbpClass",
+      "rdfs:subClassOf": {
+        "@id": "rdfs:Class"
+      },
+      "schema:domainIncludes": [],
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "rdfs:label"
+        },
+        {
+          "@id": "dbp:dbpaCompressRowID"
+        },
+        {
+          "@id": "schema:domainIncludes"
+        },
+        {
+          "@id": "schema:rangeIncludes"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:dbpaCompressRowID",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Row structure ID when compressing with SemantiPack (matches list ID)",
+      "rdfs:label": "dbpaCompressRowID",
+      "schema:domainIncludes": {
+        "@id": "dbp:DbpClass"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:int32",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "int32",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:dbpaCompressRowID"
+        },
+        {
+          "@id": "dbp:dbpaCompressListID"
+        },
+        {
+          "@id": "dbp:dbpaChildrenLists"
+        },
+        {
+          "@id": "dbp:dbpaCompressParentListId"
+        },
+        {
+          "@id": "dbp:dbpaCompressColumnId"
+        },
+        {
+          "@id": "dbp:dbpaDiffNumBytes"
+        },
+        {
+          "@id": "dbp:dbpaFirstNumBytes"
+        },
+        {
+          "@id": "dbp:dbpaDatetimeDiffBytes"
+        },
+        {
+          "@id": "dbp:dbpaDateTimeFormatOffset"
+        },
+        {
+          "@id": "dbp:PrecisionBytes"
+        },
+        {
+          "@id": "dbp:DecimalPlaces"
+        },
+        {
+          "@id": "dbp:transmissionSpeed"
+        }
+      ],
+      "schema:rangeIncludes": []
+    },
+    {
+      "@id": "dbp:DbpList",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "Extension of rdf:List (subclass of: \"rdf:List\")",
+      "rdfs:label": "DbpList",
+      "rdfs:subClassOf": {
+        "@id": "rdf:List"
+      },
+      "schema:domainIncludes": [],
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "rdfs:label"
+        },
+        {
+          "@id": "dbp:dbpaCompress"
+        },
+        {
+          "@id": "dbp:dbpaCompressListID"
+        },
+        {
+          "@id": "dbp:dbpaChildrenLists"
+        },
+        {
+          "@id": "schema:domainIncludes"
+        },
+        {
+          "@id": "schema:rangeIncludes"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:dbpaCompress",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether to compress the list structure with SemantiPack",
+      "rdfs:label": "dbpaCompress",
+      "schema:domainIncludes": {
+        "@id": "dbp:DbpList"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:dbpaCompressListID",
+      "@type": "rdf:Property",
+      "rdfs:comment": "List structure ID when compressing with SemantiPack (matches row ID)",
+      "rdfs:label": "dbpaCompressListID",
+      "schema:domainIncludes": {
+        "@id": "dbp:DbpList"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:dbpaChildrenLists",
+      "@type": "rdf:Property",
+      "rdfs:comment": "List of child list IDs when child lists exist during SemantiPack compression",
+      "rdfs:label": "dbpaChildrenLists",
+      "schema:domainIncludes": {
+        "@id": "dbp:DbpList"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:RealWorldDataStructureProperty",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "Class for describing data metadata in JSON-LD",
+      "rdfs:label": "RealWorldDataStructureProperty",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": [],
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "rdfs:label"
+        },
+        {
+          "@id": "schema:comment"
+        },
+        {
+          "@id": "dbp:rdfsSubPropertyOf"
+        },
+        {
+          "@id": "schema:domainIncludes"
+        },
+        {
+          "@id": "schema:rangeIncludes"
+        },
+        {
+          "@id": "dbp:dbpaCompressParentListId"
+        },
+        {
+          "@id": "dbp:dbpaCompressColumnId"
+        },
+        {
+          "@id": "dbp:dbpaDiffNumBytes"
+        },
+        {
+          "@id": "dbp:dbpaFirstNumBytes"
+        },
+        {
+          "@id": "dbp:StripTrailingZeros"
+        },
+        {
+          "@id": "dbp:UseRunLength"
+        },
+        {
+          "@id": "dbp:itemType"
+        },
+        {
+          "@id": "dbp:itemType95p"
+        },
+        {
+          "@id": "schema:unitText"
+        },
+        {
+          "@id": "dbp:VariableCharacteristicEnumeration"
+        },
+        {
+          "@id": "dbp:isMostlyConstant"
+        },
+        {
+          "@id": "dbp:isEnumValue"
+        },
+        {
+          "@id": "dbp:isMostlyIncremental"
+        },
+        {
+          "@id": "dbp:isNullable"
+        },
+        {
+          "@id": "dbp:isOptional"
+        },
+        {
+          "@id": "dbp:dbpaDatetimeFormat"
+        },
+        {
+          "@id": "dbp:dbpaDatetimePrecision"
+        },
+        {
+          "@id": "dbp:dbpaDatetimeDiffBytes"
+        },
+        {
+          "@id": "dbp:dbpaDateTimeFormatOffset"
+        },
+        {
+          "@id": "dbp:dbpaDateTimeFormatUtcIsUTCinRFC3339"
+        },
+        {
+          "@id": "dbp:dbpaDateTimeFormatUtcIsZinRFC3339"
+        },
+        {
+          "@id": "dbp:RangeMin"
+        },
+        {
+          "@id": "dbp:RangeMax"
+        },
+        {
+          "@id": "dbp:PrecisionBytes"
+        },
+        {
+          "@id": "dbp:DecimalPlaces"
+        },
+        {
+          "@id": "dbp:BaseIncrement"
+        },
+        {
+          "@id": "dbp:UseBaseIncrement"
+        },
+        {
+          "@id": "dbp:valueSamples"
+        },
+        {
+          "@id": "dbp:enumList"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:rdfsSubPropertyOf",
+      "@type": "rdf:Property",
+      "rdfs:comment": "rdfs:subPropertyOf Corresponding item on schema.org",
+      "rdfs:label": "rdfsSubPropertyOf",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:dbpaCompressParentListId",
+      "@type": "rdf:Property",
+      "rdfs:comment": "List structure ID assigned to columns during SemantiPack compression (matches row ID)",
+      "rdfs:label": "dbpaCompressParentListId",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:dbpaCompressColumnId",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Column structure ID during SemantiPack compression",
+      "rdfs:label": "dbpaCompressColumnId",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:dbpaDiffNumBytes",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Number of bytes used to represent differential values during differential compression",
+      "rdfs:label": "dbpaDiffNumBytes",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:dbpaFirstNumBytes",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Number of bytes used to represent the first value during differential compression",
+      "rdfs:label": "dbpaFirstNumBytes",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:StripTrailingZeros",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether to strip trailing zeros in decimals",
+      "rdfs:label": "StripTrailingZeros",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:UseRunLength",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether run-length compression should be used",
+      "rdfs:label": "UseRunLength",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:itemType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Semantic type of data",
+      "rdfs:label": "itemType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:ItemType"
+      }
+    },
+    {
+      "@id": "dbp:ItemType",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "ItemType",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:itemType"
+        },
+        {
+          "@id": "dbp:itemType95p"
+        }
+      ],
+      "schema:rangeIncludes": []
+    },
+    {
+      "@id": "dbp:itemType95p",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Semantic type satisfied by 95% or more of the data",
+      "rdfs:label": "itemType95p",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:ItemType"
+      }
+    },
+    {
+      "@id": "dbp:google.protobuf.StringValue",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "google.protobuf.StringValue",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": {
+        "@id": "schema:unitText"
+      },
+      "schema:rangeIncludes": []
+    },
+    {
+      "@id": "dbp:isMostlyConstant",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether the data field is mostly constant",
+      "rdfs:label": "isMostlyConstant",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:isEnumValue",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether the data field is an enum value",
+      "rdfs:label": "isEnumValue",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:isMostlyIncremental",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether the data field is mostly monotonically increasing",
+      "rdfs:label": "isMostlyIncremental",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:isNullable",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether empty strings or null values may exist for numeric or datetime types",
+      "rdfs:label": "isNullable",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:isOptional",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Indicates that the data field may not exist",
+      "rdfs:label": "isOptional",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:dbpaDatetimeFormat",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Format string when the data field is of datetime type",
+      "rdfs:label": "dbpaDatetimeFormat",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:dbpaDatetimePrecision",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Minimum unit when the data field is of datetime type (string equivalent to @schema:unitText)",
+      "rdfs:label": "dbpaDatetimePrecision",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:dbpaDatetimeDiffBytes",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Number of bytes used to represent differences when the data field is of datetime type",
+      "rdfs:label": "dbpaDatetimeDiffBytes",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:dbpaDateTimeFormatOffset",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Timezone offset value for date/time used during compression",
+      "rdfs:label": "dbpaDateTimeFormatOffset",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:dbpaDateTimeFormatUtcIsUTCinRFC3339",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether to represent UTC±0 timezone as UTC in RFC3339-compliant date/time format",
+      "rdfs:label": "dbpaDateTimeFormatUtcIsUTCinRFC3339",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:dbpaDateTimeFormatUtcIsZinRFC3339",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether to represent UTC±0 timezone as Z in RFC3339-compliant date/time format",
+      "rdfs:label": "dbpaDateTimeFormatUtcIsZinRFC3339",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:RangeMin",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Minimum value of numeric range",
+      "rdfs:label": "RangeMin",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:RangeMax",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Maximum value of numeric range",
+      "rdfs:label": "RangeMax",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:PrecisionBytes",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Number of bytes used for numeric representation during compression",
+      "rdfs:label": "PrecisionBytes",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:DecimalPlaces",
+      "@type": "rdf:Property",
+      "rdfs:comment": "How many decimal places to retain when compressing float values",
+      "rdfs:label": "DecimalPlaces",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:BaseIncrement",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Most frequent value of differences when data field is monotonically increasing",
+      "rdfs:label": "BaseIncrement",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:UseBaseIncrement",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Whether the most frequent value of differences should be used for compression when data field is monotonically increasing",
+      "rdfs:label": "UseBaseIncrement",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:valueSamples",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Used to pass value samples to LLM API during compression (non-enum)",
+      "rdfs:label": "valueSamples",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:enumList",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Used to pass list of enum values to LLM API during compression",
+      "rdfs:label": "enumList",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
         "@id": "schema:Text"
@@ -913,19 +1785,6 @@
       "schema:rangeIncludes": {
         "@id": "dbp:int32"
       }
-    },
-    {
-      "@id": "dbp:int32",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "int32",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": {
-        "@id": "dbp:transmissionSpeed"
-      },
-      "schema:rangeIncludes": []
     },
     {
       "@id": "dbp:storageType",
@@ -1476,19 +2335,6 @@
       "schema:rangeIncludes": {
         "@id": "dbp:bool"
       }
-    },
-    {
-      "@id": "dbp:bool",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "bool",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": {
-        "@id": "dbp:enabled"
-      },
-      "schema:rangeIncludes": []
     },
     {
       "@id": "dbp:RealWorldDataReadDemand",

@@ -6,6 +6,7 @@ package dbp_schema;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
 
 message RealWorldDataset {                                      // 実世界データセットを表す JSON-LD (subclass of: "schema:Dataset")
     optional string id = 1;                                     // 自身(このJSON-LD)のURL
@@ -137,22 +138,151 @@ message RealWorldDataBrewEvent {
 
 }
 
-message RealWorldDataFieldProfile {        // 実世界データのフィールドプロファイルを表す JSON-LD
+message RealWorldDataFieldProfile {         // 実世界データのフィールドプロファイルを表す JSON-LD
+    // JSON-LD 基本
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional string encodingFormat = 4;
-    optional RealWorldDataStructureGraph structure = 5;  // JSON-LD schema ( including @graph )
-    optional string graphqlSchema = 6;
-    repeated RealWorldDataTags tags = 7;
+
+    // structure as JSON-LD schema
+    optional RealWorldDataStructureGraph structure = 10;     // JSON-LD schema ( including @graph )
+
+    // 元データのフォーマット関連
+    optional string encodingFormat = 20;    // sschema.org の schema:encodingFormat (ファイルのMIMEタイプ)
+    optional string newLineCharacter = 21;  // ファイル中の改行コード
+    optional string textEncoding = 22;      // ファイル中の文字コード
+
+    // 圧縮関連
+    optional string rwdProfileGeneratorVersion = 30;    // メタデータ生成に使用された SemantiPack のバージョン
+    optional string semantiPackVersion = 31;            // 圧縮に使用された SemantiPack のバージョン
+
+    // JSON 関連
+    optional bool jsonHasIndent = 40;           // JSON ファイルにインデントがあるかないか
+    optional string jsonIndentCharacter = 41;   // JSON ファイルにインデントがある場合のインデント文字列
+
+    // CSV 関連
+    optional bool csvHasHeader = 50;                            // CSVファイルにヘッダがあるかないか
+    optional string csvQuoting = 51;                            // CSV のクオート形式 (" の使い方)
+    optional string csvSeparator = 52;                          // CSV の区切り文字
+    optional bool csvVariableColumnsStripTrailingCommas = 53;   // CSV の行ごとに末尾の列が省略される場合があるかないか (末尾の列のデータが空の場合)
+
+    // その他
+    optional string graphqlSchema = 60;     // GraphQL スキーマ
+    optional string dateCreated = 70;       // 構造情報が作成された日時
+    repeated RealWorldDataTags tags = 80;
 }
 
-message RealWorldDataStructureGraph {        // 実世界データの構造を表す JSON-LD
+message RealWorldDataStructureGraph {   // 実世界データの構造を表す JSON-LD
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional google.protobuf.Struct at_graph = 4;  // JSON-LD schema ( @graph )
+    repeated GraphNode at_graph = 4;    // JSON-LD schema ( @graph )
     repeated RealWorldDataTags tags = 5;
+}
+
+message GraphNode {      // JSON-LD schema ( @graph の中身 )
+    oneof node {
+        DbpClass classNode = 1;
+        DbpList listNode = 2;
+        RealWorldDataStructureProperty propertyNode = 3;
+    }
+}
+
+message IdRef {         // schema.org の @id を参照するノード
+    optional string id = 1;
+}
+
+message DbpClass {                              // rdfs:Class を拡張 (subclass of: "rdfs:Class")
+    optional string id = 1;
+    optional string label = 2;                  // rdfs:label
+    optional int32 dbpaCompressRowID = 3;       // SmantiPack 圧縮するときの行構造ID（リストのIDと一致）
+    repeated IdRef domainIncludes = 4;          // schema:domainIncludes
+    repeated IdRef rangeIncludes = 5;           // schema:rangeIncludes
+}
+
+message DbpList {                               // rdf:List を拡張 (subclass of: "rdf:List")
+    optional string id = 1;
+    optional string label = 2;                  // rdfs:label
+    optional bool dbpaCompress = 3;             // そのリスト構造を SemantiPack 圧縮するかどうか
+    optional int32 dbpaCompressListID = 4;      // SmantiPack 圧縮するときのリスト構造ID（行のIDと一致）
+    repeated int32 dbpaChildrenLists = 5;       // SemantiPack 圧縮するときに子リストが存在する場合、子リストのID一覧
+    repeated IdRef domainIncludes = 6;          // schema:domainIncludes
+    repeated IdRef rangeIncludes = 7;           // schema:rangeIncludes
+}
+
+message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメタデータを記述するクラス
+    // JSON-LD 基本
+    optional string id = 1;
+    optional string label = 2;              // rdfs:label
+    optional string comment = 3;            // rdfs:comment データフィールドの中身を説明するコメント
+    optional string rdfsSubPropertyOf = 4;  // rdfs:subPropertyOf schema.org 上の項目で対応するもの
+
+    // 関連（domain / range）
+    repeated IdRef domainIncludes = 10;     // schema:domainIncludes
+    repeated IdRef rangeIncludes = 11;      // schema:rangeIncludes
+
+    // 圧縮メタ
+    optional int32 dbpaCompressParentListId = 20;   // SmantiPack 圧縮するときの列に付与される、リスト構造ID（行のIDと一致）
+    optional int32 dbpaCompressColumnId = 21;       // SemantiPack 圧縮するときの列構造ID
+    optional int32 dbpaDiffNumBytes = 22;           // 差分圧縮時に、差分の値を表現するために使うバイト数
+    optional int32 dbpaFirstNumBytes = 23;          // 差分圧縮時に、最初の値を表現するために使うバイト数
+    optional bool StripTrailingZeros = 24;          // 小数の末尾のゼロを削るかどうか
+    optional bool UseRunLength = 25;                // Run Length 圧縮を使うべきかどうか
+
+    // 型関連
+    optional ItemType itemType = 30;        // データのセマンティックな型
+    optional ItemType itemType95p = 31;     // データの 95% 以上が満たすセマンティックな型
+
+    // 単位
+    optional google.protobuf.StringValue unitText = 40;     // 変数の単位を表す値 (unece.org の Rec 20 の値)
+
+    // 変量特性
+    optional VariableCharacteristic VariableCharacteristicEnumeration = 50;  // 変数の尺度を表す enum 値
+
+    // 真偽メタ
+    optional bool isMostlyConstant = 60;        // データフィールドがほとんど一定値かどうか
+    optional bool isEnumValue = 61;             // データフィールドがEnum値かどうか
+    optional bool isMostlyIncremental = 62;     // データフィールドがほとんど単調増加かどうか
+    optional bool isNullable = 63;              // 数値や日付時刻型で、空文字や null な値が存在する場合があるかどうか
+    optional bool isOptional = 64;              // データフィールドが存在しない可能性があることを示す
+
+    // 日時系メタ
+    optional string dbpaDatetimeFormat = 70;                    // データフィールドが日付時刻型な場合の、書式文字列
+    optional string dbpaDatetimePrecision = 71;                 // データフィールドが日付時刻型な場合の、最小単位 (@schema:unitText と同等の文字列が入る)
+    optional int32 dbpaDatetimeDiffBytes = 72;                  // データフィールドが日付時刻型な場合の、差分を表現するために使用するバイト数
+    optional int32 dbpaDateTimeFormatOffset = 73;               // 圧縮時に使用する、日付・時刻のタイムゾーンオフセット値
+    optional bool dbpaDateTimeFormatUtcIsUTCinRFC3339 = 74;     // RFC3339 に準拠した日付・時刻フォーマットで、タイムゾーンの UTC±0 を UTC として表記するかどうか
+    optional bool dbpaDateTimeFormatUtcIsZinRFC3339 = 75;       // RFC3339 に準拠した日付・時刻フォーマットで、タイムゾーンの UTC±0 を Z として表記するかどうか
+
+    // 数値レンジ等
+    optional string RangeMin = 80;          // 数値範囲の最小値
+    optional string RangeMax = 81;          // 数値範囲の最大値
+    optional int32 PrecisionBytes = 82;     // 圧縮時に数値の表現に使用するバイト数
+    optional int32 DecimalPlaces = 83;      // Float 値の圧縮時に小数点以下何桁までを保持するか
+    optional string BaseIncrement = 84;     // データフィールドが単調増加な場合の、差分の最頻値
+    optional bool UseBaseIncrement = 85;    // データフィールドが単調増加な場合に、差分の最頻値を圧縮に使用すべきかどうか
+
+    // 値のサンプル・列挙値
+    repeated string valueSamples = 90;  // 圧縮時に LLM API に値のサンプルを渡すときに使用 (enum 以外)
+    repeated string enumList = 91;      // 圧縮時に LLM API に enum 値の一覧を渡すときに使用
+}
+
+enum ItemType {       // データのセマンティックな型を表す enum (STRING の最大文字列長は表現できていない)
+    INTEGER = 0;
+    FLOAT = 1;
+    STRING = 2;
+    BOOLEAN = 3;
+    DATE = 4;
+    TIME = 5;
+    DATETIME = 6;
+    NULL = 7;
+}
+
+enum VariableCharacteristic {    // 変数の尺度を表す enum
+    NOMINAL = 0;
+    ORDINAL = 1;
+    INTERVAL = 2;
+    PROPORTIONAL = 3;
 }
 
 message RealWorldDataStoringInfo {          // 実世界データの保存先を表す JSON-LD
