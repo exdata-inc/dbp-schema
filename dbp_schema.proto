@@ -6,6 +6,7 @@ package dbp_schema;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
 
 message RealWorldDataset {                                      // JSON-LD representing a real-world dataset (subclass of: "schema:Dataset")
     optional string id = 1;                                     // URL of itself (this JSON-LD)
@@ -137,22 +138,151 @@ message RealWorldDataBrewEvent {
 
 }
 
-message RealWorldDataFieldProfile {        // JSON-LD representing the field profile of a real-world data
+message RealWorldDataFieldProfile {        // JSON-LD representing a real-world data field profile
+    // JSON-LD basic
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional string encodingFormat = 4;
-    optional RealWorldDataStructureGraph structure = 5;  // JSON-LD schema (including @graph)
-    optional string graphqlSchema = 6;
-    repeated RealWorldDataTags tags = 7;
+
+    // structure as JSON-LD schema
+    optional RealWorldDataStructureGraph structure = 10;     // JSON-LD schema (including @graph)
+
+    // Original data format related
+    optional string encodingFormat = 20;    // schema.org's schema:encodingFormat (file MIME type)
+    optional string newLineCharacter = 21;  // Newline character in the file
+    optional string textEncoding = 22;      // Character encoding in the file
+
+    // Compression related
+    optional string rwdProfileGeneratorVersion = 30;    // SemantiPack version used for metadata generation
+    optional string semantiPackVersion = 31;            // SemantiPack version used for compression
+
+    // JSON related
+    optional bool jsonHasIndent = 40;           // Whether JSON file has indentation
+    optional string jsonIndentCharacter = 41;   // Indent character string for JSON file with indentation
+
+    // CSV related
+    optional bool csvHasHeader = 50;                            // Whether CSV file has header
+    optional string csvQuoting = 51;                            // CSV quoting format (usage of ")
+    optional string csvSeparator = 52;                          // CSV separator character
+    optional bool csvVariableColumnsStripTrailingCommas = 53;   // Whether trailing columns can be omitted per row in CSV (when trailing column data is empty)
+
+    // Others
+    optional string graphqlSchema = 60;     // GraphQL schema
+    optional string dateCreated = 70;       // Date and time when structural information was created
+    repeated RealWorldDataTags tags = 80;
 }
 
-message RealWorldDataStructureGraph {        // JSON-LD representing the structure of real-world data
+message RealWorldDataStructureGraph {   // JSON-LD representing the structure of real-world data
     optional string id = 1;
     optional string name = 2;
     optional string url = 3;
-    optional google.protobuf.Struct at_graph = 4;  // JSON-LD schema (@graph)
+    repeated GraphNode at_graph = 4;    // JSON-LD schema (@graph)
     repeated RealWorldDataTags tags = 5;
+}
+
+message GraphNode {      // JSON-LD schema (contents of @graph)
+    oneof node {
+        DbpClass classNode = 1;
+        DbpList listNode = 2;
+        RealWorldDataStructureProperty propertyNode = 3;
+    }
+}
+
+message IdRef {         // Node referencing schema.org's @id
+    optional string id = 1;
+}
+
+message DbpClass {                              // Extension of rdfs:Class (subclass of: "rdfs:Class")
+    optional string id = 1;
+    optional string label = 2;                  // rdfs:label
+    optional int32 dbpaCompressRowID = 3;       // Row structure ID when compressing with SemantiPack (matches list ID)
+    repeated IdRef domainIncludes = 4;          // schema:domainIncludes
+    repeated IdRef rangeIncludes = 5;           // schema:rangeIncludes
+}
+
+message DbpList {                               // Extension of rdf:List (subclass of: "rdf:List")
+    optional string id = 1;
+    optional string label = 2;                  // rdfs:label
+    optional bool dbpaCompress = 3;             // Whether to compress the list structure with SemantiPack
+    optional int32 dbpaCompressListID = 4;      // List structure ID when compressing with SemantiPack (matches row ID)
+    repeated int32 dbpaChildrenLists = 5;       // List of child list IDs when child lists exist during SemantiPack compression
+    repeated IdRef domainIncludes = 6;          // schema:domainIncludes
+    repeated IdRef rangeIncludes = 7;           // schema:rangeIncludes
+}
+
+message RealWorldDataStructureProperty {    // Class for describing data metadata in JSON-LD
+    // JSON-LD basic
+    optional string id = 1;
+    optional string label = 2;              // rdfs:label
+    optional string comment = 3;            // rdfs:comment Comment describing the contents of data field
+    optional string rdfsSubPropertyOf = 4;  // rdfs:subPropertyOf Corresponding item on schema.org
+
+    // Relations (domain / range)
+    repeated IdRef domainIncludes = 10;     // schema:domainIncludes
+    repeated IdRef rangeIncludes = 11;      // schema:rangeIncludes
+
+    // Compression metadata
+    optional int32 dbpaCompressParentListId = 20;   // List structure ID assigned to columns during SemantiPack compression (matches row ID)
+    optional int32 dbpaCompressColumnId = 21;       // Column structure ID during SemantiPack compression
+    optional int32 dbpaDiffNumBytes = 22;           // Number of bytes used to represent differential values during differential compression
+    optional int32 dbpaFirstNumBytes = 23;          // Number of bytes used to represent the first value during differential compression
+    optional bool StripTrailingZeros = 24;          // Whether to strip trailing zeros in decimals
+    optional bool UseRunLength = 25;                // Whether run-length compression should be used
+
+    // Type related
+    optional ItemType itemType = 30;        // Semantic type of data
+    optional ItemType itemType95p = 31;     // Semantic type satisfied by 95% or more of the data
+
+    // Unit
+    optional google.protobuf.StringValue unitText = 40;     // Value representing the unit of the variable (unece.org Rec 20 value)
+
+    // Variable characteristics
+    optional VariableCharacteristic VariableCharacteristicEnumeration = 50;  // Enum value representing the scale of the variable
+
+    // Boolean metadata
+    optional bool isMostlyConstant = 60;        // Whether the data field is mostly constant
+    optional bool isEnumValue = 61;             // Whether the data field is an enum value
+    optional bool isMostlyIncremental = 62;     // Whether the data field is mostly monotonically increasing
+    optional bool isNullable = 63;              // Whether empty strings or null values may exist for numeric or datetime types
+    optional bool isOptional = 64;              // Indicates that the data field may not exist
+
+    // Datetime metadata
+    optional string dbpaDatetimeFormat = 70;                    // Format string when the data field is of datetime type
+    optional string dbpaDatetimePrecision = 71;                 // Minimum unit when the data field is of datetime type (string equivalent to @schema:unitText)
+    optional int32 dbpaDatetimeDiffBytes = 72;                  // Number of bytes used to represent differences when the data field is of datetime type
+    optional int32 dbpaDateTimeFormatOffset = 73;               // Timezone offset value for date/time used during compression
+    optional bool dbpaDateTimeFormatUtcIsUTCinRFC3339 = 74;     // Whether to represent UTC±0 timezone as UTC in RFC3339-compliant date/time format
+    optional bool dbpaDateTimeFormatUtcIsZinRFC3339 = 75;       // Whether to represent UTC±0 timezone as Z in RFC3339-compliant date/time format
+
+    // Numeric range etc
+    optional string RangeMin = 80;          // Minimum value of numeric range
+    optional string RangeMax = 81;          // Maximum value of numeric range
+    optional int32 PrecisionBytes = 82;     // Number of bytes used for numeric representation during compression
+    optional int32 DecimalPlaces = 83;      // How many decimal places to retain when compressing float values
+    optional string BaseIncrement = 84;     // Most frequent value of differences when data field is monotonically increasing
+    optional bool UseBaseIncrement = 85;    // Whether the most frequent value of differences should be used for compression when data field is monotonically increasing
+
+    // Value samples and enumerated values
+    repeated string valueSamples = 90;  // Used to pass value samples to LLM API during compression (non-enum)
+    repeated string enumList = 91;      // Used to pass list of enum values to LLM API during compression
+}
+
+enum ItemType {       // Enum representing semantic type of data (maximum string length for STRING is not represented)
+    INTEGER = 0;
+    FLOAT = 1;
+    STRING = 2;
+    BOOLEAN = 3;
+    DATE = 4;
+    TIME = 5;
+    DATETIME = 6;
+    NULL = 7;
+}
+
+enum VariableCharacteristic {    // Enum representing variable scale
+    NOMINAL = 0;
+    ORDINAL = 1;
+    INTERVAL = 2;
+    PROPORTIONAL = 3;
 }
 
 message RealWorldDataStoringInfo {          // JSON-LD representing the storage information for real-world data

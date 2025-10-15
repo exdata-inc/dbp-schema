@@ -21,12 +21,42 @@ for elm in schemalist:
     else:
         schemasubClassOfs.append({'@id': 'schema:Thing'})
 
+RDFS_INFOS = [
+    {"id": "rdfs:comment", "comment": "an instance of rdf:Property that may be used to provide a human-readable description of a resource."},
+    {"id": "rdfs:label", "comment": "an instance of rdf:Property that may be used to provide a human-readable version of a resource's name."},
+    {"id": "rdfs:subClassOf", "comment": "an instance of rdf:Property that is used to state that all the instances of one class are instances of another."}
+]
+
+IGNORE_MESSAGES = [
+    'GraphNode', 'IdRef'
+]
+
+CONTAINS_NODE_DEFINITION = {
+    "name": "containsNode",
+    "type": "Property",
+    "subclass_of": None,
+    "comment": "A node contained in the structure(@graph)."
+}
+
+CONTAINS_NODE_RELATIONS = [
+    {
+        "parent_id": "dbp:RealWorldDataStructureGraph",
+        "children_ids": [
+            "dbp:DbpClass",
+            "dbp:DbpList",
+            "dbp:RealWorldDataStructureProperty"
+        ]
+    }
+]
+
+CONTAINS_NODE_PARENT_IDS = [r["parent_id"] for r in CONTAINS_NODE_RELATIONS]
 
 
 class DataSchema:
 
     def __init__(self, name, type, subclass_of, comment=''):
         self.key = SearchSchema(name)
+        self.key_rdfs = SearchRdfs(name)
         self.subClassOf = {'@id': subclass_of if subclass_of is not None else 'schema:Thing'}
         if self.key != -1:
             self.subClassOf = schemasubClassOfs[self.key]
@@ -37,6 +67,8 @@ class DataSchema:
         self.id = 'dbp:' + name
         if self.key != -1:
             self.id = schemaids[self.key]
+        if self.key_rdfs != -1:
+            self.id = RDFS_INFOS[self.key_rdfs]['id']
         if name == 'id':
             self.id = '@id'
         if name == 'at_graph':
@@ -48,7 +80,19 @@ class DataSchema:
         self.comment = comment
         if self.key != -1:
             self.comment = schemacomments[self.key]
+        elif self.key_rdfs != -1:
+            self.comment = RDFS_INFOS[self.key_rdfs]['comment']
         self.label = name
+        if self.id in CONTAINS_NODE_PARENT_IDS:
+            print("Found containsNode parent:", self.name)
+            self.contains_node = [
+                {"@id": n}
+                for n in CONTAINS_NODE_RELATIONS[CONTAINS_NODE_PARENT_IDS.index(self.id)][
+                    "children_ids"
+                ]
+            ]
+        else:
+            self.contains_node = None
 
     def addParentClass(self, domainInclude):
         t = {'@id': DbpOrSchema(domainInclude)}
@@ -71,12 +115,21 @@ class DataSchema:
         if len(self.rangeIncludes) == 1:
             self.rangeIncludes = self.rangeIncludes[0]
         if self.type == 'rdfs:Class':
-            jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'rdfs:subClassOf': self.subClassOf,'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
+            if self.contains_node is not None:
+                if len(self.contains_node) == 1:
+                    contains_node = self.contains_node[0]
+                else:
+                    contains_node = self.contains_node
+                jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'rdfs:subClassOf': self.subClassOf, 'dbp:containsNode': contains_node, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
+            else:
+                jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'rdfs:subClassOf': self.subClassOf, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
         elif self.type == 'rdf:Property':
             jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
+        else:
+            raise ValueError('Type is neither Class nor Property.')
         self.domainIncludes = [self.domainIncludes]
         self.rangeIncludes = [self.rangeIncludes]
-        
+
         return jsonld
 
 
@@ -88,6 +141,12 @@ def SearchSchema(name):
     return -1
 
 
+def SearchRdfs(name):
+    for i in range(len(RDFS_INFOS)):
+        if RDFS_INFOS[i]['id'] == 'rdfs:' + name:
+            return i
+    return -1
+
 
 def DbpOrSchema(name):
     if name == 'id':
@@ -97,6 +156,9 @@ def DbpOrSchema(name):
     for filter in schemaids:
         if filter == 'schema:' + name:
             return filter
+    for filter in RDFS_INFOS:
+        if filter['id'] == 'rdfs:' + name:
+            return filter['id']
     return 'dbp:' + name
 
 
@@ -123,7 +185,7 @@ def ParseProto(protofile):
         #count += 1
         #print([count,flag3])
         line = data.split()
-        if line:
+        if line and not line[0].startswith('//'):
             if flag_in_message == 0 and line[0] == 'message':
                 flag_in_message = 1
                 for i in range(len(jsondata)):
@@ -134,6 +196,9 @@ def ParseProto(protofile):
                         flag3 = 1
                         break
                 if flag3 == 0:
+                    if line[1] in IGNORE_MESSAGES:
+                        flag_in_message = 0
+                        continue
                     subclass_of = extract_subclass_of(data)
                     if len(line) > 4:
                         tmp_class = DataSchema(line[1], 'Class', subclass_of, ' '.join(line[4:]))
@@ -164,7 +229,8 @@ def ParseProto(protofile):
                             flag3 = 1
                             break
                     if flag3 == 0:
-                        if line[1] != 'string' and line[1] != 'bytes' and line[1] != 'google.protobuf.Struct' and line[1] != 'google.protobuf.Timestamp':
+                        # bool, int32 は↓に加えなくていい？ dbp:bool, dbp:int32 が出来上がってしまってる
+                        if line[1] not in ['string', 'bytes', 'google.protobuf.Struct', 'google.protobuf.Timestamp'] + IGNORE_MESSAGES:
                             if line[1] == tmp_class.name:
                                 tmp_class.addParentClass(line[2])
                             else:
@@ -189,8 +255,19 @@ def WriteJsonld(items, jsonldfile):
     with open(jsonldfile, 'w', encoding='UTF-8') as f:
         context = {'dbp': 'http://exdata.co.jp/dbp/schema/', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'schema': 'https://schema.org/'}
         graph = []
+        added_contains_node = False
         for item in sorted(set(items), key=items.index):
-            if item.key == -1 and item.id != '@id' and item.id != '@graph':
+            if item.key == -1 and item.key_rdfs == -1 and item.id != '@id' and item.id != '@graph':
+                if not added_contains_node and item.contains_node is not None:
+                    contains_node = DataSchema(
+                        CONTAINS_NODE_DEFINITION["name"],
+                        CONTAINS_NODE_DEFINITION["type"],
+                        CONTAINS_NODE_DEFINITION["subclass_of"],
+                        CONTAINS_NODE_DEFINITION["comment"]
+                    )
+                    print(contains_node.id)
+                    graph.append(contains_node.getJsonld())
+                    added_contains_node = True
                 print(item.id)
                 graph.append(item.getJsonld())
         text = {'@context': context, '@graph': graph}
