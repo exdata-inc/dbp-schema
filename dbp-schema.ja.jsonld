@@ -1413,9 +1413,6 @@
         },
         {
           "@id": "dbp:enumList"
-        },
-        {
-          "@id": "dbp:structurePath"
         }
       ]
     },
@@ -1839,18 +1836,6 @@
       "@type": "rdf:Property",
       "rdfs:comment": "圧縮時に LLM API に enum 値の一覧を渡すときに使用",
       "rdfs:label": "enumList",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:Text"
-      }
-    },
-    {
-      "@id": "dbp:structurePath",
-      "@type": "rdf:Property",
-      "rdfs:comment": "データフィールドが存在するデータ構造内のノードの階層的なパス情報",
-      "rdfs:label": "structurePath",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },

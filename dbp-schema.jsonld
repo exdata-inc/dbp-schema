@@ -1413,9 +1413,6 @@
         },
         {
           "@id": "dbp:enumList"
-        },
-        {
-          "@id": "dbp:structurePath"
         }
       ]
     },
@@ -1839,18 +1836,6 @@
       "@type": "rdf:Property",
       "rdfs:comment": "Used to pass list of enum values to LLM API during compression",
       "rdfs:label": "enumList",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
-      "schema:rangeIncludes": {
-        "@id": "schema:Text"
-      }
-    },
-    {
-      "@id": "dbp:structurePath",
-      "@type": "rdf:Property",
-      "rdfs:comment": "Hierarchical path information of nodes in the data structure where the data field exists",
-      "rdfs:label": "structurePath",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },

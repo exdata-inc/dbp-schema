@@ -270,7 +270,6 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     // Value samples,  enumerated values, and structure path
     repeated string valueSamples = 90;      // Used to pass value samples to LLM API during compression (non-enum)
     repeated string enumList = 91;          // Used to pass list of enum values to LLM API during compression
-    repeated string structurePath = 92;     // Hierarchical path information of nodes in the data structure where the data field exists
 }
 
 enum ItemType {       // Enum representing semantic type of data (maximum string length for STRING is not represented)
