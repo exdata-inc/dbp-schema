@@ -1021,6 +1021,9 @@
           "@id": "dbp:UseRunLength"
         },
         {
+          "@id": "dbp:UseFFTCompression"
+        },
+        {
           "@id": "dbp:isMostlyConstant"
         },
         {
@@ -1198,6 +1201,9 @@
           "@id": "dbp:dbpaDateTimeFormatOffset"
         },
         {
+          "@id": "dbp:dbpaTimestampRepresentingColumns"
+        },
+        {
           "@id": "dbp:PrecisionBytes"
         },
         {
@@ -1325,6 +1331,15 @@
           "@id": "dbp:UseRunLength"
         },
         {
+          "@id": "dbp:dbpaCompressionForceLayer"
+        },
+        {
+          "@id": "dbp:LossyCompressionRate"
+        },
+        {
+          "@id": "dbp:UseFFTCompression"
+        },
+        {
           "@id": "dbp:itemType"
         },
         {
@@ -1368,6 +1383,12 @@
         },
         {
           "@id": "dbp:dbpaDateTimeFormatUtcIsZinRFC3339"
+        },
+        {
+          "@id": "dbp:dbpaTimestampRepresentingColumns"
+        },
+        {
+          "@id": "dbp:dbpaTimestampUnitText"
         },
         {
           "@id": "dbp:RangeMin"
@@ -1472,6 +1493,42 @@
       "@type": "rdf:Property",
       "rdfs:comment": "Run Length 圧縮を使うべきかどうか",
       "rdfs:label": "UseRunLength",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:dbpaCompressionForceLayer",
+      "@type": "rdf:Property",
+      "rdfs:comment": "SemantiPack 圧縮時に強制的に使用する圧縮レイヤー",
+      "rdfs:label": "dbpaCompressionForceLayer",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:LossyCompressionRate",
+      "@type": "rdf:Property",
+      "rdfs:comment": "SemantiPack ロスあり圧縮の元のデータとの損失割合",
+      "rdfs:label": "LossyCompressionRate",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:float"
+      }
+    },
+    {
+      "@id": "dbp:UseFFTCompression",
+      "@type": "rdf:Property",
+      "rdfs:comment": "SemantiPack 圧縮時に FFT 圧縮を使うべきかどうか",
+      "rdfs:label": "UseFFTCompression",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1664,6 +1721,30 @@
       },
       "schema:rangeIncludes": {
         "@id": "dbp:bool"
+      }
+    },
+    {
+      "@id": "dbp:dbpaTimestampRepresentingColumns",
+      "@type": "rdf:Property",
+      "rdfs:comment": "データフィールドが日付時刻型な列ID一覧",
+      "rdfs:label": "dbpaTimestampRepresentingColumns",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:int32"
+      }
+    },
+    {
+      "@id": "dbp:dbpaTimestampUnitText",
+      "@type": "rdf:Property",
+      "rdfs:comment": "データフィールドが日付時刻型な場合の、タイムスタンプの時間単位を表す値",
+      "rdfs:label": "dbpaTimestampUnitText",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
       }
     },
     {

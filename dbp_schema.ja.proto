@@ -222,12 +222,15 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     repeated IdRef rangeIncludes = 11;      // schema:rangeIncludes
 
     // 圧縮メタ
-    optional int32 dbpaCompressParentListId = 20;   // SmantiPack 圧縮するときの列に付与される、リスト構造ID（行のIDと一致）
-    optional int32 dbpaCompressColumnId = 21;       // SemantiPack 圧縮するときの列構造ID
-    optional int32 dbpaDiffNumBytes = 22;           // 差分圧縮時に、差分の値を表現するために使うバイト数
-    optional int32 dbpaFirstNumBytes = 23;          // 差分圧縮時に、最初の値を表現するために使うバイト数
-    optional bool StripTrailingZeros = 24;          // 小数の末尾のゼロを削るかどうか
-    optional bool UseRunLength = 25;                // Run Length 圧縮を使うべきかどうか
+    optional int32 dbpaCompressParentListId = 20;       // SmantiPack 圧縮するときの列に付与される、リスト構造ID（行のIDと一致）
+    optional int32 dbpaCompressColumnId = 21;           // SemantiPack 圧縮するときの列構造ID
+    optional int32 dbpaDiffNumBytes = 22;               // 差分圧縮時に、差分の値を表現するために使うバイト数
+    optional int32 dbpaFirstNumBytes = 23;              // 差分圧縮時に、最初の値を表現するために使うバイト数
+    optional bool StripTrailingZeros = 24;              // 小数の末尾のゼロを削るかどうか
+    optional bool UseRunLength = 25;                    // Run Length 圧縮を使うべきかどうか
+    optional string dbpaCompressionForceLayer = 26;     // SemantiPack 圧縮時に強制的に使用する圧縮レイヤー
+    optional float LossyCompressionRate = 27;           // SemantiPack ロスあり圧縮の元のデータとの損失割合
+    optional bool UseFFTCompression = 28;               // SemantiPack 圧縮時に FFT 圧縮を使うべきかどうか
 
     // 型関連
     optional ItemType itemType = 30;        // データのセマンティックな型
@@ -253,6 +256,8 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional int32 dbpaDateTimeFormatOffset = 73;               // 圧縮時に使用する、日付・時刻のタイムゾーンオフセット値
     optional bool dbpaDateTimeFormatUtcIsUTCinRFC3339 = 74;     // RFC3339 に準拠した日付・時刻フォーマットで、タイムゾーンの UTC±0 を UTC として表記するかどうか
     optional bool dbpaDateTimeFormatUtcIsZinRFC3339 = 75;       // RFC3339 に準拠した日付・時刻フォーマットで、タイムゾーンの UTC±0 を Z として表記するかどうか
+    repeated int32 dbpaTimestampRepresentingColumns = 76;       // データフィールドが日付時刻型な列ID一覧
+    optional string dbpaTimestampUnitText = 77;                 // データフィールドが日付時刻型な場合の、タイムスタンプの時間単位を表す値
 
     // 数値レンジ等
     optional string RangeMin = 80;          // 数値範囲の最小値
@@ -262,9 +267,9 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional string BaseIncrement = 84;     // データフィールドが単調増加な場合の、差分の最頻値
     optional bool UseBaseIncrement = 85;    // データフィールドが単調増加な場合に、差分の最頻値を圧縮に使用すべきかどうか
 
-    // 値のサンプル・列挙値
-    repeated string valueSamples = 90;  // 圧縮時に LLM API に値のサンプルを渡すときに使用 (enum 以外)
-    repeated string enumList = 91;      // 圧縮時に LLM API に enum 値の一覧を渡すときに使用
+    // 値のサンプル・列挙値・構造パス
+    repeated string valueSamples = 90;      // 圧縮時に LLM API に値のサンプルを渡すときに使用 (enum 以外)
+    repeated string enumList = 91;          // 圧縮時に LLM API に enum 値の一覧を渡すときに使用
 }
 
 enum ItemType {       // データのセマンティックな型を表す enum (STRING の最大文字列長は表現できていない)
