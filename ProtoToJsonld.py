@@ -230,7 +230,7 @@ def ParseProto(protofile):
                             break
                     if flag3 == 0:
                         # bool, int32 は↓に加えなくていい？ dbp:bool, dbp:int32 が出来上がってしまってる
-                        if line[1] not in ['string', 'bytes', 'google.protobuf.Struct', 'google.protobuf.Timestamp'] + IGNORE_MESSAGES:
+                        if line[1] not in ['string', 'bytes', 'float', 'google.protobuf.Struct', 'google.protobuf.Timestamp'] + IGNORE_MESSAGES:
                             if line[1] == tmp_class.name:
                                 tmp_class.addParentClass(line[2])
                             else:

@@ -222,12 +222,15 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     repeated IdRef rangeIncludes = 11;      // schema:rangeIncludes
 
     // Compression metadata
-    optional int32 dbpaCompressParentListId = 20;   // List structure ID assigned to columns during SemantiPack compression (matches row ID)
-    optional int32 dbpaCompressColumnId = 21;       // Column structure ID during SemantiPack compression
-    optional int32 dbpaDiffNumBytes = 22;           // Number of bytes used to represent differential values during differential compression
-    optional int32 dbpaFirstNumBytes = 23;          // Number of bytes used to represent the first value during differential compression
-    optional bool StripTrailingZeros = 24;          // Whether to strip trailing zeros in decimals
-    optional bool UseRunLength = 25;                // Whether run-length compression should be used
+    optional int32 dbpaCompressParentListId = 20;       // List structure ID assigned to columns during SemantiPack compression (matches row ID)
+    optional int32 dbpaCompressColumnId = 21;           // Column structure ID during SemantiPack compression
+    optional int32 dbpaDiffNumBytes = 22;               // Number of bytes used to represent differential values during differential compression
+    optional int32 dbpaFirstNumBytes = 23;              // Number of bytes used to represent the first value during differential compression
+    optional bool StripTrailingZeros = 24;              // Whether to strip trailing zeros in decimals
+    optional bool UseRunLength = 25;                    // Whether run-length compression should be used
+    optional string dbpaCompressionForceLayer = 26;     // Compression layer to forcibly use during SemantiPack compression
+    optional float LossyCompressionRate = 27;           // Loss ratio between original data and SemantiPack lossy compression
+    optional bool UseFFTCompression = 28;               // Whether FFT compression should be used during SemantiPack compression
 
     // Type related
     optional ItemType itemType = 30;        // Semantic type of data
@@ -253,6 +256,8 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional int32 dbpaDateTimeFormatOffset = 73;               // Timezone offset value for date/time used during compression
     optional bool dbpaDateTimeFormatUtcIsUTCinRFC3339 = 74;     // Whether to represent UTC±0 timezone as UTC in RFC3339-compliant date/time format
     optional bool dbpaDateTimeFormatUtcIsZinRFC3339 = 75;       // Whether to represent UTC±0 timezone as Z in RFC3339-compliant date/time format
+    repeated int32 dbpaTimestampRepresentingColumns = 76;       // List of column IDs when data field is of datetime type
+    optional string dbpaTimestampUnitText = 77;                 // Value representing the time unit of timestamp when data field is of datetime type
 
     // Numeric range etc
     optional string RangeMin = 80;          // Minimum value of numeric range
@@ -262,9 +267,10 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional string BaseIncrement = 84;     // Most frequent value of differences when data field is monotonically increasing
     optional bool UseBaseIncrement = 85;    // Whether the most frequent value of differences should be used for compression when data field is monotonically increasing
 
-    // Value samples and enumerated values
-    repeated string valueSamples = 90;  // Used to pass value samples to LLM API during compression (non-enum)
-    repeated string enumList = 91;      // Used to pass list of enum values to LLM API during compression
+    // Value samples,  enumerated values, and structure path
+    repeated string valueSamples = 90;      // Used to pass value samples to LLM API during compression (non-enum)
+    repeated string enumList = 91;          // Used to pass list of enum values to LLM API during compression
+    repeated string structurePath = 92;     // Hierarchical path information of nodes in the data structure where the data field exists
 }
 
 enum ItemType {       // Enum representing semantic type of data (maximum string length for STRING is not represented)
