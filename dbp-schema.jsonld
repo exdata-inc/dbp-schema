@@ -1286,7 +1286,7 @@
           "@id": "dbp:PrecisionBytes"
         },
         {
-          "@id": "dbp:DecimalPlaces"
+          "@id": "dbp:decimalPlaces"
         },
         {
           "@id": "dbp:baseIncrement"
@@ -1682,10 +1682,10 @@
       }
     },
     {
-      "@id": "dbp:DecimalPlaces",
+      "@id": "dbp:decimalPlaces",
       "@type": "rdf:Property",
       "rdfs:comment": "How many decimal places to retain when compressing float values",
-      "rdfs:label": "DecimalPlaces",
+      "rdfs:label": "decimalPlaces",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },

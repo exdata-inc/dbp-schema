@@ -156,7 +156,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:dbpaCompressColumnID": 3,
           "dbp:RangeMin": "35.15300000",
           "dbp:RangeMax": "35.15999999",
-          "dbp:DecimalPlaces:": 6,
+          "dbp:decimalPlaces:": 6,
           "dbp:PrecisionBytes": 2
         },
         {
@@ -177,7 +177,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:dbpaCompressColumnID": 4,
           "dbp:RangeMin": "136.9700000",
           "dbp:RangeMax": "136.9899999",
-          "dbp:DecimalPlaces:": 5,
+          "dbp:decimalPlaces:": 5,
           "dbp:PrecisionBytes": 2
         }
       ]
@@ -417,7 +417,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:dbpaCompressColumnID": 0,
           "dbp:RangeMin": "35.153000000",
           "dbp:RangeMax": "35.159999999",
-          "dbp:DecimalPlaces:": 6,
+          "dbp:decimalPlaces:": 6,
           "dbp:PrecisionBytes": 2
         },
         {
@@ -438,7 +438,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:dbpaCompressColumnID": 1,
           "dbp:RangeMin": "136.97000000",
           "dbp:RangeMax": "136.98999999",
-          "dbp:DecimalPlaces:": 7,
+          "dbp:decimalPlaces:": 7,
           "dbp:PrecisionBytes": 2
         }
       ]
