@@ -101,6 +101,8 @@ class DataSchema:
     def addChildClass(self, rangeInclude):
         if rangeInclude == 'string':
             t = {'@id': 'schema:Text'}
+        elif rangeInclude == 'float':
+            t = {'@id': 'schema:Float'}
         elif rangeInclude == 'google.protobuf.Struct':
             t = {'@id': 'schema:CreativeWork'}
         elif rangeInclude == 'google.protobuf.Timestamp':

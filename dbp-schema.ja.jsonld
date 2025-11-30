@@ -1521,7 +1521,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:float"
+        "@id": "schema:Float"
       }
     },
     {
