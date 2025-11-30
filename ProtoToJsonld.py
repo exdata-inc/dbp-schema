@@ -21,6 +21,14 @@ for elm in schemalist:
     else:
         schemasubClassOfs.append({'@id': 'schema:Thing'})
 
+PROTO_TYPE_TO_SCHEMA_TYPE = {
+    'string': 'schema:Text',
+    'bytes': None,
+    'float': 'schema:Float',
+    'google.protobuf.Struct': 'schema:CreativeWork',
+    'google.protobuf.Timestamp': 'schema:DateTime'
+}
+
 RDFS_INFOS = [
     {"id": "rdfs:comment", "comment": "an instance of rdf:Property that may be used to provide a human-readable description of a resource."},
     {"id": "rdfs:label", "comment": "an instance of rdf:Property that may be used to provide a human-readable version of a resource's name."},
@@ -99,16 +107,12 @@ class DataSchema:
         self.domainIncludes.append(t)
 
     def addChildClass(self, rangeInclude):
-        if rangeInclude == 'string':
-            t = {'@id': 'schema:Text'}
-        elif rangeInclude == 'float':
-            t = {'@id': 'schema:Float'}
-        elif rangeInclude == 'google.protobuf.Struct':
-            t = {'@id': 'schema:CreativeWork'}
-        elif rangeInclude == 'google.protobuf.Timestamp':
-            t = {'@id': 'schema:DateTime'}
-        else:
-            t = {'@id': DbpOrSchema(rangeInclude)}
+        for proto_type, schema_type in PROTO_TYPE_TO_SCHEMA_TYPE.items():
+            if rangeInclude == proto_type and schema_type is not None:
+                t = {'@id': schema_type}
+                self.rangeIncludes.append(t)
+                return
+        t = {'@id': DbpOrSchema(rangeInclude)}
         self.rangeIncludes.append(t)
 
     def getJsonld(self):
@@ -232,7 +236,7 @@ def ParseProto(protofile):
                             break
                     if flag3 == 0:
                         # bool, int32 は↓に加えなくていい？ dbp:bool, dbp:int32 が出来上がってしまってる
-                        if line[1] not in ['string', 'bytes', 'float', 'google.protobuf.Struct', 'google.protobuf.Timestamp'] + IGNORE_MESSAGES:
+                        if line[1] not in list(PROTO_TYPE_TO_SCHEMA_TYPE.keys()) + IGNORE_MESSAGES:
                             if line[1] == tmp_class.name:
                                 tmp_class.addParentClass(line[2])
                             else:
