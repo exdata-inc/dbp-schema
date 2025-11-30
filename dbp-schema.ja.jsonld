@@ -990,68 +990,8 @@
         "@id": "dbp:RealWorldDataFieldProfile"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
-    },
-    {
-      "@id": "dbp:bool",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "bool",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:jsonHasIndent"
-        },
-        {
-          "@id": "dbp:csvHasHeader"
-        },
-        {
-          "@id": "dbp:csvVariableColumnsStripTrailingCommas"
-        },
-        {
-          "@id": "dbp:dbpaCompress"
-        },
-        {
-          "@id": "dbp:StripTrailingZeros"
-        },
-        {
-          "@id": "dbp:UseRunLength"
-        },
-        {
-          "@id": "dbp:UseFFTCompression"
-        },
-        {
-          "@id": "dbp:isMostlyConstant"
-        },
-        {
-          "@id": "dbp:isEnumValue"
-        },
-        {
-          "@id": "dbp:isMostlyIncremental"
-        },
-        {
-          "@id": "dbp:isNullable"
-        },
-        {
-          "@id": "dbp:isOptional"
-        },
-        {
-          "@id": "dbp:dbpaDateTimeFormatUtcIsUTCinRFC3339"
-        },
-        {
-          "@id": "dbp:dbpaDateTimeFormatUtcIsZinRFC3339"
-        },
-        {
-          "@id": "dbp:UseBaseIncrement"
-        },
-        {
-          "@id": "dbp:enabled"
-        }
-      ],
-      "schema:rangeIncludes": []
     },
     {
       "@id": "dbp:jsonIndentCharacter",
@@ -1074,7 +1014,7 @@
         "@id": "dbp:RealWorldDataFieldProfile"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1110,7 +1050,7 @@
         "@id": "dbp:RealWorldDataFieldProfile"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1161,59 +1101,8 @@
         "@id": "dbp:DbpClass"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
-    },
-    {
-      "@id": "dbp:int32",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "int32",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": [
-        {
-          "@id": "dbp:dbpaCompressRowID"
-        },
-        {
-          "@id": "dbp:dbpaCompressListID"
-        },
-        {
-          "@id": "dbp:dbpaChildrenLists"
-        },
-        {
-          "@id": "dbp:dbpaCompressParentListId"
-        },
-        {
-          "@id": "dbp:dbpaCompressColumnId"
-        },
-        {
-          "@id": "dbp:dbpaDiffNumBytes"
-        },
-        {
-          "@id": "dbp:dbpaFirstNumBytes"
-        },
-        {
-          "@id": "dbp:dbpaDatetimeDiffBytes"
-        },
-        {
-          "@id": "dbp:dbpaDateTimeFormatOffset"
-        },
-        {
-          "@id": "dbp:dbpaTimestampRepresentingColumns"
-        },
-        {
-          "@id": "dbp:PrecisionBytes"
-        },
-        {
-          "@id": "dbp:DecimalPlaces"
-        },
-        {
-          "@id": "dbp:transmissionSpeed"
-        }
-      ],
-      "schema:rangeIncludes": []
     },
     {
       "@id": "dbp:DbpList",
@@ -1257,7 +1146,7 @@
         "@id": "dbp:DbpList"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1269,7 +1158,7 @@
         "@id": "dbp:DbpList"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1281,7 +1170,7 @@
         "@id": "dbp:DbpList"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1437,7 +1326,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1449,7 +1338,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1461,7 +1350,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1473,7 +1362,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1485,7 +1374,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1497,7 +1386,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1533,7 +1422,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1600,7 +1489,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1612,7 +1501,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1624,7 +1513,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1636,7 +1525,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1648,7 +1537,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1684,7 +1573,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1696,7 +1585,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1708,7 +1597,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1720,7 +1609,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1732,7 +1621,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1780,7 +1669,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1792,7 +1681,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -1816,7 +1705,7 @@
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
@@ -1864,7 +1753,7 @@
         "@id": "dbp:RealWorldDataStoringInfo"
       },
       "schema:rangeIncludes": {
-        "@id": "dbp:int32"
+        "@id": "schema:Integer"
       }
     },
     {
@@ -2414,7 +2303,7 @@
         }
       ],
       "schema:rangeIncludes": {
-        "@id": "dbp:bool"
+        "@id": "schema:Boolean"
       }
     },
     {
