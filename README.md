@@ -96,7 +96,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class1"
           },
-          "dbp:VariableCharacteristicEnumeration": "Interval",
+          "dbp:variableScaleType": "Interval",
           "dbp:dbpaDateTimeFormat": "%Y-%m-%dT%H:%M:%S",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 0
@@ -113,7 +113,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class1"
           },
-          "dbp:VariableCharacteristicEnumeration": "Nominal",
+          "dbp:variableScaleType": "Nominal",
           "dbp:isEnumValue": false,
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 1
@@ -130,7 +130,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class1"
           },
-          "dbp:VariableCharacteristicEnumeration": "Ordinal",
+          "dbp:variableScaleType": "Ordinal",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 2,
           "dbp:RangeMin": "100",
@@ -151,7 +151,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class1"
           },
-          "dbp:VariableCharacteristicEnumeration": "Proportional",
+          "dbp:variableScaleType": "Proportional",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 3,
           "dbp:RangeMin": "35.15300000",
@@ -172,7 +172,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class1"
           },
-          "dbp:VariableCharacteristicEnumeration": "Interval",
+          "dbp:variableScaleType": "Interval",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 4,
           "dbp:RangeMin": "136.9700000",
@@ -295,7 +295,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class1"
           },
-          "dbp:VariableCharacteristicEnumeration": "Interval",
+          "dbp:variableScaleType": "Interval",
           "dbp:dbpaDateTimeFormat": "%Y-%m-%dT%H:%M:%S",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 0
@@ -312,7 +312,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class1"
           },
-          "dbp:VariableCharacteristicEnumeration": "Interval",
+          "dbp:variableScaleType": "Interval",
           "dbp:dbpaDateTimeFormat": "%Y-%m-%dT%H:%M:%S",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 1
@@ -329,7 +329,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class1"
           },
-          "dbp:VariableCharacteristicEnumeration": "Nominal",
+          "dbp:variableScaleType": "Nominal",
           "dbp:isEnumValue": false,
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 2
@@ -346,7 +346,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class1"
           },
-          "dbp:VariableCharacteristicEnumeration": "Nominal",
+          "dbp:variableScaleType": "Nominal",
           "dbp:isEnumValue": true,
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 3
@@ -412,7 +412,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class2"
           },
-          "dbp:VariableCharacteristicEnumeration": "Proportional",
+          "dbp:variableScaleType": "Proportional",
           "dbp:dbpaCompressParentListID": 1,
           "dbp:dbpaCompressColumnID": 0,
           "dbp:RangeMin": "35.153000000",
@@ -433,7 +433,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "schema:domainIncludes": {
             "@id": "class2"
           },
-          "dbp:VariableCharacteristicEnumeration": "Interval",
+          "dbp:variableScaleType": "Interval",
           "dbp:dbpaCompressParentListID": 1,
           "dbp:dbpaCompressColumnID": 1,
           "dbp:RangeMin": "136.97000000",

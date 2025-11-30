@@ -645,9 +645,6 @@
         },
         {
           "@id": "dbp:outputCharacteristic"
-        },
-        {
-          "@id": "dbp:RealWorldDataStructureProperty"
         }
       ],
       "schema:rangeIncludes": []
@@ -1238,7 +1235,7 @@
           "@id": "schema:unitText"
         },
         {
-          "@id": "dbp:VariableCharacteristicEnumeration"
+          "@id": "dbp:variableScaleType"
         },
         {
           "@id": "dbp:isMostlyConstant"
@@ -1466,6 +1463,31 @@
       "schema:rangeIncludes": {
         "@id": "dbp:ItemType"
       }
+    },
+    {
+      "@id": "dbp:variableScaleType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Enum value representing the scale of the variable",
+      "rdfs:label": "variableScaleType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:VariableScaleTypeEnumeration"
+      }
+    },
+    {
+      "@id": "dbp:VariableScaleTypeEnumeration",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "VariableScaleTypeEnumeration",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": {
+        "@id": "dbp:variableScaleType"
+      },
+      "schema:rangeIncludes": []
     },
     {
       "@id": "dbp:isMostlyConstant",

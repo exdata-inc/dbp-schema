@@ -240,7 +240,7 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional google.protobuf.StringValue unitText = 40;     // Value representing the unit of the variable (unece.org Rec 20 value)
 
     // Variable characteristics
-    optional VariableCharacteristic VariableCharacteristicEnumeration = 50;  // Enum value representing the scale of the variable
+    optional VariableScaleTypeEnumeration variableScaleType = 50;   // Enum value representing the scale of the variable
 
     // Boolean metadata
     optional bool isMostlyConstant = 60;        // Whether the data field is mostly constant
@@ -283,7 +283,7 @@ enum ItemType {       // Enum representing semantic type of data (maximum string
     NULL = 7;
 }
 
-enum VariableCharacteristic {    // Enum representing variable scale
+enum VariableScaleTypeEnumeration {     // Enum representing variable scale
     NOMINAL = 0;
     ORDINAL = 1;
     INTERVAL = 2;
