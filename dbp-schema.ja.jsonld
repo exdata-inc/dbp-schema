@@ -1292,7 +1292,7 @@
           "@id": "dbp:baseIncrement"
         },
         {
-          "@id": "dbp:UseBaseIncrement"
+          "@id": "dbp:useBaseIncrement"
         },
         {
           "@id": "dbp:valueSamples"
@@ -1706,10 +1706,10 @@
       }
     },
     {
-      "@id": "dbp:UseBaseIncrement",
+      "@id": "dbp:useBaseIncrement",
       "@type": "rdf:Property",
       "rdfs:comment": "データフィールドが単調増加な場合に、差分の最頻値を圧縮に使用すべきかどうか",
-      "rdfs:label": "UseBaseIncrement",
+      "rdfs:label": "useBaseIncrement",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },

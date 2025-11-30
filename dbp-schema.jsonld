@@ -1292,7 +1292,7 @@
           "@id": "dbp:baseIncrement"
         },
         {
-          "@id": "dbp:UseBaseIncrement"
+          "@id": "dbp:useBaseIncrement"
         },
         {
           "@id": "dbp:valueSamples"
@@ -1706,10 +1706,10 @@
       }
     },
     {
-      "@id": "dbp:UseBaseIncrement",
+      "@id": "dbp:useBaseIncrement",
       "@type": "rdf:Property",
       "rdfs:comment": "Whether the most frequent value of differences should be used for compression when data field is monotonically increasing",
-      "rdfs:label": "UseBaseIncrement",
+      "rdfs:label": "useBaseIncrement",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },

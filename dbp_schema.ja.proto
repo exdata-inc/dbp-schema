@@ -265,7 +265,7 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional int32 precisionBytes = 82;     // 圧縮時に数値の表現に使用するバイト数
     optional int32 decimalPlaces = 83;      // Float 値の圧縮時に小数点以下何桁までを保持するか
     optional string baseIncrement = 84;     // データフィールドが単調増加な場合の、差分の最頻値
-    optional bool UseBaseIncrement = 85;    // データフィールドが単調増加な場合に、差分の最頻値を圧縮に使用すべきかどうか
+    optional bool useBaseIncrement = 85;    // データフィールドが単調増加な場合に、差分の最頻値を圧縮に使用すべきかどうか
 
     // 値のサンプル・列挙値・構造パス
     repeated string valueSamples = 90;      // 圧縮時に LLM API に値のサンプルを渡すときに使用 (enum 以外)

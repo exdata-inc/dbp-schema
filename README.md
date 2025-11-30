@@ -136,7 +136,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:rangeMin": "100",
           "dbp:rangeMax": "999999",
           "dbp:baseIncrement": 1,
-          "dbp:UseBaseIncrement": true
+          "dbp:useBaseIncrement": true
         },
         {
           "@id": "latitude",
