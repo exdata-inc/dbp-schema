@@ -260,8 +260,8 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional string dbpaTimestampUnitText = 77;                 // データフィールドが日付時刻型な場合の、タイムスタンプの時間単位を表す値
 
     // 数値レンジ等
-    optional string RangeMin = 80;          // 数値範囲の最小値
-    optional string RangeMax = 81;          // 数値範囲の最大値
+    optional string rangeMin = 80;          // 数値範囲の最小値
+    optional string rangeMax = 81;          // 数値範囲の最大値
     optional int32 precisionBytes = 82;     // 圧縮時に数値の表現に使用するバイト数
     optional int32 decimalPlaces = 83;      // Float 値の圧縮時に小数点以下何桁までを保持するか
     optional string baseIncrement = 84;     // データフィールドが単調増加な場合の、差分の最頻値

@@ -133,8 +133,8 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:variableScaleType": "Ordinal",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 2,
-          "dbp:RangeMin": "100",
-          "dbp:RangeMax": "999999",
+          "dbp:rangeMin": "100",
+          "dbp:rangeMax": "999999",
           "dbp:baseIncrement": 1,
           "dbp:UseBaseIncrement": true
         },
@@ -154,8 +154,8 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:variableScaleType": "Proportional",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 3,
-          "dbp:RangeMin": "35.15300000",
-          "dbp:RangeMax": "35.15999999",
+          "dbp:rangeMin": "35.15300000",
+          "dbp:rangeMax": "35.15999999",
           "dbp:decimalPlaces:": 6,
           "dbp:precisionBytes": 2
         },
@@ -175,8 +175,8 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:variableScaleType": "Interval",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 4,
-          "dbp:RangeMin": "136.9700000",
-          "dbp:RangeMax": "136.9899999",
+          "dbp:rangeMin": "136.9700000",
+          "dbp:rangeMax": "136.9899999",
           "dbp:decimalPlaces:": 5,
           "dbp:precisionBytes": 2
         }
@@ -415,8 +415,8 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:variableScaleType": "Proportional",
           "dbp:dbpaCompressParentListID": 1,
           "dbp:dbpaCompressColumnID": 0,
-          "dbp:RangeMin": "35.153000000",
-          "dbp:RangeMax": "35.159999999",
+          "dbp:rangeMin": "35.153000000",
+          "dbp:rangeMax": "35.159999999",
           "dbp:decimalPlaces:": 6,
           "dbp:precisionBytes": 2
         },
@@ -436,8 +436,8 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:variableScaleType": "Interval",
           "dbp:dbpaCompressParentListID": 1,
           "dbp:dbpaCompressColumnID": 1,
-          "dbp:RangeMin": "136.97000000",
-          "dbp:RangeMax": "136.98999999",
+          "dbp:rangeMin": "136.97000000",
+          "dbp:rangeMax": "136.98999999",
           "dbp:decimalPlaces:": 7,
           "dbp:precisionBytes": 2
         }

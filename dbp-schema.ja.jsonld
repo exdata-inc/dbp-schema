@@ -1277,10 +1277,10 @@
           "@id": "dbp:dbpaTimestampUnitText"
         },
         {
-          "@id": "dbp:RangeMin"
+          "@id": "dbp:rangeMin"
         },
         {
-          "@id": "dbp:RangeMax"
+          "@id": "dbp:rangeMax"
         },
         {
           "@id": "dbp:precisionBytes"
@@ -1646,10 +1646,10 @@
       }
     },
     {
-      "@id": "dbp:RangeMin",
+      "@id": "dbp:rangeMin",
       "@type": "rdf:Property",
       "rdfs:comment": "数値範囲の最小値",
-      "rdfs:label": "RangeMin",
+      "rdfs:label": "rangeMin",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1658,10 +1658,10 @@
       }
     },
     {
-      "@id": "dbp:RangeMax",
+      "@id": "dbp:rangeMax",
       "@type": "rdf:Property",
       "rdfs:comment": "数値範囲の最大値",
-      "rdfs:label": "RangeMax",
+      "rdfs:label": "rangeMax",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
