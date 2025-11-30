@@ -264,7 +264,7 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional string RangeMax = 81;          // 数値範囲の最大値
     optional int32 PrecisionBytes = 82;     // 圧縮時に数値の表現に使用するバイト数
     optional int32 DecimalPlaces = 83;      // Float 値の圧縮時に小数点以下何桁までを保持するか
-    optional string BaseIncrement = 84;     // データフィールドが単調増加な場合の、差分の最頻値
+    optional string baseIncrement = 84;     // データフィールドが単調増加な場合の、差分の最頻値
     optional bool UseBaseIncrement = 85;    // データフィールドが単調増加な場合に、差分の最頻値を圧縮に使用すべきかどうか
 
     // 値のサンプル・列挙値・構造パス

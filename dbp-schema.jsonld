@@ -1289,7 +1289,7 @@
           "@id": "dbp:DecimalPlaces"
         },
         {
-          "@id": "dbp:BaseIncrement"
+          "@id": "dbp:baseIncrement"
         },
         {
           "@id": "dbp:UseBaseIncrement"
@@ -1694,10 +1694,10 @@
       }
     },
     {
-      "@id": "dbp:BaseIncrement",
+      "@id": "dbp:baseIncrement",
       "@type": "rdf:Property",
       "rdfs:comment": "Most frequent value of differences when data field is monotonically increasing",
-      "rdfs:label": "BaseIncrement",
+      "rdfs:label": "baseIncrement",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },

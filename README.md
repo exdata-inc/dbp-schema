@@ -135,7 +135,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "dbp:dbpaCompressColumnID": 2,
           "dbp:RangeMin": "100",
           "dbp:RangeMax": "999999",
-          "dbp:BaseIncrement": 1,
+          "dbp:baseIncrement": 1,
           "dbp:UseBaseIncrement": true
         },
         {

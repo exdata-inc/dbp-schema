@@ -1289,7 +1289,7 @@
           "@id": "dbp:DecimalPlaces"
         },
         {
-          "@id": "dbp:BaseIncrement"
+          "@id": "dbp:baseIncrement"
         },
         {
           "@id": "dbp:UseBaseIncrement"
@@ -1694,10 +1694,10 @@
       }
     },
     {
-      "@id": "dbp:BaseIncrement",
+      "@id": "dbp:baseIncrement",
       "@type": "rdf:Property",
       "rdfs:comment": "データフィールドが単調増加な場合の、差分の最頻値",
-      "rdfs:label": "BaseIncrement",
+      "rdfs:label": "baseIncrement",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },

@@ -264,7 +264,7 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional string RangeMax = 81;          // Maximum value of numeric range
     optional int32 PrecisionBytes = 82;     // Number of bytes used for numeric representation during compression
     optional int32 DecimalPlaces = 83;      // How many decimal places to retain when compressing float values
-    optional string BaseIncrement = 84;     // Most frequent value of differences when data field is monotonically increasing
+    optional string baseIncrement = 84;     // Most frequent value of differences when data field is monotonically increasing
     optional bool UseBaseIncrement = 85;    // Whether the most frequent value of differences should be used for compression when data field is monotonically increasing
 
     // Value samples,  enumerated values, and structure path
