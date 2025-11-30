@@ -28,7 +28,8 @@ PROTO_TYPE_TO_SCHEMA_TYPE = {
     'bytes': None,
     'float': 'schema:Float',
     'google.protobuf.Struct': 'schema:CreativeWork',
-    'google.protobuf.Timestamp': 'schema:DateTime'
+    'google.protobuf.Timestamp': 'schema:DateTime',
+    'google.protobuf.StringValue': 'schema:Text',
 }
 
 RDFS_INFOS = [

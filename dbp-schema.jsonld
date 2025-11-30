@@ -1468,19 +1468,6 @@
       }
     },
     {
-      "@id": "dbp:google.protobuf.StringValue",
-      "@type": "rdfs:Class",
-      "rdfs:comment": "",
-      "rdfs:label": "google.protobuf.StringValue",
-      "rdfs:subClassOf": {
-        "@id": "schema:Thing"
-      },
-      "schema:domainIncludes": {
-        "@id": "schema:unitText"
-      },
-      "schema:rangeIncludes": []
-    },
-    {
       "@id": "dbp:isMostlyConstant",
       "@type": "rdf:Property",
       "rdfs:comment": "Whether the data field is mostly constant",
