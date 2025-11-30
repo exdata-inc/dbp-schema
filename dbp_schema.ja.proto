@@ -227,7 +227,7 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional int32 dbpaDiffNumBytes = 22;               // 差分圧縮時に、差分の値を表現するために使うバイト数
     optional int32 dbpaFirstNumBytes = 23;              // 差分圧縮時に、最初の値を表現するために使うバイト数
     optional bool stripTrailingZeros = 24;              // 小数の末尾のゼロを削るかどうか
-    optional bool UseRunLength = 25;                    // Run Length 圧縮を使うべきかどうか
+    optional bool useRunLength = 25;                    // Run Length 圧縮を使うべきかどうか
     optional string dbpaCompressionForceLayer = 26;     // SemantiPack 圧縮時に強制的に使用する圧縮レイヤー
     optional float lossyCompressionRate = 27;           // SemantiPack ロスあり圧縮の元のデータとの損失割合
     optional bool useFFTCompression = 28;               // SemantiPack 圧縮時に FFT 圧縮を使うべきかどうか

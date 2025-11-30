@@ -1214,7 +1214,7 @@
           "@id": "dbp:stripTrailingZeros"
         },
         {
-          "@id": "dbp:UseRunLength"
+          "@id": "dbp:useRunLength"
         },
         {
           "@id": "dbp:dbpaCompressionForceLayer"
@@ -1375,10 +1375,10 @@
       }
     },
     {
-      "@id": "dbp:UseRunLength",
+      "@id": "dbp:useRunLength",
       "@type": "rdf:Property",
       "rdfs:comment": "Whether run-length compression should be used",
-      "rdfs:label": "UseRunLength",
+      "rdfs:label": "useRunLength",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
