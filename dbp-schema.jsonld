@@ -1223,7 +1223,7 @@
           "@id": "dbp:lossyCompressionRate"
         },
         {
-          "@id": "dbp:UseFFTCompression"
+          "@id": "dbp:useFFTCompression"
         },
         {
           "@id": "dbp:itemType"
@@ -1411,10 +1411,10 @@
       }
     },
     {
-      "@id": "dbp:UseFFTCompression",
+      "@id": "dbp:useFFTCompression",
       "@type": "rdf:Property",
       "rdfs:comment": "Whether FFT compression should be used during SemantiPack compression",
-      "rdfs:label": "UseFFTCompression",
+      "rdfs:label": "useFFTCompression",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },

@@ -230,7 +230,7 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional bool UseRunLength = 25;                    // Whether run-length compression should be used
     optional string dbpaCompressionForceLayer = 26;     // Compression layer to forcibly use during SemantiPack compression
     optional float lossyCompressionRate = 27;           // Loss ratio between original data and SemantiPack lossy compression
-    optional bool UseFFTCompression = 28;               // Whether FFT compression should be used during SemantiPack compression
+    optional bool useFFTCompression = 28;               // Whether FFT compression should be used during SemantiPack compression
 
     // Type related
     optional ItemType itemType = 30;        // Semantic type of data

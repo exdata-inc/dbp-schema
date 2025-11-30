@@ -230,7 +230,7 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional bool UseRunLength = 25;                    // Run Length 圧縮を使うべきかどうか
     optional string dbpaCompressionForceLayer = 26;     // SemantiPack 圧縮時に強制的に使用する圧縮レイヤー
     optional float lossyCompressionRate = 27;           // SemantiPack ロスあり圧縮の元のデータとの損失割合
-    optional bool UseFFTCompression = 28;               // SemantiPack 圧縮時に FFT 圧縮を使うべきかどうか
+    optional bool useFFTCompression = 28;               // SemantiPack 圧縮時に FFT 圧縮を使うべきかどうか
 
     // 型関連
     optional ItemType itemType = 30;        // データのセマンティックな型
