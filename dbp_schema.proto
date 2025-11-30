@@ -226,7 +226,7 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional int32 dbpaCompressColumnId = 21;           // Column structure ID during SemantiPack compression
     optional int32 dbpaDiffNumBytes = 22;               // Number of bytes used to represent differential values during differential compression
     optional int32 dbpaFirstNumBytes = 23;              // Number of bytes used to represent the first value during differential compression
-    optional bool StripTrailingZeros = 24;              // Whether to strip trailing zeros in decimals
+    optional bool stripTrailingZeros = 24;              // Whether to strip trailing zeros in decimals
     optional bool UseRunLength = 25;                    // Whether run-length compression should be used
     optional string dbpaCompressionForceLayer = 26;     // Compression layer to forcibly use during SemantiPack compression
     optional float lossyCompressionRate = 27;           // Loss ratio between original data and SemantiPack lossy compression

@@ -1211,7 +1211,7 @@
           "@id": "dbp:dbpaFirstNumBytes"
         },
         {
-          "@id": "dbp:StripTrailingZeros"
+          "@id": "dbp:stripTrailingZeros"
         },
         {
           "@id": "dbp:UseRunLength"
@@ -1363,10 +1363,10 @@
       }
     },
     {
-      "@id": "dbp:StripTrailingZeros",
+      "@id": "dbp:stripTrailingZeros",
       "@type": "rdf:Property",
       "rdfs:comment": "小数の末尾のゼロを削るかどうか",
-      "rdfs:label": "StripTrailingZeros",
+      "rdfs:label": "stripTrailingZeros",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
