@@ -1220,7 +1220,7 @@
           "@id": "dbp:dbpaCompressionForceLayer"
         },
         {
-          "@id": "dbp:LossyCompressionRate"
+          "@id": "dbp:lossyCompressionRate"
         },
         {
           "@id": "dbp:UseFFTCompression"
@@ -1399,10 +1399,10 @@
       }
     },
     {
-      "@id": "dbp:LossyCompressionRate",
+      "@id": "dbp:lossyCompressionRate",
       "@type": "rdf:Property",
       "rdfs:comment": "SemantiPack ロスあり圧縮の元のデータとの損失割合",
-      "rdfs:label": "LossyCompressionRate",
+      "rdfs:label": "lossyCompressionRate",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
