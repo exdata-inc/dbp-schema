@@ -1283,7 +1283,7 @@
           "@id": "dbp:RangeMax"
         },
         {
-          "@id": "dbp:PrecisionBytes"
+          "@id": "dbp:precisionBytes"
         },
         {
           "@id": "dbp:decimalPlaces"
@@ -1670,10 +1670,10 @@
       }
     },
     {
-      "@id": "dbp:PrecisionBytes",
+      "@id": "dbp:precisionBytes",
       "@type": "rdf:Property",
       "rdfs:comment": "Number of bytes used for numeric representation during compression",
-      "rdfs:label": "PrecisionBytes",
+      "rdfs:label": "precisionBytes",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
