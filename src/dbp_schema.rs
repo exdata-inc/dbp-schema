@@ -253,24 +253,74 @@ pub struct Thing {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataBrewEvent {}
-/// JSON-LD representing the field profile of a real-world data
+/// JSON-LD representing a real-world data field profile
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealWorldDataFieldProfile {
+    /// JSON-LD basic
     #[prost(string, optional, tag = "1")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "2")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(string, optional, tag = "4")]
-    pub encoding_format: ::core::option::Option<::prost::alloc::string::String>,
+    /// structure as JSON-LD schema
+    ///
     /// JSON-LD schema (including @graph)
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag = "10")]
     pub structure: ::core::option::Option<RealWorldDataStructureGraph>,
-    #[prost(string, optional, tag = "6")]
+    /// Original data format related
+    ///
+    /// schema.org's schema:encodingFormat (file MIME type)
+    #[prost(string, optional, tag = "20")]
+    pub encoding_format: ::core::option::Option<::prost::alloc::string::String>,
+    /// Newline character in the file
+    #[prost(string, optional, tag = "21")]
+    pub new_line_character: ::core::option::Option<::prost::alloc::string::String>,
+    /// Character encoding in the file
+    #[prost(string, optional, tag = "22")]
+    pub text_encoding: ::core::option::Option<::prost::alloc::string::String>,
+    /// Compression related
+    ///
+    /// SemantiPack version used for metadata generation
+    #[prost(string, optional, tag = "30")]
+    pub rwd_profile_generator_version: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// SemantiPack version used for compression
+    #[prost(string, optional, tag = "31")]
+    pub semanti_pack_version: ::core::option::Option<::prost::alloc::string::String>,
+    /// JSON related
+    ///
+    /// Whether JSON file has indentation
+    #[prost(bool, optional, tag = "40")]
+    pub json_has_indent: ::core::option::Option<bool>,
+    /// Indent character string for JSON file with indentation
+    #[prost(string, optional, tag = "41")]
+    pub json_indent_character: ::core::option::Option<::prost::alloc::string::String>,
+    /// CSV related
+    ///
+    /// Whether CSV file has header
+    #[prost(bool, optional, tag = "50")]
+    pub csv_has_header: ::core::option::Option<bool>,
+    /// CSV quoting format (usage of ")
+    #[prost(string, optional, tag = "51")]
+    pub csv_quoting: ::core::option::Option<::prost::alloc::string::String>,
+    /// CSV separator character
+    #[prost(string, optional, tag = "52")]
+    pub csv_separator: ::core::option::Option<::prost::alloc::string::String>,
+    /// Whether trailing columns can be omitted per row in CSV (when trailing column data is empty)
+    #[prost(bool, optional, tag = "53")]
+    pub csv_variable_columns_strip_trailing_commas: ::core::option::Option<bool>,
+    /// Others
+    ///
+    /// GraphQL schema
+    #[prost(string, optional, tag = "60")]
     pub graphql_schema: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(message, repeated, tag = "7")]
+    /// Date and time when structural information was created
+    #[prost(string, optional, tag = "70")]
+    pub date_created: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(message, repeated, tag = "80")]
     pub tags: ::prost::alloc::vec::Vec<RealWorldDataTags>,
 }
 /// JSON-LD representing the structure of real-world data
@@ -284,10 +334,226 @@ pub struct RealWorldDataStructureGraph {
     #[prost(string, optional, tag = "3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
     /// JSON-LD schema (@graph)
-    #[prost(message, optional, tag = "4")]
-    pub at_graph: ::core::option::Option<::prost_types::Struct>,
+    #[prost(message, repeated, tag = "4")]
+    pub at_graph: ::prost::alloc::vec::Vec<GraphNode>,
     #[prost(message, repeated, tag = "5")]
     pub tags: ::prost::alloc::vec::Vec<RealWorldDataTags>,
+}
+/// JSON-LD schema (contents of @graph)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GraphNode {
+    #[prost(oneof = "graph_node::Node", tags = "1, 2, 3")]
+    pub node: ::core::option::Option<graph_node::Node>,
+}
+/// Nested message and enum types in `GraphNode`.
+pub mod graph_node {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Node {
+        #[prost(message, tag = "1")]
+        ClassNode(super::DbpClass),
+        #[prost(message, tag = "2")]
+        ListNode(super::DbpList),
+        #[prost(message, tag = "3")]
+        PropertyNode(super::RealWorldDataStructureProperty),
+    }
+}
+/// Node referencing schema.org's @id
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IdRef {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Extension of rdfs:Class (subclass of: "rdfs:Class")
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DbpClass {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// rdfs:label
+    #[prost(string, optional, tag = "2")]
+    pub label: ::core::option::Option<::prost::alloc::string::String>,
+    /// Row structure ID when compressing with SemantiPack (matches list ID)
+    #[prost(int32, optional, tag = "3")]
+    pub dbpa_compress_row_id: ::core::option::Option<i32>,
+    /// schema:domainIncludes
+    #[prost(message, repeated, tag = "4")]
+    pub domain_includes: ::prost::alloc::vec::Vec<IdRef>,
+    /// schema:rangeIncludes
+    #[prost(message, repeated, tag = "5")]
+    pub range_includes: ::prost::alloc::vec::Vec<IdRef>,
+}
+/// Extension of rdf:List (subclass of: "rdf:List")
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DbpList {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// rdfs:label
+    #[prost(string, optional, tag = "2")]
+    pub label: ::core::option::Option<::prost::alloc::string::String>,
+    /// Whether to compress the list structure with SemantiPack
+    #[prost(bool, optional, tag = "3")]
+    pub dbpa_compress: ::core::option::Option<bool>,
+    /// List structure ID when compressing with SemantiPack (matches row ID)
+    #[prost(int32, optional, tag = "4")]
+    pub dbpa_compress_list_id: ::core::option::Option<i32>,
+    /// List of child list IDs when child lists exist during SemantiPack compression
+    #[prost(int32, repeated, tag = "5")]
+    pub dbpa_children_lists: ::prost::alloc::vec::Vec<i32>,
+    /// schema:domainIncludes
+    #[prost(message, repeated, tag = "6")]
+    pub domain_includes: ::prost::alloc::vec::Vec<IdRef>,
+    /// schema:rangeIncludes
+    #[prost(message, repeated, tag = "7")]
+    pub range_includes: ::prost::alloc::vec::Vec<IdRef>,
+}
+/// Class for describing data metadata in JSON-LD
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RealWorldDataStructureProperty {
+    /// JSON-LD basic
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// rdfs:label
+    #[prost(string, optional, tag = "2")]
+    pub label: ::core::option::Option<::prost::alloc::string::String>,
+    /// rdfs:comment Comment describing the contents of data field
+    #[prost(string, optional, tag = "3")]
+    pub comment: ::core::option::Option<::prost::alloc::string::String>,
+    /// rdfs:subPropertyOf Corresponding item on schema.org
+    #[prost(string, optional, tag = "4")]
+    pub rdfs_sub_property_of: ::core::option::Option<::prost::alloc::string::String>,
+    /// Relations (domain / range)
+    ///
+    /// schema:domainIncludes
+    #[prost(message, repeated, tag = "10")]
+    pub domain_includes: ::prost::alloc::vec::Vec<IdRef>,
+    /// schema:rangeIncludes
+    #[prost(message, repeated, tag = "11")]
+    pub range_includes: ::prost::alloc::vec::Vec<IdRef>,
+    /// Compression metadata
+    ///
+    /// List structure ID assigned to columns during SemantiPack compression (matches row ID)
+    #[prost(int32, optional, tag = "20")]
+    pub dbpa_compress_parent_list_id: ::core::option::Option<i32>,
+    /// Column structure ID during SemantiPack compression
+    #[prost(int32, optional, tag = "21")]
+    pub dbpa_compress_column_id: ::core::option::Option<i32>,
+    /// Number of bytes used to represent differential values during differential compression
+    #[prost(int32, optional, tag = "22")]
+    pub dbpa_diff_num_bytes: ::core::option::Option<i32>,
+    /// Number of bytes used to represent the first value during differential compression
+    #[prost(int32, optional, tag = "23")]
+    pub dbpa_first_num_bytes: ::core::option::Option<i32>,
+    /// Whether to strip trailing zeros in decimals
+    #[prost(bool, optional, tag = "24")]
+    pub strip_trailing_zeros: ::core::option::Option<bool>,
+    /// Whether run-length compression should be used
+    #[prost(bool, optional, tag = "25")]
+    pub use_run_length: ::core::option::Option<bool>,
+    /// Compression layer to forcibly use during SemantiPack compression
+    #[prost(string, optional, tag = "26")]
+    pub dbpa_compression_force_layer: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Loss ratio between original data and SemantiPack lossy compression
+    #[prost(float, optional, tag = "27")]
+    pub lossy_compression_rate: ::core::option::Option<f32>,
+    /// Whether FFT compression should be used during SemantiPack compression
+    #[prost(bool, optional, tag = "28")]
+    pub use_fft_compression: ::core::option::Option<bool>,
+    /// Type related
+    ///
+    /// Semantic type of data
+    #[prost(enumeration = "ItemType", optional, tag = "30")]
+    pub item_type: ::core::option::Option<i32>,
+    /// Semantic type satisfied by 95% or more of the data
+    #[prost(enumeration = "ItemType", optional, tag = "31")]
+    pub item_type95p: ::core::option::Option<i32>,
+    /// Unit
+    ///
+    /// Value representing the unit of the variable (unece.org Rec 20 value)
+    #[prost(message, optional, tag = "40")]
+    pub unit_text: ::core::option::Option<::prost::alloc::string::String>,
+    /// Variable characteristics
+    ///
+    /// Enum value representing the scale of the variable
+    #[prost(enumeration = "VariableScaleTypeEnumeration", optional, tag = "50")]
+    pub variable_scale_type: ::core::option::Option<i32>,
+    /// Boolean metadata
+    ///
+    /// Whether the data field is mostly constant
+    #[prost(bool, optional, tag = "60")]
+    pub is_mostly_constant: ::core::option::Option<bool>,
+    /// Whether the data field is an enum value
+    #[prost(bool, optional, tag = "61")]
+    pub is_enum_value: ::core::option::Option<bool>,
+    /// Whether the data field is mostly monotonically increasing
+    #[prost(bool, optional, tag = "62")]
+    pub is_mostly_incremental: ::core::option::Option<bool>,
+    /// Whether empty strings or null values may exist for numeric or datetime types
+    #[prost(bool, optional, tag = "63")]
+    pub is_nullable: ::core::option::Option<bool>,
+    /// Indicates that the data field may not exist
+    #[prost(bool, optional, tag = "64")]
+    pub is_optional: ::core::option::Option<bool>,
+    /// Datetime metadata
+    ///
+    /// Format string when the data field is of datetime type
+    #[prost(string, optional, tag = "70")]
+    pub dbpa_datetime_format: ::core::option::Option<::prost::alloc::string::String>,
+    /// Minimum unit when the data field is of datetime type (string equivalent to @schema:unitText)
+    #[prost(string, optional, tag = "71")]
+    pub dbpa_datetime_precision: ::core::option::Option<::prost::alloc::string::String>,
+    /// Number of bytes used to represent differences when the data field is of datetime type
+    #[prost(int32, optional, tag = "72")]
+    pub dbpa_datetime_diff_bytes: ::core::option::Option<i32>,
+    /// Timezone offset value for date/time used during compression
+    #[prost(int32, optional, tag = "73")]
+    pub dbpa_date_time_format_offset: ::core::option::Option<i32>,
+    /// Whether to represent UTC±0 timezone as UTC in RFC3339-compliant date/time format
+    #[prost(bool, optional, tag = "74")]
+    pub dbpa_date_time_format_utc_is_ut_cin_rfc3339: ::core::option::Option<bool>,
+    /// Whether to represent UTC±0 timezone as Z in RFC3339-compliant date/time format
+    #[prost(bool, optional, tag = "75")]
+    pub dbpa_date_time_format_utc_is_zin_rfc3339: ::core::option::Option<bool>,
+    /// List of column IDs when data field is of datetime type
+    #[prost(int32, repeated, tag = "76")]
+    pub dbpa_timestamp_representing_columns: ::prost::alloc::vec::Vec<i32>,
+    /// Value representing the time unit of timestamp when data field is of datetime type
+    #[prost(string, optional, tag = "77")]
+    pub dbpa_timestamp_unit_text: ::core::option::Option<::prost::alloc::string::String>,
+    /// Numeric range etc
+    ///
+    /// Minimum value of numeric range
+    #[prost(string, optional, tag = "80")]
+    pub range_min: ::core::option::Option<::prost::alloc::string::String>,
+    /// Maximum value of numeric range
+    #[prost(string, optional, tag = "81")]
+    pub range_max: ::core::option::Option<::prost::alloc::string::String>,
+    /// Number of bytes used for numeric representation during compression
+    #[prost(int32, optional, tag = "82")]
+    pub precision_bytes: ::core::option::Option<i32>,
+    /// How many decimal places to retain when compressing float values
+    #[prost(int32, optional, tag = "83")]
+    pub decimal_places: ::core::option::Option<i32>,
+    /// Most frequent value of differences when data field is monotonically increasing
+    #[prost(string, optional, tag = "84")]
+    pub base_increment: ::core::option::Option<::prost::alloc::string::String>,
+    /// Whether the most frequent value of differences should be used for compression when data field is monotonically increasing
+    #[prost(bool, optional, tag = "85")]
+    pub use_base_increment: ::core::option::Option<bool>,
+    /// Value samples,  enumerated values, and structure path
+    ///
+    /// Used to pass value samples to LLM API during compression (non-enum)
+    #[prost(string, repeated, tag = "90")]
+    pub value_samples: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Used to pass list of enum values to LLM API during compression
+    #[prost(string, repeated, tag = "91")]
+    pub enum_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// JSON-LD representing the storage information for real-world data
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -814,6 +1080,84 @@ impl VariableCharacteristicEnumeration {
         match value {
             "QUALITATIVE" => Some(Self::Qualitative),
             "QUANTITATIVE" => Some(Self::Quantitative),
+            _ => None,
+        }
+    }
+}
+/// Enum representing semantic type of data (maximum string length for STRING is not represented)
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ItemType {
+    Integer = 0,
+    Float = 1,
+    String = 2,
+    Boolean = 3,
+    Date = 4,
+    Time = 5,
+    Datetime = 6,
+    Null = 7,
+}
+impl ItemType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ItemType::Integer => "INTEGER",
+            ItemType::Float => "FLOAT",
+            ItemType::String => "STRING",
+            ItemType::Boolean => "BOOLEAN",
+            ItemType::Date => "DATE",
+            ItemType::Time => "TIME",
+            ItemType::Datetime => "DATETIME",
+            ItemType::Null => "NULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INTEGER" => Some(Self::Integer),
+            "FLOAT" => Some(Self::Float),
+            "STRING" => Some(Self::String),
+            "BOOLEAN" => Some(Self::Boolean),
+            "DATE" => Some(Self::Date),
+            "TIME" => Some(Self::Time),
+            "DATETIME" => Some(Self::Datetime),
+            "NULL" => Some(Self::Null),
+            _ => None,
+        }
+    }
+}
+/// Enum representing variable scale
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum VariableScaleTypeEnumeration {
+    Nominal = 0,
+    Ordinal = 1,
+    Interval = 2,
+    Proportional = 3,
+}
+impl VariableScaleTypeEnumeration {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            VariableScaleTypeEnumeration::Nominal => "NOMINAL",
+            VariableScaleTypeEnumeration::Ordinal => "ORDINAL",
+            VariableScaleTypeEnumeration::Interval => "INTERVAL",
+            VariableScaleTypeEnumeration::Proportional => "PROPORTIONAL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "NOMINAL" => Some(Self::Nominal),
+            "ORDINAL" => Some(Self::Ordinal),
+            "INTERVAL" => Some(Self::Interval),
+            "PROPORTIONAL" => Some(Self::Proportional),
             _ => None,
         }
     }

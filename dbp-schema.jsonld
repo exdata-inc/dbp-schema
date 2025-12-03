@@ -645,9 +645,6 @@
         },
         {
           "@id": "dbp:outputCharacteristic"
-        },
-        {
-          "@id": "dbp:RealWorldDataStructureProperty"
         }
       ],
       "schema:rangeIncludes": []
@@ -1214,19 +1211,19 @@
           "@id": "dbp:dbpaFirstNumBytes"
         },
         {
-          "@id": "dbp:StripTrailingZeros"
+          "@id": "dbp:stripTrailingZeros"
         },
         {
-          "@id": "dbp:UseRunLength"
+          "@id": "dbp:useRunLength"
         },
         {
           "@id": "dbp:dbpaCompressionForceLayer"
         },
         {
-          "@id": "dbp:LossyCompressionRate"
+          "@id": "dbp:lossyCompressionRate"
         },
         {
-          "@id": "dbp:UseFFTCompression"
+          "@id": "dbp:useFFTCompression"
         },
         {
           "@id": "dbp:itemType"
@@ -1238,7 +1235,7 @@
           "@id": "schema:unitText"
         },
         {
-          "@id": "dbp:VariableCharacteristicEnumeration"
+          "@id": "dbp:variableScaleType"
         },
         {
           "@id": "dbp:isMostlyConstant"
@@ -1280,22 +1277,22 @@
           "@id": "dbp:dbpaTimestampUnitText"
         },
         {
-          "@id": "dbp:RangeMin"
+          "@id": "dbp:rangeMin"
         },
         {
-          "@id": "dbp:RangeMax"
+          "@id": "dbp:rangeMax"
         },
         {
-          "@id": "dbp:PrecisionBytes"
+          "@id": "dbp:precisionBytes"
         },
         {
-          "@id": "dbp:DecimalPlaces"
+          "@id": "dbp:decimalPlaces"
         },
         {
-          "@id": "dbp:BaseIncrement"
+          "@id": "dbp:baseIncrement"
         },
         {
-          "@id": "dbp:UseBaseIncrement"
+          "@id": "dbp:useBaseIncrement"
         },
         {
           "@id": "dbp:valueSamples"
@@ -1366,10 +1363,10 @@
       }
     },
     {
-      "@id": "dbp:StripTrailingZeros",
+      "@id": "dbp:stripTrailingZeros",
       "@type": "rdf:Property",
       "rdfs:comment": "Whether to strip trailing zeros in decimals",
-      "rdfs:label": "StripTrailingZeros",
+      "rdfs:label": "stripTrailingZeros",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1378,10 +1375,10 @@
       }
     },
     {
-      "@id": "dbp:UseRunLength",
+      "@id": "dbp:useRunLength",
       "@type": "rdf:Property",
       "rdfs:comment": "Whether run-length compression should be used",
-      "rdfs:label": "UseRunLength",
+      "rdfs:label": "useRunLength",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1402,10 +1399,10 @@
       }
     },
     {
-      "@id": "dbp:LossyCompressionRate",
+      "@id": "dbp:lossyCompressionRate",
       "@type": "rdf:Property",
       "rdfs:comment": "Loss ratio between original data and SemantiPack lossy compression",
-      "rdfs:label": "LossyCompressionRate",
+      "rdfs:label": "lossyCompressionRate",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1414,10 +1411,10 @@
       }
     },
     {
-      "@id": "dbp:UseFFTCompression",
+      "@id": "dbp:useFFTCompression",
       "@type": "rdf:Property",
       "rdfs:comment": "Whether FFT compression should be used during SemantiPack compression",
-      "rdfs:label": "UseFFTCompression",
+      "rdfs:label": "useFFTCompression",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1466,6 +1463,31 @@
       "schema:rangeIncludes": {
         "@id": "dbp:ItemType"
       }
+    },
+    {
+      "@id": "dbp:variableScaleType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "Enum value representing the scale of the variable",
+      "rdfs:label": "variableScaleType",
+      "schema:domainIncludes": {
+        "@id": "dbp:RealWorldDataStructureProperty"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:VariableScaleTypeEnumeration"
+      }
+    },
+    {
+      "@id": "dbp:VariableScaleTypeEnumeration",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "",
+      "rdfs:label": "VariableScaleTypeEnumeration",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": {
+        "@id": "dbp:variableScaleType"
+      },
+      "schema:rangeIncludes": []
     },
     {
       "@id": "dbp:isMostlyConstant",
@@ -1624,10 +1646,10 @@
       }
     },
     {
-      "@id": "dbp:RangeMin",
+      "@id": "dbp:rangeMin",
       "@type": "rdf:Property",
       "rdfs:comment": "Minimum value of numeric range",
-      "rdfs:label": "RangeMin",
+      "rdfs:label": "rangeMin",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1636,10 +1658,10 @@
       }
     },
     {
-      "@id": "dbp:RangeMax",
+      "@id": "dbp:rangeMax",
       "@type": "rdf:Property",
       "rdfs:comment": "Maximum value of numeric range",
-      "rdfs:label": "RangeMax",
+      "rdfs:label": "rangeMax",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1648,10 +1670,10 @@
       }
     },
     {
-      "@id": "dbp:PrecisionBytes",
+      "@id": "dbp:precisionBytes",
       "@type": "rdf:Property",
       "rdfs:comment": "Number of bytes used for numeric representation during compression",
-      "rdfs:label": "PrecisionBytes",
+      "rdfs:label": "precisionBytes",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1660,10 +1682,10 @@
       }
     },
     {
-      "@id": "dbp:DecimalPlaces",
+      "@id": "dbp:decimalPlaces",
       "@type": "rdf:Property",
       "rdfs:comment": "How many decimal places to retain when compressing float values",
-      "rdfs:label": "DecimalPlaces",
+      "rdfs:label": "decimalPlaces",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1672,10 +1694,10 @@
       }
     },
     {
-      "@id": "dbp:BaseIncrement",
+      "@id": "dbp:baseIncrement",
       "@type": "rdf:Property",
       "rdfs:comment": "Most frequent value of differences when data field is monotonically increasing",
-      "rdfs:label": "BaseIncrement",
+      "rdfs:label": "baseIncrement",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
@@ -1684,10 +1706,10 @@
       }
     },
     {
-      "@id": "dbp:UseBaseIncrement",
+      "@id": "dbp:useBaseIncrement",
       "@type": "rdf:Property",
       "rdfs:comment": "Whether the most frequent value of differences should be used for compression when data field is monotonically increasing",
-      "rdfs:label": "UseBaseIncrement",
+      "rdfs:label": "useBaseIncrement",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },

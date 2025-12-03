@@ -226,11 +226,11 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional int32 dbpaCompressColumnId = 21;           // Column structure ID during SemantiPack compression
     optional int32 dbpaDiffNumBytes = 22;               // Number of bytes used to represent differential values during differential compression
     optional int32 dbpaFirstNumBytes = 23;              // Number of bytes used to represent the first value during differential compression
-    optional bool StripTrailingZeros = 24;              // Whether to strip trailing zeros in decimals
-    optional bool UseRunLength = 25;                    // Whether run-length compression should be used
+    optional bool stripTrailingZeros = 24;              // Whether to strip trailing zeros in decimals
+    optional bool useRunLength = 25;                    // Whether run-length compression should be used
     optional string dbpaCompressionForceLayer = 26;     // Compression layer to forcibly use during SemantiPack compression
-    optional float LossyCompressionRate = 27;           // Loss ratio between original data and SemantiPack lossy compression
-    optional bool UseFFTCompression = 28;               // Whether FFT compression should be used during SemantiPack compression
+    optional float lossyCompressionRate = 27;           // Loss ratio between original data and SemantiPack lossy compression
+    optional bool useFFTCompression = 28;               // Whether FFT compression should be used during SemantiPack compression
 
     // Type related
     optional ItemType itemType = 30;        // Semantic type of data
@@ -240,7 +240,7 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional google.protobuf.StringValue unitText = 40;     // Value representing the unit of the variable (unece.org Rec 20 value)
 
     // Variable characteristics
-    optional VariableCharacteristic VariableCharacteristicEnumeration = 50;  // Enum value representing the scale of the variable
+    optional VariableScaleTypeEnumeration variableScaleType = 50;   // Enum value representing the scale of the variable
 
     // Boolean metadata
     optional bool isMostlyConstant = 60;        // Whether the data field is mostly constant
@@ -260,12 +260,12 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional string dbpaTimestampUnitText = 77;                 // Value representing the time unit of timestamp when data field is of datetime type
 
     // Numeric range etc
-    optional string RangeMin = 80;          // Minimum value of numeric range
-    optional string RangeMax = 81;          // Maximum value of numeric range
-    optional int32 PrecisionBytes = 82;     // Number of bytes used for numeric representation during compression
-    optional int32 DecimalPlaces = 83;      // How many decimal places to retain when compressing float values
-    optional string BaseIncrement = 84;     // Most frequent value of differences when data field is monotonically increasing
-    optional bool UseBaseIncrement = 85;    // Whether the most frequent value of differences should be used for compression when data field is monotonically increasing
+    optional string rangeMin = 80;          // Minimum value of numeric range
+    optional string rangeMax = 81;          // Maximum value of numeric range
+    optional int32 precisionBytes = 82;     // Number of bytes used for numeric representation during compression
+    optional int32 decimalPlaces = 83;      // How many decimal places to retain when compressing float values
+    optional string baseIncrement = 84;     // Most frequent value of differences when data field is monotonically increasing
+    optional bool useBaseIncrement = 85;    // Whether the most frequent value of differences should be used for compression when data field is monotonically increasing
 
     // Value samples,  enumerated values, and structure path
     repeated string valueSamples = 90;      // Used to pass value samples to LLM API during compression (non-enum)
@@ -283,7 +283,7 @@ enum ItemType {       // Enum representing semantic type of data (maximum string
     NULL = 7;
 }
 
-enum VariableCharacteristic {    // Enum representing variable scale
+enum VariableScaleTypeEnumeration {     // Enum representing variable scale
     NOMINAL = 0;
     ORDINAL = 1;
     INTERVAL = 2;

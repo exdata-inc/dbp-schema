@@ -226,11 +226,11 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional int32 dbpaCompressColumnId = 21;           // SemantiPack 圧縮するときの列構造ID
     optional int32 dbpaDiffNumBytes = 22;               // 差分圧縮時に、差分の値を表現するために使うバイト数
     optional int32 dbpaFirstNumBytes = 23;              // 差分圧縮時に、最初の値を表現するために使うバイト数
-    optional bool StripTrailingZeros = 24;              // 小数の末尾のゼロを削るかどうか
-    optional bool UseRunLength = 25;                    // Run Length 圧縮を使うべきかどうか
+    optional bool stripTrailingZeros = 24;              // 小数の末尾のゼロを削るかどうか
+    optional bool useRunLength = 25;                    // Run Length 圧縮を使うべきかどうか
     optional string dbpaCompressionForceLayer = 26;     // SemantiPack 圧縮時に強制的に使用する圧縮レイヤー
-    optional float LossyCompressionRate = 27;           // SemantiPack ロスあり圧縮の元のデータとの損失割合
-    optional bool UseFFTCompression = 28;               // SemantiPack 圧縮時に FFT 圧縮を使うべきかどうか
+    optional float lossyCompressionRate = 27;           // SemantiPack ロスあり圧縮の元のデータとの損失割合
+    optional bool useFFTCompression = 28;               // SemantiPack 圧縮時に FFT 圧縮を使うべきかどうか
 
     // 型関連
     optional ItemType itemType = 30;        // データのセマンティックな型
@@ -240,7 +240,7 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional google.protobuf.StringValue unitText = 40;     // 変数の単位を表す値 (unece.org の Rec 20 の値)
 
     // 変量特性
-    optional VariableCharacteristic VariableCharacteristicEnumeration = 50;  // 変数の尺度を表す enum 値
+    optional VariableScaleTypeEnumeration variableScaleType = 50;   // 変数の尺度を表す enum 値
 
     // 真偽メタ
     optional bool isMostlyConstant = 60;        // データフィールドがほとんど一定値かどうか
@@ -260,12 +260,12 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional string dbpaTimestampUnitText = 77;                 // データフィールドが日付時刻型な場合の、タイムスタンプの時間単位を表す値
 
     // 数値レンジ等
-    optional string RangeMin = 80;          // 数値範囲の最小値
-    optional string RangeMax = 81;          // 数値範囲の最大値
-    optional int32 PrecisionBytes = 82;     // 圧縮時に数値の表現に使用するバイト数
-    optional int32 DecimalPlaces = 83;      // Float 値の圧縮時に小数点以下何桁までを保持するか
-    optional string BaseIncrement = 84;     // データフィールドが単調増加な場合の、差分の最頻値
-    optional bool UseBaseIncrement = 85;    // データフィールドが単調増加な場合に、差分の最頻値を圧縮に使用すべきかどうか
+    optional string rangeMin = 80;          // 数値範囲の最小値
+    optional string rangeMax = 81;          // 数値範囲の最大値
+    optional int32 precisionBytes = 82;     // 圧縮時に数値の表現に使用するバイト数
+    optional int32 decimalPlaces = 83;      // Float 値の圧縮時に小数点以下何桁までを保持するか
+    optional string baseIncrement = 84;     // データフィールドが単調増加な場合の、差分の最頻値
+    optional bool useBaseIncrement = 85;    // データフィールドが単調増加な場合に、差分の最頻値を圧縮に使用すべきかどうか
 
     // 値のサンプル・列挙値・構造パス
     repeated string valueSamples = 90;      // 圧縮時に LLM API に値のサンプルを渡すときに使用 (enum 以外)
@@ -283,7 +283,7 @@ enum ItemType {       // データのセマンティックな型を表す enum (
     NULL = 7;
 }
 
-enum VariableCharacteristic {    // 変数の尺度を表す enum
+enum VariableScaleTypeEnumeration {     // 変数の尺度を表す enum
     NOMINAL = 0;
     ORDINAL = 1;
     INTERVAL = 2;
