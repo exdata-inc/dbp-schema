@@ -1896,8 +1896,10 @@ type RealWorldDataStructureProperty struct {
 	BaseIncrement    *string `protobuf:"bytes,84,opt,name=baseIncrement,proto3,oneof" json:"baseIncrement,omitempty"`        // Most frequent value of differences when data field is monotonically increasing
 	UseBaseIncrement *bool   `protobuf:"varint,85,opt,name=useBaseIncrement,proto3,oneof" json:"useBaseIncrement,omitempty"` // Whether the most frequent value of differences should be used for compression when data field is monotonically increasing
 	// Value samples,  enumerated values, and structure path
-	ValueSamples  []string `protobuf:"bytes,90,rep,name=valueSamples,proto3" json:"valueSamples,omitempty"` // Used to pass value samples to LLM API during compression (non-enum)
-	EnumList      []string `protobuf:"bytes,91,rep,name=enumList,proto3" json:"enumList,omitempty"`         // Used to pass list of enum values to LLM API during compression
+	ValueSamples []string `protobuf:"bytes,90,rep,name=valueSamples,proto3" json:"valueSamples,omitempty"` // Used to pass value samples to LLM API during compression (non-enum)
+	EnumList     []string `protobuf:"bytes,91,rep,name=enumList,proto3" json:"enumList,omitempty"`         // Used to pass list of enum values to LLM API during compression
+	// Data field catalogue
+	FieldType     *DataFieldType `protobuf:"bytes,100,opt,name=fieldType,proto3,oneof" json:"fieldType,omitempty"` // Reference to the data field type in the data field catalogue
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2208,6 +2210,13 @@ func (x *RealWorldDataStructureProperty) GetValueSamples() []string {
 func (x *RealWorldDataStructureProperty) GetEnumList() []string {
 	if x != nil {
 		return x.EnumList
+	}
+	return nil
+}
+
+func (x *RealWorldDataStructureProperty) GetFieldType() *DataFieldType {
+	if x != nil {
+		return x.FieldType
 	}
 	return nil
 }
@@ -4256,6 +4265,423 @@ func (x *RealWorldDataTags) GetValue() string {
 	return ""
 }
 
+type DataFieldType struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// JSON-LD basic
+	Id          *string `protobuf:"bytes,1,opt,name=id,proto3,oneof" json:"id,omitempty"`
+	Name        *string `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Url         *string `protobuf:"bytes,3,opt,name=url,proto3,oneof" json:"url,omitempty"`
+	Description *string `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	// Identification
+	Aliases []string `protobuf:"bytes,10,rep,name=aliases,proto3" json:"aliases,omitempty"` // Alternative notations of the field name (used as search keys)
+	// Lifecycle
+	Status       *string                `protobuf:"bytes,20,opt,name=status,proto3,oneof" json:"status,omitempty"` // Lifecycle status of the catalogue entry (draft / stable / deprecated)
+	Version      *int32                 `protobuf:"varint,21,opt,name=version,proto3,oneof" json:"version,omitempty"`
+	DateModified *timestamppb.Timestamp `protobuf:"bytes,22,opt,name=dateModified,proto3,oneof" json:"dateModified,omitempty"`
+	SupersededBy *DataFieldType         `protobuf:"bytes,23,opt,name=supersededBy,proto3,oneof" json:"supersededBy,omitempty"` // Catalogue entry that supersedes this entry (redirect target when duplicated entries are merged)
+	Provenance   *string                `protobuf:"bytes,24,opt,name=provenance,proto3,oneof" json:"provenance,omitempty"`     // Seed origin of the catalogue entry (human / extracted-from-profiles / llm-rec20 / open-data-survey)
+	// Type and value
+	ItemType          *ItemType                     `protobuf:"varint,30,opt,name=itemType,proto3,enum=dbp_schema.ItemType,oneof" json:"itemType,omitempty"`
+	VariableScaleType *VariableScaleTypeEnumeration `protobuf:"varint,31,opt,name=variableScaleType,proto3,enum=dbp_schema.VariableScaleTypeEnumeration,oneof" json:"variableScaleType,omitempty"`
+	RangeMin          *string                       `protobuf:"bytes,32,opt,name=rangeMin,proto3,oneof" json:"rangeMin,omitempty"`
+	RangeMax          *string                       `protobuf:"bytes,33,opt,name=rangeMax,proto3,oneof" json:"rangeMax,omitempty"`
+	DecimalPlaces     *int32                        `protobuf:"varint,34,opt,name=decimalPlaces,proto3,oneof" json:"decimalPlaces,omitempty"`
+	IsEnumValue       *bool                         `protobuf:"varint,35,opt,name=isEnumValue,proto3,oneof" json:"isEnumValue,omitempty"`
+	EnumList          []string                      `protobuf:"bytes,36,rep,name=enumList,proto3" json:"enumList,omitempty"`
+	ValueSamples      []string                      `protobuf:"bytes,37,rep,name=valueSamples,proto3" json:"valueSamples,omitempty"`
+	// Unit
+	UnitText *wrapperspb.StringValue `protobuf:"bytes,40,opt,name=unitText,proto3,oneof" json:"unitText,omitempty"`
+	UnitCode *string                 `protobuf:"bytes,41,opt,name=unitCode,proto3,oneof" json:"unitCode,omitempty"` // Unit code of the variable (UNECE Recommendation 20 code)
+	// Datetime
+	DbpaDatetimeFormat    *string `protobuf:"bytes,50,opt,name=dbpaDatetimeFormat,proto3,oneof" json:"dbpaDatetimeFormat,omitempty"`
+	DbpaTimestampUnitText *string `protobuf:"bytes,51,opt,name=dbpaTimestampUnitText,proto3,oneof" json:"dbpaTimestampUnitText,omitempty"`
+	// Tendency (prior knowledge on how fields of this kind generally behave)
+	IsMostlyConstant    *bool `protobuf:"varint,60,opt,name=isMostlyConstant,proto3,oneof" json:"isMostlyConstant,omitempty"`
+	IsMostlyIncremental *bool `protobuf:"varint,61,opt,name=isMostlyIncremental,proto3,oneof" json:"isMostlyIncremental,omitempty"`
+	IsOptional          *bool `protobuf:"varint,62,opt,name=isOptional,proto3,oneof" json:"isOptional,omitempty"`
+	IsNullable          *bool `protobuf:"varint,63,opt,name=isNullable,proto3,oneof" json:"isNullable,omitempty"`
+	// Compression
+	CompressionHints []*CompressionHint   `protobuf:"bytes,70,rep,name=compressionHints,proto3" json:"compressionHints,omitempty"` // Recommended compression settings per use case
+	Tags             []*RealWorldDataTags `protobuf:"bytes,80,rep,name=tags,proto3" json:"tags,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *DataFieldType) Reset() {
+	*x = DataFieldType{}
+	mi := &file_dbp_schema_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DataFieldType) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DataFieldType) ProtoMessage() {}
+
+func (x *DataFieldType) ProtoReflect() protoreflect.Message {
+	mi := &file_dbp_schema_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DataFieldType.ProtoReflect.Descriptor instead.
+func (*DataFieldType) Descriptor() ([]byte, []int) {
+	return file_dbp_schema_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *DataFieldType) GetId() string {
+	if x != nil && x.Id != nil {
+		return *x.Id
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetUrl() string {
+	if x != nil && x.Url != nil {
+		return *x.Url
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetDescription() string {
+	if x != nil && x.Description != nil {
+		return *x.Description
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetAliases() []string {
+	if x != nil {
+		return x.Aliases
+	}
+	return nil
+}
+
+func (x *DataFieldType) GetStatus() string {
+	if x != nil && x.Status != nil {
+		return *x.Status
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetVersion() int32 {
+	if x != nil && x.Version != nil {
+		return *x.Version
+	}
+	return 0
+}
+
+func (x *DataFieldType) GetDateModified() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DateModified
+	}
+	return nil
+}
+
+func (x *DataFieldType) GetSupersededBy() *DataFieldType {
+	if x != nil {
+		return x.SupersededBy
+	}
+	return nil
+}
+
+func (x *DataFieldType) GetProvenance() string {
+	if x != nil && x.Provenance != nil {
+		return *x.Provenance
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetItemType() ItemType {
+	if x != nil && x.ItemType != nil {
+		return *x.ItemType
+	}
+	return ItemType_INTEGER
+}
+
+func (x *DataFieldType) GetVariableScaleType() VariableScaleTypeEnumeration {
+	if x != nil && x.VariableScaleType != nil {
+		return *x.VariableScaleType
+	}
+	return VariableScaleTypeEnumeration_NOMINAL
+}
+
+func (x *DataFieldType) GetRangeMin() string {
+	if x != nil && x.RangeMin != nil {
+		return *x.RangeMin
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetRangeMax() string {
+	if x != nil && x.RangeMax != nil {
+		return *x.RangeMax
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetDecimalPlaces() int32 {
+	if x != nil && x.DecimalPlaces != nil {
+		return *x.DecimalPlaces
+	}
+	return 0
+}
+
+func (x *DataFieldType) GetIsEnumValue() bool {
+	if x != nil && x.IsEnumValue != nil {
+		return *x.IsEnumValue
+	}
+	return false
+}
+
+func (x *DataFieldType) GetEnumList() []string {
+	if x != nil {
+		return x.EnumList
+	}
+	return nil
+}
+
+func (x *DataFieldType) GetValueSamples() []string {
+	if x != nil {
+		return x.ValueSamples
+	}
+	return nil
+}
+
+func (x *DataFieldType) GetUnitText() *wrapperspb.StringValue {
+	if x != nil {
+		return x.UnitText
+	}
+	return nil
+}
+
+func (x *DataFieldType) GetUnitCode() string {
+	if x != nil && x.UnitCode != nil {
+		return *x.UnitCode
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetDbpaDatetimeFormat() string {
+	if x != nil && x.DbpaDatetimeFormat != nil {
+		return *x.DbpaDatetimeFormat
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetDbpaTimestampUnitText() string {
+	if x != nil && x.DbpaTimestampUnitText != nil {
+		return *x.DbpaTimestampUnitText
+	}
+	return ""
+}
+
+func (x *DataFieldType) GetIsMostlyConstant() bool {
+	if x != nil && x.IsMostlyConstant != nil {
+		return *x.IsMostlyConstant
+	}
+	return false
+}
+
+func (x *DataFieldType) GetIsMostlyIncremental() bool {
+	if x != nil && x.IsMostlyIncremental != nil {
+		return *x.IsMostlyIncremental
+	}
+	return false
+}
+
+func (x *DataFieldType) GetIsOptional() bool {
+	if x != nil && x.IsOptional != nil {
+		return *x.IsOptional
+	}
+	return false
+}
+
+func (x *DataFieldType) GetIsNullable() bool {
+	if x != nil && x.IsNullable != nil {
+		return *x.IsNullable
+	}
+	return false
+}
+
+func (x *DataFieldType) GetCompressionHints() []*CompressionHint {
+	if x != nil {
+		return x.CompressionHints
+	}
+	return nil
+}
+
+func (x *DataFieldType) GetTags() []*RealWorldDataTags {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+type CompressionHint struct {
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	Id           *string                `protobuf:"bytes,1,opt,name=id,proto3,oneof" json:"id,omitempty"`
+	Name         *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Url          *string                `protobuf:"bytes,3,opt,name=url,proto3,oneof" json:"url,omitempty"`
+	UseCase      *string                `protobuf:"bytes,4,opt,name=useCase,proto3,oneof" json:"useCase,omitempty"` // Identifier of the use case for this compression hint (kebab-case, e.g. realtime-monitoring)
+	Description  *string                `protobuf:"bytes,5,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	AccuracyNote *string                `protobuf:"bytes,6,opt,name=accuracyNote,proto3,oneof" json:"accuracyNote,omitempty"` // Explanation of the error tolerable in this use case
+	// Recommended values (compression-related properties of RealWorldDataStructureProperty reused as recommendations)
+	DecimalPlaces         *int32   `protobuf:"varint,10,opt,name=decimalPlaces,proto3,oneof" json:"decimalPlaces,omitempty"`
+	LossyCompressionRate  *float32 `protobuf:"fixed32,11,opt,name=lossyCompressionRate,proto3,oneof" json:"lossyCompressionRate,omitempty"`
+	PrecisionBytes        *int32   `protobuf:"varint,12,opt,name=precisionBytes,proto3,oneof" json:"precisionBytes,omitempty"`
+	UseFFTCompression     *bool    `protobuf:"varint,13,opt,name=useFFTCompression,proto3,oneof" json:"useFFTCompression,omitempty"`
+	UseRunLength          *bool    `protobuf:"varint,14,opt,name=useRunLength,proto3,oneof" json:"useRunLength,omitempty"`
+	UseBaseIncrement      *bool    `protobuf:"varint,15,opt,name=useBaseIncrement,proto3,oneof" json:"useBaseIncrement,omitempty"`
+	DbpaDatetimePrecision *string  `protobuf:"bytes,16,opt,name=dbpaDatetimePrecision,proto3,oneof" json:"dbpaDatetimePrecision,omitempty"`
+	IsMostlyIncremental   *bool    `protobuf:"varint,17,opt,name=isMostlyIncremental,proto3,oneof" json:"isMostlyIncremental,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *CompressionHint) Reset() {
+	*x = CompressionHint{}
+	mi := &file_dbp_schema_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CompressionHint) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CompressionHint) ProtoMessage() {}
+
+func (x *CompressionHint) ProtoReflect() protoreflect.Message {
+	mi := &file_dbp_schema_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CompressionHint.ProtoReflect.Descriptor instead.
+func (*CompressionHint) Descriptor() ([]byte, []int) {
+	return file_dbp_schema_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *CompressionHint) GetId() string {
+	if x != nil && x.Id != nil {
+		return *x.Id
+	}
+	return ""
+}
+
+func (x *CompressionHint) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *CompressionHint) GetUrl() string {
+	if x != nil && x.Url != nil {
+		return *x.Url
+	}
+	return ""
+}
+
+func (x *CompressionHint) GetUseCase() string {
+	if x != nil && x.UseCase != nil {
+		return *x.UseCase
+	}
+	return ""
+}
+
+func (x *CompressionHint) GetDescription() string {
+	if x != nil && x.Description != nil {
+		return *x.Description
+	}
+	return ""
+}
+
+func (x *CompressionHint) GetAccuracyNote() string {
+	if x != nil && x.AccuracyNote != nil {
+		return *x.AccuracyNote
+	}
+	return ""
+}
+
+func (x *CompressionHint) GetDecimalPlaces() int32 {
+	if x != nil && x.DecimalPlaces != nil {
+		return *x.DecimalPlaces
+	}
+	return 0
+}
+
+func (x *CompressionHint) GetLossyCompressionRate() float32 {
+	if x != nil && x.LossyCompressionRate != nil {
+		return *x.LossyCompressionRate
+	}
+	return 0
+}
+
+func (x *CompressionHint) GetPrecisionBytes() int32 {
+	if x != nil && x.PrecisionBytes != nil {
+		return *x.PrecisionBytes
+	}
+	return 0
+}
+
+func (x *CompressionHint) GetUseFFTCompression() bool {
+	if x != nil && x.UseFFTCompression != nil {
+		return *x.UseFFTCompression
+	}
+	return false
+}
+
+func (x *CompressionHint) GetUseRunLength() bool {
+	if x != nil && x.UseRunLength != nil {
+		return *x.UseRunLength
+	}
+	return false
+}
+
+func (x *CompressionHint) GetUseBaseIncrement() bool {
+	if x != nil && x.UseBaseIncrement != nil {
+		return *x.UseBaseIncrement
+	}
+	return false
+}
+
+func (x *CompressionHint) GetDbpaDatetimePrecision() string {
+	if x != nil && x.DbpaDatetimePrecision != nil {
+		return *x.DbpaDatetimePrecision
+	}
+	return ""
+}
+
+func (x *CompressionHint) GetIsMostlyIncremental() bool {
+	if x != nil && x.IsMostlyIncremental != nil {
+		return *x.IsMostlyIncremental
+	}
+	return false
+}
+
 var File_dbp_schema_proto protoreflect.FileDescriptor
 
 const file_dbp_schema_proto_rawDesc = "" +
@@ -4535,7 +4961,7 @@ const file_dbp_schema_proto_rawDesc = "" +
 	"\x03_idB\b\n" +
 	"\x06_labelB\x0f\n" +
 	"\r_dbpaCompressB\x15\n" +
-	"\x13_dbpaCompressListID\"\x97\x16\n" +
+	"\x13_dbpaCompressListID\"\xe3\x16\n" +
 	"\x1eRealWorldDataStructureProperty\x12\x13\n" +
 	"\x02id\x18\x01 \x01(\tH\x00R\x02id\x88\x01\x01\x12\x19\n" +
 	"\x05label\x18\x02 \x01(\tH\x01R\x05label\x88\x01\x01\x12\x1d\n" +
@@ -4582,7 +5008,8 @@ const file_dbp_schema_proto_rawDesc = "" +
 	"\rbaseIncrement\x18T \x01(\tH!R\rbaseIncrement\x88\x01\x01\x12/\n" +
 	"\x10useBaseIncrement\x18U \x01(\bH\"R\x10useBaseIncrement\x88\x01\x01\x12\"\n" +
 	"\fvalueSamples\x18Z \x03(\tR\fvalueSamples\x12\x1a\n" +
-	"\benumList\x18[ \x03(\tR\benumListB\x05\n" +
+	"\benumList\x18[ \x03(\tR\benumList\x12<\n" +
+	"\tfieldType\x18d \x01(\v2\x19.dbp_schema.DataFieldTypeH#R\tfieldType\x88\x01\x01B\x05\n" +
 	"\x03_idB\b\n" +
 	"\x06_labelB\n" +
 	"\n" +
@@ -4618,7 +5045,9 @@ const file_dbp_schema_proto_rawDesc = "" +
 	"\x0f_precisionBytesB\x10\n" +
 	"\x0e_decimalPlacesB\x10\n" +
 	"\x0e_baseIncrementB\x13\n" +
-	"\x11_useBaseIncrement\"\x89\x06\n" +
+	"\x11_useBaseIncrementB\f\n" +
+	"\n" +
+	"_fieldType\"\x89\x06\n" +
 	"\x18RealWorldDataStoringInfo\x12\x13\n" +
 	"\x02id\x18\x01 \x01(\tH\x00R\x02id\x88\x01\x01\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x01R\x04name\x88\x01\x01\x12\x15\n" +
@@ -4968,7 +5397,100 @@ const file_dbp_schema_proto_rawDesc = "" +
 	"\x05_nameB\x06\n" +
 	"\x04_urlB\x06\n" +
 	"\x04_keyB\b\n" +
-	"\x06_value*]\n" +
+	"\x06_value\"\xca\f\n" +
+	"\rDataFieldType\x12\x13\n" +
+	"\x02id\x18\x01 \x01(\tH\x00R\x02id\x88\x01\x01\x12\x17\n" +
+	"\x04name\x18\x02 \x01(\tH\x01R\x04name\x88\x01\x01\x12\x15\n" +
+	"\x03url\x18\x03 \x01(\tH\x02R\x03url\x88\x01\x01\x12%\n" +
+	"\vdescription\x18\x04 \x01(\tH\x03R\vdescription\x88\x01\x01\x12\x18\n" +
+	"\aaliases\x18\n" +
+	" \x03(\tR\aaliases\x12\x1b\n" +
+	"\x06status\x18\x14 \x01(\tH\x04R\x06status\x88\x01\x01\x12\x1d\n" +
+	"\aversion\x18\x15 \x01(\x05H\x05R\aversion\x88\x01\x01\x12C\n" +
+	"\fdateModified\x18\x16 \x01(\v2\x1a.google.protobuf.TimestampH\x06R\fdateModified\x88\x01\x01\x12B\n" +
+	"\fsupersededBy\x18\x17 \x01(\v2\x19.dbp_schema.DataFieldTypeH\aR\fsupersededBy\x88\x01\x01\x12#\n" +
+	"\n" +
+	"provenance\x18\x18 \x01(\tH\bR\n" +
+	"provenance\x88\x01\x01\x125\n" +
+	"\bitemType\x18\x1e \x01(\x0e2\x14.dbp_schema.ItemTypeH\tR\bitemType\x88\x01\x01\x12[\n" +
+	"\x11variableScaleType\x18\x1f \x01(\x0e2(.dbp_schema.VariableScaleTypeEnumerationH\n" +
+	"R\x11variableScaleType\x88\x01\x01\x12\x1f\n" +
+	"\brangeMin\x18  \x01(\tH\vR\brangeMin\x88\x01\x01\x12\x1f\n" +
+	"\brangeMax\x18! \x01(\tH\fR\brangeMax\x88\x01\x01\x12)\n" +
+	"\rdecimalPlaces\x18\" \x01(\x05H\rR\rdecimalPlaces\x88\x01\x01\x12%\n" +
+	"\visEnumValue\x18# \x01(\bH\x0eR\visEnumValue\x88\x01\x01\x12\x1a\n" +
+	"\benumList\x18$ \x03(\tR\benumList\x12\"\n" +
+	"\fvalueSamples\x18% \x03(\tR\fvalueSamples\x12=\n" +
+	"\bunitText\x18( \x01(\v2\x1c.google.protobuf.StringValueH\x0fR\bunitText\x88\x01\x01\x12\x1f\n" +
+	"\bunitCode\x18) \x01(\tH\x10R\bunitCode\x88\x01\x01\x123\n" +
+	"\x12dbpaDatetimeFormat\x182 \x01(\tH\x11R\x12dbpaDatetimeFormat\x88\x01\x01\x129\n" +
+	"\x15dbpaTimestampUnitText\x183 \x01(\tH\x12R\x15dbpaTimestampUnitText\x88\x01\x01\x12/\n" +
+	"\x10isMostlyConstant\x18< \x01(\bH\x13R\x10isMostlyConstant\x88\x01\x01\x125\n" +
+	"\x13isMostlyIncremental\x18= \x01(\bH\x14R\x13isMostlyIncremental\x88\x01\x01\x12#\n" +
+	"\n" +
+	"isOptional\x18> \x01(\bH\x15R\n" +
+	"isOptional\x88\x01\x01\x12#\n" +
+	"\n" +
+	"isNullable\x18? \x01(\bH\x16R\n" +
+	"isNullable\x88\x01\x01\x12G\n" +
+	"\x10compressionHints\x18F \x03(\v2\x1b.dbp_schema.CompressionHintR\x10compressionHints\x121\n" +
+	"\x04tags\x18P \x03(\v2\x1d.dbp_schema.RealWorldDataTagsR\x04tagsB\x05\n" +
+	"\x03_idB\a\n" +
+	"\x05_nameB\x06\n" +
+	"\x04_urlB\x0e\n" +
+	"\f_descriptionB\t\n" +
+	"\a_statusB\n" +
+	"\n" +
+	"\b_versionB\x0f\n" +
+	"\r_dateModifiedB\x0f\n" +
+	"\r_supersededByB\r\n" +
+	"\v_provenanceB\v\n" +
+	"\t_itemTypeB\x14\n" +
+	"\x12_variableScaleTypeB\v\n" +
+	"\t_rangeMinB\v\n" +
+	"\t_rangeMaxB\x10\n" +
+	"\x0e_decimalPlacesB\x0e\n" +
+	"\f_isEnumValueB\v\n" +
+	"\t_unitTextB\v\n" +
+	"\t_unitCodeB\x15\n" +
+	"\x13_dbpaDatetimeFormatB\x18\n" +
+	"\x16_dbpaTimestampUnitTextB\x13\n" +
+	"\x11_isMostlyConstantB\x16\n" +
+	"\x14_isMostlyIncrementalB\r\n" +
+	"\v_isOptionalB\r\n" +
+	"\v_isNullable\"\xc6\x06\n" +
+	"\x0fCompressionHint\x12\x13\n" +
+	"\x02id\x18\x01 \x01(\tH\x00R\x02id\x88\x01\x01\x12\x17\n" +
+	"\x04name\x18\x02 \x01(\tH\x01R\x04name\x88\x01\x01\x12\x15\n" +
+	"\x03url\x18\x03 \x01(\tH\x02R\x03url\x88\x01\x01\x12\x1d\n" +
+	"\auseCase\x18\x04 \x01(\tH\x03R\auseCase\x88\x01\x01\x12%\n" +
+	"\vdescription\x18\x05 \x01(\tH\x04R\vdescription\x88\x01\x01\x12'\n" +
+	"\faccuracyNote\x18\x06 \x01(\tH\x05R\faccuracyNote\x88\x01\x01\x12)\n" +
+	"\rdecimalPlaces\x18\n" +
+	" \x01(\x05H\x06R\rdecimalPlaces\x88\x01\x01\x127\n" +
+	"\x14lossyCompressionRate\x18\v \x01(\x02H\aR\x14lossyCompressionRate\x88\x01\x01\x12+\n" +
+	"\x0eprecisionBytes\x18\f \x01(\x05H\bR\x0eprecisionBytes\x88\x01\x01\x121\n" +
+	"\x11useFFTCompression\x18\r \x01(\bH\tR\x11useFFTCompression\x88\x01\x01\x12'\n" +
+	"\fuseRunLength\x18\x0e \x01(\bH\n" +
+	"R\fuseRunLength\x88\x01\x01\x12/\n" +
+	"\x10useBaseIncrement\x18\x0f \x01(\bH\vR\x10useBaseIncrement\x88\x01\x01\x129\n" +
+	"\x15dbpaDatetimePrecision\x18\x10 \x01(\tH\fR\x15dbpaDatetimePrecision\x88\x01\x01\x125\n" +
+	"\x13isMostlyIncremental\x18\x11 \x01(\bH\rR\x13isMostlyIncremental\x88\x01\x01B\x05\n" +
+	"\x03_idB\a\n" +
+	"\x05_nameB\x06\n" +
+	"\x04_urlB\n" +
+	"\n" +
+	"\b_useCaseB\x0e\n" +
+	"\f_descriptionB\x0f\n" +
+	"\r_accuracyNoteB\x10\n" +
+	"\x0e_decimalPlacesB\x17\n" +
+	"\x15_lossyCompressionRateB\x11\n" +
+	"\x0f_precisionBytesB\x14\n" +
+	"\x12_useFFTCompressionB\x0f\n" +
+	"\r_useRunLengthB\x13\n" +
+	"\x11_useBaseIncrementB\x18\n" +
+	"\x16_dbpaDatetimePrecisionB\x16\n" +
+	"\x14_isMostlyIncremental*]\n" +
 	"#ConversionCharacteristicEnumeration\x12\x18\n" +
 	"\x14SINGLE_VALUE_REPLACE\x10\x00\x12\r\n" +
 	"\tCOL_MERGE\x10\x01\x12\r\n" +
@@ -5005,7 +5527,7 @@ func file_dbp_schema_proto_rawDescGZIP() []byte {
 }
 
 var file_dbp_schema_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_dbp_schema_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
+var file_dbp_schema_proto_msgTypes = make([]protoimpl.MessageInfo, 39)
 var file_dbp_schema_proto_goTypes = []any{
 	(ConversionCharacteristicEnumeration)(0),   // 0: dbp_schema.ConversionCharacteristicEnumeration
 	(VariableCharacteristicEnumeration)(0),     // 1: dbp_schema.VariableCharacteristicEnumeration
@@ -5048,110 +5570,120 @@ var file_dbp_schema_proto_goTypes = []any{
 	(*RealWorldDataPeriodicRemoveConfig)(nil),  // 38: dbp_schema.RealWorldDataPeriodicRemoveConfig
 	(*RealWorldDataPathPatternFormat)(nil),     // 39: dbp_schema.RealWorldDataPathPatternFormat
 	(*RealWorldDataTags)(nil),                  // 40: dbp_schema.RealWorldDataTags
-	(*timestamppb.Timestamp)(nil),              // 41: google.protobuf.Timestamp
-	(*wrapperspb.StringValue)(nil),             // 42: google.protobuf.StringValue
-	(*structpb.Struct)(nil),                    // 43: google.protobuf.Struct
+	(*DataFieldType)(nil),                      // 41: dbp_schema.DataFieldType
+	(*CompressionHint)(nil),                    // 42: dbp_schema.CompressionHint
+	(*timestamppb.Timestamp)(nil),              // 43: google.protobuf.Timestamp
+	(*wrapperspb.StringValue)(nil),             // 44: google.protobuf.StringValue
+	(*structpb.Struct)(nil),                    // 45: google.protobuf.Struct
 }
 var file_dbp_schema_proto_depIdxs = []int32{
-	13, // 0: dbp_schema.RealWorldDataset.structureInfo:type_name -> dbp_schema.RealWorldDataFieldProfile
-	4,  // 1: dbp_schema.RealWorldDataset.generatedFrom:type_name -> dbp_schema.RealWorldDataset
-	8,  // 2: dbp_schema.RealWorldDataset.generatedUsing:type_name -> dbp_schema.RealWorldDataBrewerInfo
-	7,  // 3: dbp_schema.RealWorldDataset.generatedArgs:type_name -> dbp_schema.RealWorldDataBrewingArgument
-	9,  // 4: dbp_schema.RealWorldDataset.collectionInfo:type_name -> dbp_schema.RealWorldDataCollectionInfo
-	20, // 5: dbp_schema.RealWorldDataset.distribution:type_name -> dbp_schema.RealWorldDataStoringInfo
-	41, // 6: dbp_schema.RealWorldDataset.dateCreated:type_name -> google.protobuf.Timestamp
-	41, // 7: dbp_schema.RealWorldDataset.dateModified:type_name -> google.protobuf.Timestamp
-	41, // 8: dbp_schema.RealWorldDataset.datePublished:type_name -> google.protobuf.Timestamp
-	40, // 9: dbp_schema.RealWorldDataset.tags:type_name -> dbp_schema.RealWorldDataTags
-	1,  // 10: dbp_schema.RealWorldDataBrewerInput.inputCharacteristic:type_name -> dbp_schema.VariableCharacteristicEnumeration
-	4,  // 11: dbp_schema.RealWorldDataBrewerInput.dataset:type_name -> dbp_schema.RealWorldDataset
-	40, // 12: dbp_schema.RealWorldDataBrewerInput.tags:type_name -> dbp_schema.RealWorldDataTags
-	1,  // 13: dbp_schema.RealWorldDataBrewerOutput.outputCharacteristic:type_name -> dbp_schema.VariableCharacteristicEnumeration
-	40, // 14: dbp_schema.RealWorldDataBrewerOutput.tags:type_name -> dbp_schema.RealWorldDataTags
-	40, // 15: dbp_schema.RealWorldDataBrewingArgument.tags:type_name -> dbp_schema.RealWorldDataTags
-	5,  // 16: dbp_schema.RealWorldDataBrewerInfo.inputSpecs:type_name -> dbp_schema.RealWorldDataBrewerInput
-	6,  // 17: dbp_schema.RealWorldDataBrewerInfo.outputSpecs:type_name -> dbp_schema.RealWorldDataBrewerOutput
-	7,  // 18: dbp_schema.RealWorldDataBrewerInfo.argSpecs:type_name -> dbp_schema.RealWorldDataBrewingArgument
-	0,  // 19: dbp_schema.RealWorldDataBrewerInfo.conversionCharacteristic:type_name -> dbp_schema.ConversionCharacteristicEnumeration
-	40, // 20: dbp_schema.RealWorldDataBrewerInfo.tags:type_name -> dbp_schema.RealWorldDataTags
-	10, // 21: dbp_schema.RealWorldDataCollectionInfo.entryPoint:type_name -> dbp_schema.EntryPoint
-	40, // 22: dbp_schema.RealWorldDataCollectionInfo.tags:type_name -> dbp_schema.RealWorldDataTags
-	14, // 23: dbp_schema.RealWorldDataFieldProfile.structure:type_name -> dbp_schema.RealWorldDataStructureGraph
-	40, // 24: dbp_schema.RealWorldDataFieldProfile.tags:type_name -> dbp_schema.RealWorldDataTags
-	15, // 25: dbp_schema.RealWorldDataStructureGraph.at_graph:type_name -> dbp_schema.GraphNode
-	40, // 26: dbp_schema.RealWorldDataStructureGraph.tags:type_name -> dbp_schema.RealWorldDataTags
-	17, // 27: dbp_schema.GraphNode.classNode:type_name -> dbp_schema.DbpClass
-	18, // 28: dbp_schema.GraphNode.listNode:type_name -> dbp_schema.DbpList
-	19, // 29: dbp_schema.GraphNode.propertyNode:type_name -> dbp_schema.RealWorldDataStructureProperty
-	16, // 30: dbp_schema.DbpClass.domainIncludes:type_name -> dbp_schema.IdRef
-	16, // 31: dbp_schema.DbpClass.rangeIncludes:type_name -> dbp_schema.IdRef
-	16, // 32: dbp_schema.DbpList.domainIncludes:type_name -> dbp_schema.IdRef
-	16, // 33: dbp_schema.DbpList.rangeIncludes:type_name -> dbp_schema.IdRef
-	16, // 34: dbp_schema.RealWorldDataStructureProperty.domainIncludes:type_name -> dbp_schema.IdRef
-	16, // 35: dbp_schema.RealWorldDataStructureProperty.rangeIncludes:type_name -> dbp_schema.IdRef
-	2,  // 36: dbp_schema.RealWorldDataStructureProperty.itemType:type_name -> dbp_schema.ItemType
-	2,  // 37: dbp_schema.RealWorldDataStructureProperty.itemType95p:type_name -> dbp_schema.ItemType
-	42, // 38: dbp_schema.RealWorldDataStructureProperty.unitText:type_name -> google.protobuf.StringValue
-	3,  // 39: dbp_schema.RealWorldDataStructureProperty.variableScaleType:type_name -> dbp_schema.VariableScaleTypeEnumeration
-	41, // 40: dbp_schema.RealWorldDataStoringInfo.startTime:type_name -> google.protobuf.Timestamp
-	41, // 41: dbp_schema.RealWorldDataStoringInfo.endTime:type_name -> google.protobuf.Timestamp
-	10, // 42: dbp_schema.RealWorldDataStoringInfo.entryPoint:type_name -> dbp_schema.EntryPoint
-	39, // 43: dbp_schema.RealWorldDataStoringInfo.extendedPathPatternFormats:type_name -> dbp_schema.RealWorldDataPathPatternFormat
-	40, // 44: dbp_schema.RealWorldDataStoringInfo.tags:type_name -> dbp_schema.RealWorldDataTags
-	4,  // 45: dbp_schema.RealWorldDataRegisterDemand.dataset:type_name -> dbp_schema.RealWorldDataset
-	40, // 46: dbp_schema.RealWorldDataRegisterDemand.tags:type_name -> dbp_schema.RealWorldDataTags
-	4,  // 47: dbp_schema.RealWorldDataRegisterSupply.dataset:type_name -> dbp_schema.RealWorldDataset
-	40, // 48: dbp_schema.RealWorldDataRegisterSupply.tags:type_name -> dbp_schema.RealWorldDataTags
-	9,  // 49: dbp_schema.RealWorldDataCollectionDemand.collectionInfo:type_name -> dbp_schema.RealWorldDataCollectionInfo
-	40, // 50: dbp_schema.RealWorldDataCollectionDemand.tags:type_name -> dbp_schema.RealWorldDataTags
-	9,  // 51: dbp_schema.RealWorldDataCollectionSupply.collectionInfo:type_name -> dbp_schema.RealWorldDataCollectionInfo
-	40, // 52: dbp_schema.RealWorldDataCollectionSupply.tags:type_name -> dbp_schema.RealWorldDataTags
-	9,  // 53: dbp_schema.RealWorldDataCollectionStatus.collectionInfo:type_name -> dbp_schema.RealWorldDataCollectionInfo
-	43, // 54: dbp_schema.RealWorldDataCollectionStatus.activeConnections:type_name -> google.protobuf.Struct
-	43, // 55: dbp_schema.RealWorldDataCollectionStatus.trafficStatistics:type_name -> google.protobuf.Struct
-	40, // 56: dbp_schema.RealWorldDataCollectionStatus.tags:type_name -> dbp_schema.RealWorldDataTags
-	8,  // 57: dbp_schema.RealWorldDataBrewingDemand.brewerInfo:type_name -> dbp_schema.RealWorldDataBrewerInfo
-	5,  // 58: dbp_schema.RealWorldDataBrewingDemand.brewerInput:type_name -> dbp_schema.RealWorldDataBrewerInput
-	7,  // 59: dbp_schema.RealWorldDataBrewingDemand.brewingArgument:type_name -> dbp_schema.RealWorldDataBrewingArgument
-	20, // 60: dbp_schema.RealWorldDataBrewingDemand.brewerOutputStore:type_name -> dbp_schema.RealWorldDataStoringInfo
-	40, // 61: dbp_schema.RealWorldDataBrewingDemand.tags:type_name -> dbp_schema.RealWorldDataTags
-	8,  // 62: dbp_schema.RealWorldDataBrewingSupply.brewerInfo:type_name -> dbp_schema.RealWorldDataBrewerInfo
-	6,  // 63: dbp_schema.RealWorldDataBrewingSupply.brewerOutput:type_name -> dbp_schema.RealWorldDataBrewerOutput
-	7,  // 64: dbp_schema.RealWorldDataBrewingSupply.brewingArgument:type_name -> dbp_schema.RealWorldDataBrewingArgument
-	40, // 65: dbp_schema.RealWorldDataBrewingSupply.tags:type_name -> dbp_schema.RealWorldDataTags
-	26, // 66: dbp_schema.RealWorldDataPeriodicBrewingConfig.brewingConfig:type_name -> dbp_schema.RealWorldDataBrewingDemand
-	40, // 67: dbp_schema.RealWorldDataPeriodicBrewingConfig.tags:type_name -> dbp_schema.RealWorldDataTags
-	4,  // 68: dbp_schema.RealWorldDataReadDemand.dataset:type_name -> dbp_schema.RealWorldDataset
-	40, // 69: dbp_schema.RealWorldDataReadDemand.tags:type_name -> dbp_schema.RealWorldDataTags
-	4,  // 70: dbp_schema.RealWorldDataReadSupply.dataset:type_name -> dbp_schema.RealWorldDataset
-	40, // 71: dbp_schema.RealWorldDataReadSupply.tags:type_name -> dbp_schema.RealWorldDataTags
-	4,  // 72: dbp_schema.RealWorldDataWriteDemand.dataset:type_name -> dbp_schema.RealWorldDataset
-	40, // 73: dbp_schema.RealWorldDataWriteDemand.tags:type_name -> dbp_schema.RealWorldDataTags
-	4,  // 74: dbp_schema.RealWorldDataWriteSupply.dataset:type_name -> dbp_schema.RealWorldDataset
-	40, // 75: dbp_schema.RealWorldDataWriteSupply.tags:type_name -> dbp_schema.RealWorldDataTags
-	4,  // 76: dbp_schema.RealWorldDataMoveDemand.dataset:type_name -> dbp_schema.RealWorldDataset
-	20, // 77: dbp_schema.RealWorldDataMoveDemand.moveFrom:type_name -> dbp_schema.RealWorldDataStoringInfo
-	20, // 78: dbp_schema.RealWorldDataMoveDemand.moveTo:type_name -> dbp_schema.RealWorldDataStoringInfo
-	40, // 79: dbp_schema.RealWorldDataMoveDemand.tags:type_name -> dbp_schema.RealWorldDataTags
-	4,  // 80: dbp_schema.RealWorldDataMoveSupply.dataset:type_name -> dbp_schema.RealWorldDataset
-	20, // 81: dbp_schema.RealWorldDataMoveSupply.moveFrom:type_name -> dbp_schema.RealWorldDataStoringInfo
-	20, // 82: dbp_schema.RealWorldDataMoveSupply.moveTo:type_name -> dbp_schema.RealWorldDataStoringInfo
-	4,  // 83: dbp_schema.RealWorldDataMoveSupply.movedDataset:type_name -> dbp_schema.RealWorldDataset
-	40, // 84: dbp_schema.RealWorldDataMoveSupply.tags:type_name -> dbp_schema.RealWorldDataTags
-	33, // 85: dbp_schema.RealWorldDataPeriodicMoveConfig.moveConfig:type_name -> dbp_schema.RealWorldDataMoveDemand
-	40, // 86: dbp_schema.RealWorldDataPeriodicMoveConfig.tags:type_name -> dbp_schema.RealWorldDataTags
-	20, // 87: dbp_schema.RealWorldDataRemoveDemand.datasetStore:type_name -> dbp_schema.RealWorldDataStoringInfo
-	40, // 88: dbp_schema.RealWorldDataRemoveDemand.tags:type_name -> dbp_schema.RealWorldDataTags
-	20, // 89: dbp_schema.RealWorldDataRemoveSupply.datasetStore:type_name -> dbp_schema.RealWorldDataStoringInfo
-	40, // 90: dbp_schema.RealWorldDataRemoveSupply.tags:type_name -> dbp_schema.RealWorldDataTags
-	36, // 91: dbp_schema.RealWorldDataPeriodicRemoveConfig.removeConfig:type_name -> dbp_schema.RealWorldDataRemoveDemand
-	40, // 92: dbp_schema.RealWorldDataPeriodicRemoveConfig.tags:type_name -> dbp_schema.RealWorldDataTags
-	40, // 93: dbp_schema.RealWorldDataPathPatternFormat.tags:type_name -> dbp_schema.RealWorldDataTags
-	94, // [94:94] is the sub-list for method output_type
-	94, // [94:94] is the sub-list for method input_type
-	94, // [94:94] is the sub-list for extension type_name
-	94, // [94:94] is the sub-list for extension extendee
-	0,  // [0:94] is the sub-list for field type_name
+	13,  // 0: dbp_schema.RealWorldDataset.structureInfo:type_name -> dbp_schema.RealWorldDataFieldProfile
+	4,   // 1: dbp_schema.RealWorldDataset.generatedFrom:type_name -> dbp_schema.RealWorldDataset
+	8,   // 2: dbp_schema.RealWorldDataset.generatedUsing:type_name -> dbp_schema.RealWorldDataBrewerInfo
+	7,   // 3: dbp_schema.RealWorldDataset.generatedArgs:type_name -> dbp_schema.RealWorldDataBrewingArgument
+	9,   // 4: dbp_schema.RealWorldDataset.collectionInfo:type_name -> dbp_schema.RealWorldDataCollectionInfo
+	20,  // 5: dbp_schema.RealWorldDataset.distribution:type_name -> dbp_schema.RealWorldDataStoringInfo
+	43,  // 6: dbp_schema.RealWorldDataset.dateCreated:type_name -> google.protobuf.Timestamp
+	43,  // 7: dbp_schema.RealWorldDataset.dateModified:type_name -> google.protobuf.Timestamp
+	43,  // 8: dbp_schema.RealWorldDataset.datePublished:type_name -> google.protobuf.Timestamp
+	40,  // 9: dbp_schema.RealWorldDataset.tags:type_name -> dbp_schema.RealWorldDataTags
+	1,   // 10: dbp_schema.RealWorldDataBrewerInput.inputCharacteristic:type_name -> dbp_schema.VariableCharacteristicEnumeration
+	4,   // 11: dbp_schema.RealWorldDataBrewerInput.dataset:type_name -> dbp_schema.RealWorldDataset
+	40,  // 12: dbp_schema.RealWorldDataBrewerInput.tags:type_name -> dbp_schema.RealWorldDataTags
+	1,   // 13: dbp_schema.RealWorldDataBrewerOutput.outputCharacteristic:type_name -> dbp_schema.VariableCharacteristicEnumeration
+	40,  // 14: dbp_schema.RealWorldDataBrewerOutput.tags:type_name -> dbp_schema.RealWorldDataTags
+	40,  // 15: dbp_schema.RealWorldDataBrewingArgument.tags:type_name -> dbp_schema.RealWorldDataTags
+	5,   // 16: dbp_schema.RealWorldDataBrewerInfo.inputSpecs:type_name -> dbp_schema.RealWorldDataBrewerInput
+	6,   // 17: dbp_schema.RealWorldDataBrewerInfo.outputSpecs:type_name -> dbp_schema.RealWorldDataBrewerOutput
+	7,   // 18: dbp_schema.RealWorldDataBrewerInfo.argSpecs:type_name -> dbp_schema.RealWorldDataBrewingArgument
+	0,   // 19: dbp_schema.RealWorldDataBrewerInfo.conversionCharacteristic:type_name -> dbp_schema.ConversionCharacteristicEnumeration
+	40,  // 20: dbp_schema.RealWorldDataBrewerInfo.tags:type_name -> dbp_schema.RealWorldDataTags
+	10,  // 21: dbp_schema.RealWorldDataCollectionInfo.entryPoint:type_name -> dbp_schema.EntryPoint
+	40,  // 22: dbp_schema.RealWorldDataCollectionInfo.tags:type_name -> dbp_schema.RealWorldDataTags
+	14,  // 23: dbp_schema.RealWorldDataFieldProfile.structure:type_name -> dbp_schema.RealWorldDataStructureGraph
+	40,  // 24: dbp_schema.RealWorldDataFieldProfile.tags:type_name -> dbp_schema.RealWorldDataTags
+	15,  // 25: dbp_schema.RealWorldDataStructureGraph.at_graph:type_name -> dbp_schema.GraphNode
+	40,  // 26: dbp_schema.RealWorldDataStructureGraph.tags:type_name -> dbp_schema.RealWorldDataTags
+	17,  // 27: dbp_schema.GraphNode.classNode:type_name -> dbp_schema.DbpClass
+	18,  // 28: dbp_schema.GraphNode.listNode:type_name -> dbp_schema.DbpList
+	19,  // 29: dbp_schema.GraphNode.propertyNode:type_name -> dbp_schema.RealWorldDataStructureProperty
+	16,  // 30: dbp_schema.DbpClass.domainIncludes:type_name -> dbp_schema.IdRef
+	16,  // 31: dbp_schema.DbpClass.rangeIncludes:type_name -> dbp_schema.IdRef
+	16,  // 32: dbp_schema.DbpList.domainIncludes:type_name -> dbp_schema.IdRef
+	16,  // 33: dbp_schema.DbpList.rangeIncludes:type_name -> dbp_schema.IdRef
+	16,  // 34: dbp_schema.RealWorldDataStructureProperty.domainIncludes:type_name -> dbp_schema.IdRef
+	16,  // 35: dbp_schema.RealWorldDataStructureProperty.rangeIncludes:type_name -> dbp_schema.IdRef
+	2,   // 36: dbp_schema.RealWorldDataStructureProperty.itemType:type_name -> dbp_schema.ItemType
+	2,   // 37: dbp_schema.RealWorldDataStructureProperty.itemType95p:type_name -> dbp_schema.ItemType
+	44,  // 38: dbp_schema.RealWorldDataStructureProperty.unitText:type_name -> google.protobuf.StringValue
+	3,   // 39: dbp_schema.RealWorldDataStructureProperty.variableScaleType:type_name -> dbp_schema.VariableScaleTypeEnumeration
+	41,  // 40: dbp_schema.RealWorldDataStructureProperty.fieldType:type_name -> dbp_schema.DataFieldType
+	43,  // 41: dbp_schema.RealWorldDataStoringInfo.startTime:type_name -> google.protobuf.Timestamp
+	43,  // 42: dbp_schema.RealWorldDataStoringInfo.endTime:type_name -> google.protobuf.Timestamp
+	10,  // 43: dbp_schema.RealWorldDataStoringInfo.entryPoint:type_name -> dbp_schema.EntryPoint
+	39,  // 44: dbp_schema.RealWorldDataStoringInfo.extendedPathPatternFormats:type_name -> dbp_schema.RealWorldDataPathPatternFormat
+	40,  // 45: dbp_schema.RealWorldDataStoringInfo.tags:type_name -> dbp_schema.RealWorldDataTags
+	4,   // 46: dbp_schema.RealWorldDataRegisterDemand.dataset:type_name -> dbp_schema.RealWorldDataset
+	40,  // 47: dbp_schema.RealWorldDataRegisterDemand.tags:type_name -> dbp_schema.RealWorldDataTags
+	4,   // 48: dbp_schema.RealWorldDataRegisterSupply.dataset:type_name -> dbp_schema.RealWorldDataset
+	40,  // 49: dbp_schema.RealWorldDataRegisterSupply.tags:type_name -> dbp_schema.RealWorldDataTags
+	9,   // 50: dbp_schema.RealWorldDataCollectionDemand.collectionInfo:type_name -> dbp_schema.RealWorldDataCollectionInfo
+	40,  // 51: dbp_schema.RealWorldDataCollectionDemand.tags:type_name -> dbp_schema.RealWorldDataTags
+	9,   // 52: dbp_schema.RealWorldDataCollectionSupply.collectionInfo:type_name -> dbp_schema.RealWorldDataCollectionInfo
+	40,  // 53: dbp_schema.RealWorldDataCollectionSupply.tags:type_name -> dbp_schema.RealWorldDataTags
+	9,   // 54: dbp_schema.RealWorldDataCollectionStatus.collectionInfo:type_name -> dbp_schema.RealWorldDataCollectionInfo
+	45,  // 55: dbp_schema.RealWorldDataCollectionStatus.activeConnections:type_name -> google.protobuf.Struct
+	45,  // 56: dbp_schema.RealWorldDataCollectionStatus.trafficStatistics:type_name -> google.protobuf.Struct
+	40,  // 57: dbp_schema.RealWorldDataCollectionStatus.tags:type_name -> dbp_schema.RealWorldDataTags
+	8,   // 58: dbp_schema.RealWorldDataBrewingDemand.brewerInfo:type_name -> dbp_schema.RealWorldDataBrewerInfo
+	5,   // 59: dbp_schema.RealWorldDataBrewingDemand.brewerInput:type_name -> dbp_schema.RealWorldDataBrewerInput
+	7,   // 60: dbp_schema.RealWorldDataBrewingDemand.brewingArgument:type_name -> dbp_schema.RealWorldDataBrewingArgument
+	20,  // 61: dbp_schema.RealWorldDataBrewingDemand.brewerOutputStore:type_name -> dbp_schema.RealWorldDataStoringInfo
+	40,  // 62: dbp_schema.RealWorldDataBrewingDemand.tags:type_name -> dbp_schema.RealWorldDataTags
+	8,   // 63: dbp_schema.RealWorldDataBrewingSupply.brewerInfo:type_name -> dbp_schema.RealWorldDataBrewerInfo
+	6,   // 64: dbp_schema.RealWorldDataBrewingSupply.brewerOutput:type_name -> dbp_schema.RealWorldDataBrewerOutput
+	7,   // 65: dbp_schema.RealWorldDataBrewingSupply.brewingArgument:type_name -> dbp_schema.RealWorldDataBrewingArgument
+	40,  // 66: dbp_schema.RealWorldDataBrewingSupply.tags:type_name -> dbp_schema.RealWorldDataTags
+	26,  // 67: dbp_schema.RealWorldDataPeriodicBrewingConfig.brewingConfig:type_name -> dbp_schema.RealWorldDataBrewingDemand
+	40,  // 68: dbp_schema.RealWorldDataPeriodicBrewingConfig.tags:type_name -> dbp_schema.RealWorldDataTags
+	4,   // 69: dbp_schema.RealWorldDataReadDemand.dataset:type_name -> dbp_schema.RealWorldDataset
+	40,  // 70: dbp_schema.RealWorldDataReadDemand.tags:type_name -> dbp_schema.RealWorldDataTags
+	4,   // 71: dbp_schema.RealWorldDataReadSupply.dataset:type_name -> dbp_schema.RealWorldDataset
+	40,  // 72: dbp_schema.RealWorldDataReadSupply.tags:type_name -> dbp_schema.RealWorldDataTags
+	4,   // 73: dbp_schema.RealWorldDataWriteDemand.dataset:type_name -> dbp_schema.RealWorldDataset
+	40,  // 74: dbp_schema.RealWorldDataWriteDemand.tags:type_name -> dbp_schema.RealWorldDataTags
+	4,   // 75: dbp_schema.RealWorldDataWriteSupply.dataset:type_name -> dbp_schema.RealWorldDataset
+	40,  // 76: dbp_schema.RealWorldDataWriteSupply.tags:type_name -> dbp_schema.RealWorldDataTags
+	4,   // 77: dbp_schema.RealWorldDataMoveDemand.dataset:type_name -> dbp_schema.RealWorldDataset
+	20,  // 78: dbp_schema.RealWorldDataMoveDemand.moveFrom:type_name -> dbp_schema.RealWorldDataStoringInfo
+	20,  // 79: dbp_schema.RealWorldDataMoveDemand.moveTo:type_name -> dbp_schema.RealWorldDataStoringInfo
+	40,  // 80: dbp_schema.RealWorldDataMoveDemand.tags:type_name -> dbp_schema.RealWorldDataTags
+	4,   // 81: dbp_schema.RealWorldDataMoveSupply.dataset:type_name -> dbp_schema.RealWorldDataset
+	20,  // 82: dbp_schema.RealWorldDataMoveSupply.moveFrom:type_name -> dbp_schema.RealWorldDataStoringInfo
+	20,  // 83: dbp_schema.RealWorldDataMoveSupply.moveTo:type_name -> dbp_schema.RealWorldDataStoringInfo
+	4,   // 84: dbp_schema.RealWorldDataMoveSupply.movedDataset:type_name -> dbp_schema.RealWorldDataset
+	40,  // 85: dbp_schema.RealWorldDataMoveSupply.tags:type_name -> dbp_schema.RealWorldDataTags
+	33,  // 86: dbp_schema.RealWorldDataPeriodicMoveConfig.moveConfig:type_name -> dbp_schema.RealWorldDataMoveDemand
+	40,  // 87: dbp_schema.RealWorldDataPeriodicMoveConfig.tags:type_name -> dbp_schema.RealWorldDataTags
+	20,  // 88: dbp_schema.RealWorldDataRemoveDemand.datasetStore:type_name -> dbp_schema.RealWorldDataStoringInfo
+	40,  // 89: dbp_schema.RealWorldDataRemoveDemand.tags:type_name -> dbp_schema.RealWorldDataTags
+	20,  // 90: dbp_schema.RealWorldDataRemoveSupply.datasetStore:type_name -> dbp_schema.RealWorldDataStoringInfo
+	40,  // 91: dbp_schema.RealWorldDataRemoveSupply.tags:type_name -> dbp_schema.RealWorldDataTags
+	36,  // 92: dbp_schema.RealWorldDataPeriodicRemoveConfig.removeConfig:type_name -> dbp_schema.RealWorldDataRemoveDemand
+	40,  // 93: dbp_schema.RealWorldDataPeriodicRemoveConfig.tags:type_name -> dbp_schema.RealWorldDataTags
+	40,  // 94: dbp_schema.RealWorldDataPathPatternFormat.tags:type_name -> dbp_schema.RealWorldDataTags
+	43,  // 95: dbp_schema.DataFieldType.dateModified:type_name -> google.protobuf.Timestamp
+	41,  // 96: dbp_schema.DataFieldType.supersededBy:type_name -> dbp_schema.DataFieldType
+	2,   // 97: dbp_schema.DataFieldType.itemType:type_name -> dbp_schema.ItemType
+	3,   // 98: dbp_schema.DataFieldType.variableScaleType:type_name -> dbp_schema.VariableScaleTypeEnumeration
+	44,  // 99: dbp_schema.DataFieldType.unitText:type_name -> google.protobuf.StringValue
+	42,  // 100: dbp_schema.DataFieldType.compressionHints:type_name -> dbp_schema.CompressionHint
+	40,  // 101: dbp_schema.DataFieldType.tags:type_name -> dbp_schema.RealWorldDataTags
+	102, // [102:102] is the sub-list for method output_type
+	102, // [102:102] is the sub-list for method input_type
+	102, // [102:102] is the sub-list for extension type_name
+	102, // [102:102] is the sub-list for extension extendee
+	0,   // [0:102] is the sub-list for field type_name
 }
 
 func init() { file_dbp_schema_proto_init() }
@@ -5199,13 +5731,15 @@ func file_dbp_schema_proto_init() {
 	file_dbp_schema_proto_msgTypes[34].OneofWrappers = []any{}
 	file_dbp_schema_proto_msgTypes[35].OneofWrappers = []any{}
 	file_dbp_schema_proto_msgTypes[36].OneofWrappers = []any{}
+	file_dbp_schema_proto_msgTypes[37].OneofWrappers = []any{}
+	file_dbp_schema_proto_msgTypes[38].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dbp_schema_proto_rawDesc), len(file_dbp_schema_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   37,
+			NumMessages:   39,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
