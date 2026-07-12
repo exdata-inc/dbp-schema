@@ -33,7 +33,7 @@ jobs:
       (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
       (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     # rate limit 時に resetsAt(最大 5h 先)まで待ってから --resume で再開するため、
     # デフォルト 360 分では「実行 120 分 + 待機 + 再開 120 分」が収まらない。余裕を持って 12h。
     timeout-minutes: 720
