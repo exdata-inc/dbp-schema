@@ -1,0 +1,227 @@
+name: Claude Code
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: write # ブランチを push するため
+  issues: write # Issue にコメントするため
+  pull-requests: write # PR を作るため
+  id-token: write
+
+env:
+  CLAUDE_CODE_ENABLE_TELEMETRY: "1"
+  OTEL_METRICS_EXPORTER: "otlp"
+  OTEL_LOGS_EXPORTER: "otlp"
+  OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+  OTEL_EXPORTER_OTLP_ENDPOINT: ${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT || vars.OTEL_EXPORTER_OTLP_ENDPOINT }}
+  OTEL_EXPORTER_OTLP_HEADERS: ${{ secrets.OTEL_EXPORTER_OTLP_HEADERS || vars.OTEL_EXPORTER_OTLP_HEADERS }}
+  OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE: "cumulative"
+  OTEL_RESOURCE_ATTRIBUTES: "adhd_user=gh-claude"
+
+jobs:
+  claude-code:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+    runs-on: self-hosted
+    # rate limit 時に resetsAt(最大 5h 先)まで待ってから --resume で再開するため、
+    # デフォルト 360 分では「実行 120 分 + 待機 + 再開 120 分」が収まらない。余裕を持って 12h。
+    timeout-minutes: 720
+    container:
+      image: ngtystr/rust-obfuscator-llvm:1.93.0-21.1.8-20260710
+    # この container では Actions runner が bash を自動検出できず sh フォールバックしていたため、
+    # ジョブ全体の run step を bash で実行するよう明示する。bash は image に同梱されている前提。
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Prepare task environment
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory '*'
+
+      - name: Fetch Claude OAuth values
+        id: claude-oauth
+        env:
+          CLAUDE_OAUTH_URL: ${{ secrets.CLAUDE_OAUTH_URL }}
+        run: |
+          set -euo pipefail
+          json=$(curl -fsSL "$CLAUDE_OAUTH_URL")
+          access_token=$(printf '%s' "$json" | jq -r '.accessToken')
+          expires_at=$(printf '%s' "$json" | jq -r '.expiresAt | tostring')
+
+          if [ "$access_token" = "null" ] || [ -z "$access_token" ]; then
+            echo "Failed to read accessToken from JSON response" >&2
+            exit 1
+          fi
+          if [ "$expires_at" = "null" ] || [ -z "$expires_at" ]; then
+            echo "Failed to read expiresAt from JSON response" >&2
+            exit 1
+          fi
+
+          echo "access_token=$access_token" >> "$GITHUB_OUTPUT"
+          echo "expires_at=$expires_at" >> "$GITHUB_OUTPUT"
+
+      # Slack スレッドの添付を claude が Read できるよう、実行前に取得しておく。
+      # slackmeta(channel/ts) はハブから引き継がれるので、各 repo 側でも同じ添付を再取得できる。
+      # 画像は claude が Read で視覚的に解析できる。失敗してもジョブは止めない（exit 0）。
+      - name: Download Slack attachments
+        if: contains(github.event.issue.body, 'slackmeta')
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          set -uo pipefail
+          META=$(grep -oP '(?<=slackmeta ).*(?= -->)' <<< "$ISSUE_BODY" || true)
+          if [ -z "$META" ]; then echo "slackmeta なし。スキップ"; exit 0; fi
+          CH=$(jq -r .channel <<< "$META"); TS=$(jq -r .ts <<< "$META")
+          mkdir -p slack-attachments
+          resp=$(curl -s -G https://slack.com/api/conversations.replies \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            --data-urlencode "channel=$CH" --data-urlencode "ts=$TS" --data-urlencode "limit=1000")
+          if [ "$(jq -r '.ok' <<< "$resp")" != "true" ]; then
+            echo "conversations.replies 失敗: $(jq -r '.error // "unknown"' <<< "$resp")" >&2
+            echo "（Slack アプリに files:read と channels:history / groups:history スコープが必要）" >&2
+            exit 0
+          fi
+          count=0
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            id=$(jq -r '.id' <<< "$f")
+            name=$(jq -r '.name // "file"' <<< "$f")
+            url=$(jq -r '.url_private_download // .url_private // empty' <<< "$f")
+            [ -z "$url" ] && continue
+            safe=$(basename "$name" | tr -cd 'A-Za-z0-9._-'); [ -z "$safe" ] && safe="file"
+            out="slack-attachments/${id}_${safe}"
+            if curl -sfL -H "Authorization: Bearer $SLACK_BOT_TOKEN" "$url" -o "$out"; then
+              echo "✓ $name -> $out"; count=$((count + 1))
+            else
+              echo "✗ DL 失敗: $name" >&2
+            fi
+          done < <(jq -c '.messages[]?.files[]?' <<< "$resp")
+          jq -r '.messages[]?.files[]? | "- \(.name)  (\(.mimetype // "?"), \(.size // 0) bytes)"' <<< "$resp" > slack-attachments/INDEX.md || true
+          echo "添付 $count 件を slack-attachments/ に保存しました"
+          ls -la slack-attachments || true
+
+      # claude が `gh pr create` 等で本物の PR を作れるように gh CLI を用意する。
+      # GitHub ホストランナーには既定で入っているが、セルフホストランナーには無いことがある。
+      # 無ければ sudo 不要でローカルに配置し PATH へ通す（Linux x64/arm64）。失敗してもジョブは止めない。
+      - name: Ensure GitHub CLI (gh)
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          if command -v gh >/dev/null 2>&1; then
+            echo "gh あり: $(gh --version | head -1)"; exit 0
+          fi
+          case "$(uname -m)" in
+            x86_64|amd64) A=amd64 ;;
+            aarch64|arm64) A=arm64 ;;
+            *) echo "未対応アーキ $(uname -m)。gh をランナーに手動導入してください" >&2; exit 1 ;;
+          esac
+          VER=2.63.2
+          tmp="$(mktemp -d)"
+          curl -fsSL "https://github.com/cli/cli/releases/download/v${VER}/gh_${VER}_linux_${A}.tar.gz" | tar -xz -C "$tmp"
+          echo "${tmp}/gh_${VER}_linux_${A}/bin" >> "$GITHUB_PATH"
+          "${tmp}/gh_${VER}_linux_${A}/bin/gh" --version | head -1
+
+      # ANTHROPIC_BASE_URL が repo の Actions secrets / variables に設定されていれば実行時の環境へ反映する
+      #（独自の Anthropic 互換エンドポイント＝gateway やローカル wrapper へ向けたいとき用）。
+      # 未設定なら何も足さない（= 既定の OAuth フローのまま）。
+      # 空文字で既定を上書きしないよう、値があるときだけ書く。
+      - name: Apply Anthropic env overrides (if set)
+        env:
+          IN_ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL || vars.ANTHROPIC_BASE_URL }}
+        run: |
+          set -euo pipefail
+          if [ -n "${IN_ANTHROPIC_BASE_URL:-}" ]; then
+            echo "ANTHROPIC_BASE_URL=${IN_ANTHROPIC_BASE_URL}" >> "$GITHUB_ENV"
+            echo "ANTHROPIC_BASE_URL を反映しました: ${IN_ANTHROPIC_BASE_URL}"
+          fi
+          true
+
+      - name: Run Claude Code
+        id: claude-code
+        uses: ngtystr/claude-code-action@main
+        with:
+          use_oauth: "true"
+          claude_access_token: ${{ steps.claude-oauth.outputs.access_token }}
+          claude_refresh_token: "disabled"
+          claude_expires_at: ${{ steps.claude-oauth.outputs.expires_at }}
+          model: ${{ secrets.ANTHROPIC_MODEL || vars.ANTHROPIC_MODEL || vars.CLAUDE_MODEL || 'claude-sonnet-5' }}
+          # claude-code-action の実行時間制限（デフォ 30 分 → 720 分に延長）。
+          timeout_minutes: '720'
+          # rate limit 対策の retry。stream-json の rate_limit_event を構造的に検知し、
+          # resetsAt(リセット時刻)まで一括待機 → `--resume <session-id>` で同一セッションを
+          # 再開する。会話コンテキストが引き継がれるので、中断までに使ったトークン
+          # (数十ターン分の作業)が無駄にならない。resetsAt が取れない失敗は 60s 間隔で
+          # 再試行(上限 120 回)。rate limit 以外の失敗は従来どおり即 fail。
+          # 単発待機の上限はデフォルト 8h(retry_max_wait_seconds)。job の timeout-minutes: 720
+          # とセットで運用する。
+          max_retries: '120'
+          retry_interval_seconds: '60'
+          # CLAUDE.md の手順に必要なツールを許可する（CI では未許可ツールは弾かれるため）。
+          #   Bash      : post_slack ヘルパー（curl/jq/grep, 関数定義込み）と gh での PR 作成に必須
+          #   WebFetch  : URL 明示のページ取得
+          #   WebSearch : エラー文言などの Web 検索
+          # ※ コード修正・PR 作成が役割なので commit/PR 系は禁止しない（ベース許可のまま）。
+          allowed_tools: |
+            Bash
+            WebFetch
+            WebSearch
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          # claude の Bash 内で `gh` を認証させるためのトークン（PR 作成/コメント等）。
+          # GITHUB_TOKEN（permissions の contents/issues/pull-requests: write）で同一 repo の PR 作成は可能。
+          # ※ GITHUB_TOKEN 作成の PR は他ワークフロー（claude-code-review 等）を起動しない点に注意。
+          #    レビュー bot まで起動させたい場合は PAT（例: secrets.GH_DISPATCH_TOKEN）に差し替える。
+          GH_TOKEN: ${{ github.token }}
+          # submodule 内のコード修正まで踏み込む必要が出たとき、claude が git submodule update /
+          # commit / push に使うトークン（CLAUDE.md の "submodule を操作するときのお願い" 節参照）。
+          # secrets に未登録なら空文字が渡り、claude はその場合「権限外」と判断してコメントで終える。
+          GH_TOKEN_SUBMODULE_RW: ${{ secrets.GH_TOKEN_SUBMODULE_RW }}
+
+          # Optional: Customize the trigger phrase (default: @claude)
+          # trigger_phrase: "/claude"
+
+          # Optional: Trigger when specific user is assigned to an issue
+          # assignee_trigger: "claude-bot"
+
+          # Optional: Allow Claude to run specific commands
+          # allowed_tools: "Bash(npm install),Bash(npm run build),Bash(npm run test:*),Bash(npm run lint:*)"
+
+          # Optional: Add custom instructions for Claude to customize its behavior for your project
+          # custom_instructions: |
+          #   Follow our coding standards
+          #   Ensure all new code has tests
+          #   Use TypeScript for new files
+
+          # Optional: Custom environment variables for Claude
+          # claude_env: |
+          #   NODE_ENV: test
+
+      # このジョブはコンテナ内で root として動くため、checkout / cargo が生成した
+      # ファイルは host 上で root 所有になる。次に同じ self-hosted runner で
+      # コンテナを使わないワークフロー(main 等)が動くと、runner ユーザーがそれらを
+      # 削除できず checkout(git clean) が "permission denied" でコケる。
+      # そこで (1) 所有者をマウント元 /__w(= runner ユーザー)に戻し、(2) 中身を削除する。
+      # ビルドが途中で失敗しても必ず後始末されるよう if: always() を付ける。
+      - name: Cleanup Directory
+        if: always()
+        run: |
+          chown -R --reference=/__w /__w 2>/dev/null || true
+          rm -rf -- "$GITHUB_WORKSPACE"/* "$GITHUB_WORKSPACE"/.[!.]* "$GITHUB_WORKSPACE"/..?* 2>/dev/null || true

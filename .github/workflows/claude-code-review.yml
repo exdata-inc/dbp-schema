@@ -1,0 +1,161 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    # Optional: Only run on specific file changes
+    # paths:
+    #   - "src/**/*.ts"
+    #   - "src/**/*.tsx"
+    #   - "src/**/*.js"
+    #   - "src/**/*.jsx"
+
+permissions:
+  contents: write # ブランチを push するため
+  issues: write # Issue にコメントするため
+  pull-requests: write # PR を作るため
+  id-token: write
+
+env:
+  CLAUDE_CODE_ENABLE_TELEMETRY: "1"
+  OTEL_METRICS_EXPORTER: "otlp"
+  OTEL_LOGS_EXPORTER: "otlp"
+  OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+  OTEL_EXPORTER_OTLP_ENDPOINT: ${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT || vars.OTEL_EXPORTER_OTLP_ENDPOINT }}
+  OTEL_EXPORTER_OTLP_HEADERS: ${{ secrets.OTEL_EXPORTER_OTLP_HEADERS || vars.OTEL_EXPORTER_OTLP_HEADERS }}
+  OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE: "cumulative"
+  OTEL_RESOURCE_ATTRIBUTES: "adhd_user=gh-claude-review"
+
+jobs:
+  claude-review:
+    # Optional: Filter by PR author
+    # if: |
+    #   github.event.pull_request.user.login == 'external-contributor' ||
+    #   github.event.pull_request.user.login == 'new-developer' ||
+    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
+
+    runs-on: self-hosted
+    # rate limit 時に resetsAt(最大 5h 先)まで待ってから --resume で再開するため、
+    # デフォルト 360 分では「実行 120 分 + 待機 + 再開 120 分」が収まらない。余裕を持って 12h。
+    timeout-minutes: 720
+    container:
+      image: ngtystr/rust-obfuscator-llvm:1.93.0-21.1.8-20260710
+    # この container では Actions runner が bash を自動検出できず sh フォールバックしていたため、
+    # ジョブ全体の run step を bash で実行するよう明示する。bash は image に同梱されている前提。
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Prepare task environment
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory '*'
+
+      - name: Fetch Claude OAuth values
+        id: claude-oauth
+        env:
+          CLAUDE_OAUTH_URL: ${{ secrets.CLAUDE_OAUTH_URL }}
+        run: |
+          set -euo pipefail
+          json=$(curl -fsSL "$CLAUDE_OAUTH_URL")
+          access_token=$(printf '%s' "$json" | jq -r '.accessToken')
+          expires_at=$(printf '%s' "$json" | jq -r '.expiresAt | tostring')
+
+          if [ "$access_token" = "null" ] || [ -z "$access_token" ]; then
+            echo "Failed to read accessToken from JSON response" >&2
+            exit 1
+          fi
+          if [ "$expires_at" = "null" ] || [ -z "$expires_at" ]; then
+            echo "Failed to read expiresAt from JSON response" >&2
+            exit 1
+          fi
+
+          echo "access_token=$access_token" >> "$GITHUB_OUTPUT"
+          echo "expires_at=$expires_at" >> "$GITHUB_OUTPUT"
+
+      # ANTHROPIC_BASE_URL が repo の Actions secrets / variables に設定されていれば実行時の環境へ反映する
+      #（独自の Anthropic 互換エンドポイント＝gateway やローカル wrapper へ向けたいとき用）。
+      # 未設定なら何も足さない（= 既定の OAuth フローのまま）。
+      # 空文字で既定を上書きしないよう、値があるときだけ書く。
+      - name: Apply Anthropic env overrides (if set)
+        env:
+          IN_ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL || vars.ANTHROPIC_BASE_URL }}
+        run: |
+          set -euo pipefail
+          if [ -n "${IN_ANTHROPIC_BASE_URL:-}" ]; then
+            echo "ANTHROPIC_BASE_URL=${IN_ANTHROPIC_BASE_URL}" >> "$GITHUB_ENV"
+            echo "ANTHROPIC_BASE_URL を反映しました: ${IN_ANTHROPIC_BASE_URL}"
+          fi
+          true
+
+      - name: Run Claude Code Review
+        id: claude-review
+        uses: ngtystr/claude-code-action@main
+        with:
+          use_oauth: "true"
+          claude_access_token: ${{ steps.claude-oauth.outputs.access_token }}
+          claude_refresh_token: "disabled"
+          claude_expires_at: ${{ steps.claude-oauth.outputs.expires_at }}
+          # Optional: Specify model (defaults to Claude Sonnet 5, uncomment for Claude Opus 5)
+          model: ${{ secrets.ANTHROPIC_MODEL || vars.ANTHROPIC_MODEL || vars.CLAUDE_MODEL || 'claude-sonnet-5' }}
+          # claude-code-action の実行時間制限（デフォ 30 分 → 720 分に延長）。
+          timeout_minutes: '720'
+          # rate limit 対策の retry。stream-json の rate_limit_event を構造的に検知し、
+          # resetsAt(リセット時刻)まで一括待機 → `--resume <session-id>` で同一セッションを
+          # 再開する。会話コンテキストが引き継がれるので、中断までに使ったトークン
+          # (数十ターン分の作業)が無駄にならない。resetsAt が取れない失敗は 60s 間隔で
+          # 再試行(上限 120 回)。rate limit 以外の失敗は従来どおり即 fail。
+          # 単発待機の上限はデフォルト 8h(retry_max_wait_seconds)。job の timeout-minutes: 720
+          # とセットで運用する。
+          max_retries: '120'
+          retry_interval_seconds: '60'
+
+          # Direct prompt for automated review (no @claude mention needed)
+          direct_prompt: |
+            Please review this pull request and provide feedback on:
+            - Code quality and best practices
+            - Potential bugs or issues
+            - Performance considerations
+            - Security concerns
+            - Test coverage
+
+            Be constructive and helpful in your feedback.
+
+          # Optional: Customize review based on file types
+          # direct_prompt: |
+          #   Review this PR focusing on:
+          #   - For TypeScript files: Type safety and proper interface usage
+          #   - For API endpoints: Security, input validation, and error handling
+          #   - For React components: Performance, accessibility, and best practices
+          #   - For tests: Coverage, edge cases, and test quality
+
+          # Optional: Different prompts for different authors
+          # direct_prompt: |
+          #   ${{ github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR' &&
+          #   'Welcome! Please review this PR from a first-time contributor. Be encouraging and provide detailed explanations for any suggestions.' ||
+          #   'Please provide a thorough code review focusing on our coding standards and best practices.' }}
+
+          # Optional: Add specific tools for running tests or linting
+          # allowed_tools: "Bash(npm run test),Bash(npm run lint),Bash(npm run typecheck)"
+
+          # Optional: Skip review for certain conditions
+          # if: |
+          #   !contains(github.event.pull_request.title, '[skip-review]') &&
+          #   !contains(github.event.pull_request.title, '[WIP]')
+
+      # このジョブはコンテナ内で root として動くため、checkout / cargo が生成した
+      # ファイルは host 上で root 所有になる。次に同じ self-hosted runner で
+      # コンテナを使わないワークフロー(main 等)が動くと、runner ユーザーがそれらを
+      # 削除できず checkout(git clean) が "permission denied" でコケる。
+      # そこで (1) 所有者をマウント元 /__w(= runner ユーザー)に戻し、(2) 中身を削除する。
+      # ビルドが途中で失敗しても必ず後始末されるよう if: always() を付ける。
+      - name: Cleanup Directory
+        if: always()
+        run: |
+          chown -R --reference=/__w /__w 2>/dev/null || true
+          rm -rf -- "$GITHUB_WORKSPACE"/* "$GITHUB_WORKSPACE"/.[!.]* "$GITHUB_WORKSPACE"/..?* 2>/dev/null || true

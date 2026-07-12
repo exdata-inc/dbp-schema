@@ -1,0 +1,354 @@
+# 各 repo の .github/workflows/opportunistic-task.yml に置く受け手側 workflow のテンプレ。
+# ハブ repo の .github/workflows/opportunistic-worker.yml がここに workflow_dispatch を投げる。
+#
+# 仕組み（Issue ベース）:
+#   - 1 つの GitHub Issue = 1 つの長期タスク。本文に「long-task」キーワードを含めると
+#     ハブの worker の検索（org:exdata-inc is:issue state:open long-task -label:long-task-done）に拾われる
+#   - 起動されると、この workflow が Issue 本文と既存 bot コメントを読み、作業ブランチ名を確定する:
+#       1. 既存 bot コメントの先頭メタ行 `working_branch: <name>` があればそれ
+#       2. なければ Issue 本文の `working_branch: <name>` 行
+#       3. どちらも無ければ `claude/task-<issueNumber>-<title-slug>` を自動生成
+#   - claude-code-action に `working_branch` で渡し、そのブランチに commit を積む（既存 PR があれば継続）
+#   - 進捗は Issue 内の bot コメント 1 件を毎回 PATCH で上書き
+#   - タスク全体が終わったら claude が long-task-done ラベルを付け、作成者にメンション
+#
+# 配置手順:
+#   1. このファイルを対象 repo の .github/workflows/opportunistic-task.yml にコピー（ファイル名 固定）。
+#   2. 対象 repo の secrets に CLAUDE_OAUTH_URL を入れる。
+#   3. ハブが Issue search で勝手に拾うので、対象 repo に long-task Issue を立てるだけで投入される。
+#
+# 重要:
+#   - このテンプレは 1〜2 ステップだけ進めて commit する設計。終了まで延々と回さないこと。
+
+name: Opportunistic long-running task
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'long-task Issue 番号（このリポジトリ内）'
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+
+env:
+  CLAUDE_CODE_ENABLE_TELEMETRY: "1"
+  OTEL_METRICS_EXPORTER: "otlp"
+  OTEL_LOGS_EXPORTER: "otlp"
+  OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+  OTEL_EXPORTER_OTLP_ENDPOINT: ${{ secrets.OTEL_EXPORTER_OTLP_ENDPOINT || vars.OTEL_EXPORTER_OTLP_ENDPOINT }}
+  OTEL_EXPORTER_OTLP_HEADERS: ${{ secrets.OTEL_EXPORTER_OTLP_HEADERS || vars.OTEL_EXPORTER_OTLP_HEADERS }}
+  OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE: "cumulative"
+  OTEL_RESOURCE_ATTRIBUTES: "adhd_user=gh-op-task"
+
+concurrency:
+  # 同じ Issue に対する dispatch は直列化（複数同時実行で commit / コメントが衝突しないように）。
+  group: opportunistic-task-${{ inputs.issue_number }}
+  cancel-in-progress: false
+
+jobs:
+  long-task:
+    runs-on: self-hosted
+    # rate limit 時に resetsAt(最大 5h 先)まで待ってから --resume で再開するため、
+    # デフォルト 360 分では「実行 120 分 + 待機 + 再開 120 分」が収まらない。余裕を持って 12h。
+    timeout-minutes: 720
+    container:
+      image: ngtystr/rust-obfuscator-llvm:1.93.0-21.1.8-20260710
+    # この container では Actions runner が bash を自動検出できず sh フォールバックしていたため、
+    # ジョブ全体の run step を bash で実行するよう明示する。bash は image に同梱されている前提。
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout default branch
+        # 一部 submodule（外部 org や SSH 形式 URL 等）で fetch がコケても、親 repo が
+        # 取れていれば claude 側で必要な submodule だけ後から init する運用にできる。
+        # ここで赤くしてジョブ全体を止めない。
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          # private な submodule を含む repo では default の GITHUB_TOKEN では
+          # submodule の clone に権限が無くコケる。GH_TOKEN_SUBMODULE_RW が設定されて
+          # いればそれを使い（各 submodule 上流にも contents:read を持つ想定）、
+          # 未設定なら従来どおり GITHUB_TOKEN で動く。checkout@v4 は with.token を
+          # submodule fetch にも使う。
+          token: ${{ secrets.GH_TOKEN_SUBMODULE_RW || github.token }}
+
+      - name: Prepare task environment
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory '*'
+
+      # self-hosted runner には gh CLI が無いことが多いので、無ければ portable binary を
+      # ~/.local/bin に展開し、GITHUB_PATH に通す（sudo 不要）。既にあれば何もしない。
+      # 後続の Resolve working branch step や claude の direct_prompt 内 (gh issue view 等) が
+      # gh を使う前提で書かれているため、Job 冒頭で確保しておく。
+      - name: Ensure gh CLI is available
+        run: |
+          set -euo pipefail
+          if command -v gh >/dev/null 2>&1; then
+            echo "gh CLI already installed: $(gh --version | head -n1)"
+            exit 0
+          fi
+          VERSION="2.62.0"
+          ARCH="$(uname -m)"
+          case "$ARCH" in
+            x86_64)  GH_ARCH=amd64 ;;
+            aarch64) GH_ARCH=arm64 ;;
+            *) echo "Unsupported arch: $ARCH" >&2; exit 1 ;;
+          esac
+          mkdir -p "$HOME/.local/bin"
+          tmp=$(mktemp -d)
+          curl -fsSL "https://github.com/cli/cli/releases/download/v${VERSION}/gh_${VERSION}_linux_${GH_ARCH}.tar.gz" \
+            | tar -xz -C "$tmp"
+          install -m 0755 "$tmp/gh_${VERSION}_linux_${GH_ARCH}/bin/gh" "$HOME/.local/bin/gh"
+          rm -rf "$tmp"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/gh" --version
+
+      # everything-claude-code (ECC) を ~/.claude/ 配下にインストールする。
+      # install.sh は内部で `npm install` → `node scripts/install-apply.js --profile full` を叩くだけなので、
+      # rust-obfuscator コンテナ同梱の bun でその 2 手を直接踏む（node/npm を用意しなくて済む）。
+      # 結果として agents / skills / rules / hooks 一式が ~/.claude/{agents,skills,rules,hooks}/ecc/ に配置される。
+      # ECC のリビジョンは vars.ECC_REF で差し替え可能（未設定なら main の HEAD）。
+      - name: Install everything-claude-code (ECC)
+        env:
+          ECC_REF: ${{ vars.ECC_REF || 'main' }}
+        run: |
+          set -euo pipefail
+          if ! command -v bun >/dev/null 2>&1; then
+            echo "bun が見つからない。rust-obfuscator コンテナには入っている想定なので、image の変更等で消えていないか確認して。" >&2
+            exit 1
+          fi
+          echo "bun version: $(bun --version)"
+          tmp=$(mktemp -d)
+          git clone https://github.com/affaan-m/ECC "$tmp/ECC"
+          git -C "$tmp/ECC" checkout "$ECC_REF"
+          cd "$tmp/ECC"
+          bun install
+          bun scripts/install-apply.js --profile full
+          echo "=== ~/.claude 配下 ==="
+          ls -la "$HOME/.claude" 2>/dev/null || echo "(空)"
+          for d in agents skills rules hooks; do
+            if [ -d "$HOME/.claude/$d/ecc" ]; then
+              echo "-- $d/ecc --"
+              ls "$HOME/.claude/$d/ecc" | head -n 20
+            fi
+          done
+
+      # Issue 本文 + 既存 bot コメントから「使うブランチ名」「Issue 作成者」を決定する。
+      # bot コメントの working_branch 行が最優先 → Issue 本文の working_branch 行 → 自動生成。
+      - name: Resolve working branch
+        id: branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          set -euo pipefail
+          REPO="${{ github.repository }}"
+
+          # Issue メタ
+          ISSUE_JSON=$(gh api "repos/${REPO}/issues/${ISSUE_NUMBER}")
+          ISSUE_TITLE=$(jq -r '.title // ""' <<<"$ISSUE_JSON")
+          ISSUE_USER=$(jq -r '.user.login // ""' <<<"$ISSUE_JSON")
+          ISSUE_BODY=$(jq -r '.body // ""' <<<"$ISSUE_JSON")
+
+          # 既存 bot コメント（本文が `## opportunistic-task progress` で始まるもの 1 件）
+          BOT_BODY=$(gh api --paginate "repos/${REPO}/issues/${ISSUE_NUMBER}/comments" \
+            --jq '[.[] | select(.user.login == "github-actions[bot]") | select(.body | startswith("## opportunistic-task progress")) | .body] | first // ""')
+
+          # 優先順位: bot コメント > Issue 本文 > 自動生成
+          # grep がマッチしないと exit 1 を返し、pipefail + set -e で script が落ちるので
+          # `|| true` でパイプライン全体を「マッチ無し = 空文字」として扱う。
+          extract_wb() {
+            printf '%s\n' "$1" \
+              | { grep -oE '^working_branch:[[:space:]]+\S+' || true; } \
+              | head -n1 \
+              | awk '{print $2}'
+          }
+          WB=$(extract_wb "$BOT_BODY")
+          [ -z "$WB" ] && WB=$(extract_wb "$ISSUE_BODY") || true
+          if [ -z "$WB" ]; then
+            SLUG=$(printf '%s' "$ISSUE_TITLE" \
+              | tr '[:upper:]' '[:lower:]' \
+              | sed -E 's/[^a-z0-9-]+/-/g; s/-+/-/g; s/^-//; s/-$//' \
+              | cut -c1-40)
+            WB="claude/task-${ISSUE_NUMBER}-${SLUG:-x}"
+          fi
+
+          echo "working_branch=$WB" >> "$GITHUB_OUTPUT"
+          echo "issue_user=$ISSUE_USER" >> "$GITHUB_OUTPUT"
+          # タイトルに改行や " が混入しても壊さないよう、heredoc で出力
+          {
+            echo "issue_title<<EOF"
+            printf '%s\n' "$ISSUE_TITLE"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "→ Issue #${ISSUE_NUMBER} by @${ISSUE_USER}"
+          echo "→ working_branch=$WB"
+
+      # ハブ repo の claude-triage.yml と同じ OAuth 取得パターン。
+      - name: Fetch Claude OAuth values
+        id: claude-oauth
+        env:
+          CLAUDE_OAUTH_URL: ${{ secrets.CLAUDE_OAUTH_URL }}
+        run: |
+          set -euo pipefail
+          json=$(curl -fsSL "$CLAUDE_OAUTH_URL")
+          access_token=$(printf '%s' "$json" | jq -r '.accessToken')
+          expires_at=$(printf '%s' "$json" | jq -r '.expiresAt | tostring')
+          [ "$access_token" = "null" ] || [ -z "$access_token" ] && { echo "accessToken 取得失敗" >&2; exit 1; }
+          [ "$expires_at" = "null" ] || [ -z "$expires_at" ] && { echo "expiresAt 取得失敗" >&2; exit 1; }
+          echo "access_token=$access_token" >> "$GITHUB_OUTPUT"
+          echo "expires_at=$expires_at" >> "$GITHUB_OUTPUT"
+
+      - name: Apply Anthropic env overrides (if set)
+        env:
+          IN_ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL || vars.ANTHROPIC_BASE_URL }}
+        run: |
+          set -euo pipefail
+          if [ -n "${IN_ANTHROPIC_BASE_URL:-}" ]; then
+            echo "ANTHROPIC_BASE_URL=${IN_ANTHROPIC_BASE_URL}" >> "$GITHUB_ENV"
+          fi
+          true
+
+      - name: Run one step of long-running task
+        uses: ngtystr/claude-code-action@main
+        with:
+          use_oauth: 'true'
+          claude_access_token: ${{ steps.claude-oauth.outputs.access_token }}
+          claude_refresh_token: "disabled"
+          claude_expires_at: ${{ steps.claude-oauth.outputs.expires_at }}
+          model: ${{ secrets.ANTHROPIC_MODEL || vars.ANTHROPIC_MODEL || vars.CLAUDE_MODEL || 'claude-sonnet-5' }}
+          github_token: ${{ github.token }}
+          # claude-code-action の実行時間制限（デフォ 30 分 → 720 分に延長）。
+          timeout_minutes: '720'
+          # rate limit 対策の retry。stream-json の rate_limit_event を構造的に検知し、
+          # resetsAt(リセット時刻)まで一括待機 → `--resume <session-id>` で同一セッションを
+          # 再開する。会話コンテキストが引き継がれるので、中断までに使ったトークン
+          # (数十ターン分の作業)が無駄にならない。resetsAt が取れない失敗は 60s 間隔で
+          # 再試行(上限 120 回)。rate limit 以外の失敗は従来どおり即 fail。
+          # 単発待機の上限はデフォルト 8h(retry_max_wait_seconds)。job の timeout-minutes: 720
+          # とセットで運用する。
+          max_retries: '120'
+          retry_interval_seconds: '60'
+          # 上のステップで確定したブランチを直接指定（action 側は sanitize せずそのまま使う）。
+          # 既存ブランチがあれば fetch & checkout、無ければ default branch から create。
+          # 同 head の open PR があれば action 側で existingPrNumber が立つ。
+          working_branch: ${{ steps.branch.outputs.working_branch }}
+          allowed_tools: |
+            Bash
+            WebFetch
+            WebSearch
+            mcp__github_file_ops__commit_files
+            mcp__github_file_ops__create_pull_request
+          direct_prompt: |
+            あなたは Issue ベースの長期タスクの「1〜2 ステップだけ進める」担当です。
+
+            ## everything-claude-code (ECC) が有効
+            この runner には ECC (https://github.com/affaan-m/ECC) が `--profile full` でインストール済みで、
+            `~/.claude/{agents,skills,rules,hooks}/ecc/` に一式が配置されています。ECC の agents (planner /
+            code-reviewer / security-reviewer / language-specific reviewers 等) や skills (tdd-workflow /
+            security-scan / research-first 等) を **本タスクに関係するものは積極的に呼び出して**ください
+            （例: 実装前に planner agent で最小ステップを設計、実装後に code-reviewer / security-reviewer
+            を通す、テスト追加時は tdd-workflow skill を利用、など）。
+            ただし本テンプレの「1 dispatch = 1〜2 ステップ」原則は変えない（ECC を回すために dispatch を
+            膨らませない）。skill / agent は 1 ステップの品質を上げるための道具として使う。
+
+            ## 対象
+            - Issue: ${{ github.repository }} #${{ inputs.issue_number }}
+            - タイトル: ${{ steps.branch.outputs.issue_title }}
+            - Issue 作成者: @${{ steps.branch.outputs.issue_user }}
+            - 作業ブランチ: ${{ steps.branch.outputs.working_branch }}（既にチェックアウト済み。別ブランチを切らない）
+
+            ## 手順
+            1. `gh issue view ${{ inputs.issue_number }} --comments` で Issue 本文と全コメントを読む。
+            2. **進捗 bot コメント** を探す（本文が `## opportunistic-task progress` で始まる github-actions[bot] 投稿、Issue に最大 1 件）:
+               - 存在しない場合（= **初回**）: Issue 本文を元に下記テンプレートで新規コメントを投稿する。
+                 ```
+                 ## opportunistic-task progress
+
+                 working_branch: ${{ steps.branch.outputs.working_branch }}
+
+                 ### タスク概要
+                 （Issue 本文を要約）
+
+                 ### 完了条件 (DoD)
+                 - [ ] ...
+
+                 ### これまでの進捗
+                 _まだなし_
+
+                 ### 次にやること
+                 - [ ] ...
+
+                 ### 詰まり・要相談メモ
+                 _なし_
+                 ```
+               - 存在する場合: その本文を読んで現状を把握する。`working_branch:` 行は **絶対に書き換えない**。
+            3. 「次にやること」から **最小 1〜2 件だけ** 選んで着手する。大きすぎれば自分でさらに小分けして最小 1 件にする。
+            4. 実装→テスト/ビルド→commit。落ちたら直してから commit する。
+            5. 進捗 bot コメントを **編集** して更新する:
+               - 完了した項目に ✅
+               - 新たに見えた「次にやること」を追記
+               - 詰まり/要相談メモを追加（あれば）
+
+               **更新の絶対ルール（過去にコメント全文を吹き飛ばす事故があったので厳守）**:
+               1. **更新前に現状を必ずバックアップ**:
+                  ```
+                  COMMENT_ID=<対象 progress コメントの id>
+                  gh api "repos/${{ github.repository }}/issues/comments/$COMMENT_ID" --jq '.body' > /tmp/progress_body.before.md
+                  ```
+               2. **新しい本文は必ずファイルに書き出してから送る**:
+                  ```
+                  # 推奨: gh の --body-file を使う
+                  gh api -X PATCH "repos/${{ github.repository }}/issues/comments/$COMMENT_ID" \
+                    -F body=@/tmp/progress_body.after.md
+                  ```
+                  注意:
+                  - `-F`（**大文字 F**）が `@file` 記法でファイル内容を読む。`-f`（小文字 f）は **文字列扱い** なので `@/tmp/...` という 22 文字がそのまま本文として書き込まれてしまう。**必ず `-F`**。
+                  - `--body "<長文>"` で直接渡すのは、シェルエスケープの事故を招くので避ける。一旦ファイル経由。
+               3. **書き込んだ後、即時に再取得して検証**:
+                  ```
+                  gh api "repos/${{ github.repository }}/issues/comments/$COMMENT_ID" --jq '.body' > /tmp/progress_body.actual.md
+                  ```
+                  `/tmp/progress_body.actual.md` が `## opportunistic-task progress` で始まっていない、または 100 文字未満なら **壊れた**と判断し、`/tmp/progress_body.before.md` の内容を `-F body=@...` で復元する。復元後は Issue に新規コメントで「⚠️ progress コメント更新で異常を検知して復元した」旨を残して終了する。
+            6. このブランチ（${{ steps.branch.outputs.working_branch }}）に対応する open PR がまだ無ければ、`gh pr create` で作る:
+               - title: `[long-task] ${{ steps.branch.outputs.issue_title }} (#${{ inputs.issue_number }})`
+               - body: `Issue #${{ inputs.issue_number }} の長期タスク。進捗は Issue 内の bot コメントを参照してください。`
+            7. **タスク全体が完了したと判断したとき**（進捗 bot コメントの「完了条件」が全 ✅）のみ:
+               - `gh issue edit ${{ inputs.issue_number }} --add-label long-task-done`
+               - Issue に `gh issue comment ${{ inputs.issue_number }} --body "@${{ steps.branch.outputs.issue_user }} 全タスクが完了しました。レビューをお願いします。"`
+               - PR タイトル末尾に ` [ready for review]` を付与（任意）
+
+            ## 禁止事項
+            - 別ブランチを切る／main などのデフォルトブランチに直接 push
+            - 1 dispatch で複数の大物タスクをまとめて消化する（次回 dispatch に任せる）
+            - 進捗 bot コメントの `working_branch:` 行を勝手に書き換える
+            - 中途半端な状態で long-task-done ラベルを付ける（完了条件すべて ✅ のときだけ）
+        env:
+          # claude の Bash 内で `gh` を認証させるためのトークン
+          GH_TOKEN: ${{ github.token }}
+          # submodule 内のコード修正まで踏み込む必要が出たとき、claude が git submodule update /
+          # commit / push に使うトークン（CLAUDE.md の "submodule を操作するときのお願い" 節参照）。
+          # secrets に未登録なら空文字が渡り、claude はその場合「権限外」と判断してコメントで終える。
+          GH_TOKEN_SUBMODULE_RW: ${{ secrets.GH_TOKEN_SUBMODULE_RW }}
+
+      # このジョブはコンテナ内で root として動くため、checkout / cargo が生成した
+      # ファイルは host 上で root 所有になる。次に同じ self-hosted runner で
+      # コンテナを使わないワークフロー(main 等)が動くと、runner ユーザーがそれらを
+      # 削除できず checkout(git clean) が "permission denied" でコケる。
+      # そこで (1) 所有者をマウント元 /__w(= runner ユーザー)に戻し、(2) 中身を削除する。
+      # ビルドが途中で失敗しても必ず後始末されるよう if: always() を付ける。
+      - name: Cleanup Directory
+        if: always()
+        run: |
+          chown -R --reference=/__w /__w 2>/dev/null || true
+          rm -rf -- "$GITHUB_WORKSPACE"/* "$GITHUB_WORKSPACE"/.[!.]* "$GITHUB_WORKSPACE"/..?* 2>/dev/null || true
