@@ -503,6 +503,9 @@
         },
         {
           "@id": "dbp:RealWorldDataPathPatternFormat"
+        },
+        {
+          "@id": "dbp:DataFieldType"
         }
       ],
       "schema:rangeIncludes": {
@@ -1299,6 +1302,9 @@
         },
         {
           "@id": "dbp:enumList"
+        },
+        {
+          "@id": "dbp:fieldType"
         }
       ]
     },
@@ -1379,9 +1385,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "Run Length 圧縮を使うべきかどうか",
       "rdfs:label": "useRunLength",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:CompressionHint"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Boolean"
       }
@@ -1403,9 +1414,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "SemantiPack ロスあり圧縮の元のデータとの損失割合",
       "rdfs:label": "lossyCompressionRate",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:CompressionHint"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Float"
       }
@@ -1415,9 +1431,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "SemantiPack 圧縮時に FFT 圧縮を使うべきかどうか",
       "rdfs:label": "useFFTCompression",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:CompressionHint"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Boolean"
       }
@@ -1427,9 +1448,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "データのセマンティックな型",
       "rdfs:label": "itemType",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "dbp:ItemType"
       }
@@ -1469,9 +1495,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "変数の尺度を表す enum 値",
       "rdfs:label": "variableScaleType",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "dbp:VariableScaleTypeEnumeration"
       }
@@ -1494,9 +1525,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "データフィールドがほとんど一定値かどうか",
       "rdfs:label": "isMostlyConstant",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Boolean"
       }
@@ -1506,9 +1542,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "データフィールドがEnum値かどうか",
       "rdfs:label": "isEnumValue",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Boolean"
       }
@@ -1518,9 +1559,17 @@
       "@type": "rdf:Property",
       "rdfs:comment": "データフィールドがほとんど単調増加かどうか",
       "rdfs:label": "isMostlyIncremental",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        },
+        {
+          "@id": "dbp:CompressionHint"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Boolean"
       }
@@ -1530,9 +1579,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "数値や日付時刻型で、空文字や null な値が存在する場合があるかどうか",
       "rdfs:label": "isNullable",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Boolean"
       }
@@ -1542,9 +1596,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "データフィールドが存在しない可能性があることを示す",
       "rdfs:label": "isOptional",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Boolean"
       }
@@ -1554,9 +1613,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "データフィールドが日付時刻型な場合の、書式文字列",
       "rdfs:label": "dbpaDatetimeFormat",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Text"
       }
@@ -1566,9 +1630,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "データフィールドが日付時刻型な場合の、最小単位 (@schema:unitText と同等の文字列が入る)",
       "rdfs:label": "dbpaDatetimePrecision",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:CompressionHint"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Text"
       }
@@ -1638,9 +1707,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "データフィールドが日付時刻型な場合の、タイムスタンプの時間単位を表す値",
       "rdfs:label": "dbpaTimestampUnitText",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Text"
       }
@@ -1650,9 +1724,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "数値範囲の最小値",
       "rdfs:label": "rangeMin",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Text"
       }
@@ -1662,9 +1741,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "数値範囲の最大値",
       "rdfs:label": "rangeMax",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Text"
       }
@@ -1674,9 +1758,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "圧縮時に数値の表現に使用するバイト数",
       "rdfs:label": "precisionBytes",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:CompressionHint"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Integer"
       }
@@ -1686,9 +1775,17 @@
       "@type": "rdf:Property",
       "rdfs:comment": "Float 値の圧縮時に小数点以下何桁までを保持するか",
       "rdfs:label": "decimalPlaces",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        },
+        {
+          "@id": "dbp:CompressionHint"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Integer"
       }
@@ -1710,9 +1807,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "データフィールドが単調増加な場合に、差分の最頻値を圧縮に使用すべきかどうか",
       "rdfs:label": "useBaseIncrement",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:CompressionHint"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Boolean"
       }
@@ -1722,9 +1824,14 @@
       "@type": "rdf:Property",
       "rdfs:comment": "圧縮時に LLM API に値のサンプルを渡すときに使用 (enum 以外)",
       "rdfs:label": "valueSamples",
-      "schema:domainIncludes": {
-        "@id": "dbp:RealWorldDataStructureProperty"
-      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
       "schema:rangeIncludes": {
         "@id": "schema:Text"
       }
@@ -1734,12 +1841,132 @@
       "@type": "rdf:Property",
       "rdfs:comment": "圧縮時に LLM API に enum 値の一覧を渡すときに使用",
       "rdfs:label": "enumList",
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:RealWorldDataStructureProperty"
+        },
+        {
+          "@id": "dbp:DataFieldType"
+        }
+      ],
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:fieldType",
+      "@type": "rdf:Property",
+      "rdfs:comment": "データフィールドカタログ上のフィールド種別への参照",
+      "rdfs:label": "fieldType",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataStructureProperty"
       },
       "schema:rangeIncludes": {
-        "@id": "schema:Text"
+        "@id": "dbp:DataFieldType"
       }
+    },
+    {
+      "@id": "dbp:DataFieldType",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "データフィールドカタログにおけるフィールドの「種類」（特定のデータセットに依存しない） (subclass of: \"schema:Intangible\")",
+      "rdfs:label": "DataFieldType",
+      "rdfs:subClassOf": {
+        "@id": "schema:Intangible"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "dbp:fieldType"
+        },
+        {
+          "@id": "schema:supersededBy"
+        }
+      ],
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "schema:name"
+        },
+        {
+          "@id": "schema:url"
+        },
+        {
+          "@id": "schema:description"
+        },
+        {
+          "@id": "dbp:aliases"
+        },
+        {
+          "@id": "schema:status"
+        },
+        {
+          "@id": "schema:version"
+        },
+        {
+          "@id": "schema:dateModified"
+        },
+        {
+          "@id": "schema:supersededBy"
+        },
+        {
+          "@id": "dbp:provenance"
+        },
+        {
+          "@id": "dbp:itemType"
+        },
+        {
+          "@id": "dbp:variableScaleType"
+        },
+        {
+          "@id": "dbp:rangeMin"
+        },
+        {
+          "@id": "dbp:rangeMax"
+        },
+        {
+          "@id": "dbp:decimalPlaces"
+        },
+        {
+          "@id": "dbp:isEnumValue"
+        },
+        {
+          "@id": "dbp:enumList"
+        },
+        {
+          "@id": "dbp:valueSamples"
+        },
+        {
+          "@id": "schema:unitText"
+        },
+        {
+          "@id": "schema:unitCode"
+        },
+        {
+          "@id": "dbp:dbpaDatetimeFormat"
+        },
+        {
+          "@id": "dbp:dbpaTimestampUnitText"
+        },
+        {
+          "@id": "dbp:isMostlyConstant"
+        },
+        {
+          "@id": "dbp:isMostlyIncremental"
+        },
+        {
+          "@id": "dbp:isOptional"
+        },
+        {
+          "@id": "dbp:isNullable"
+        },
+        {
+          "@id": "dbp:compressionHints"
+        },
+        {
+          "@id": "dbp:tags"
+        }
+      ]
     },
     {
       "@id": "dbp:baseUrl",
@@ -2827,6 +3054,122 @@
       "rdfs:label": "datasetProperty",
       "schema:domainIncludes": {
         "@id": "dbp:RealWorldDataPathPatternFormat"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:aliases",
+      "@type": "rdf:Property",
+      "rdfs:comment": "列名の別表記（検索キーとして使用）",
+      "rdfs:label": "aliases",
+      "schema:domainIncludes": {
+        "@id": "dbp:DataFieldType"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:provenance",
+      "@type": "rdf:Property",
+      "rdfs:comment": "カタログエントリのシード由来 (human / extracted-from-profiles / llm-rec20 / open-data-survey)",
+      "rdfs:label": "provenance",
+      "schema:domainIncludes": {
+        "@id": "dbp:DataFieldType"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:compressionHints",
+      "@type": "rdf:Property",
+      "rdfs:comment": "ユースケース別の推奨圧縮設定",
+      "rdfs:label": "compressionHints",
+      "schema:domainIncludes": {
+        "@id": "dbp:DataFieldType"
+      },
+      "schema:rangeIncludes": {
+        "@id": "dbp:CompressionHint"
+      }
+    },
+    {
+      "@id": "dbp:CompressionHint",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "特定ユースケースにおけるデータフィールド種別の推奨圧縮設定",
+      "rdfs:label": "CompressionHint",
+      "rdfs:subClassOf": {
+        "@id": "schema:Thing"
+      },
+      "schema:domainIncludes": {
+        "@id": "dbp:compressionHints"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "@id"
+        },
+        {
+          "@id": "schema:name"
+        },
+        {
+          "@id": "schema:url"
+        },
+        {
+          "@id": "dbp:useCase"
+        },
+        {
+          "@id": "schema:description"
+        },
+        {
+          "@id": "dbp:accuracyNote"
+        },
+        {
+          "@id": "dbp:decimalPlaces"
+        },
+        {
+          "@id": "dbp:lossyCompressionRate"
+        },
+        {
+          "@id": "dbp:precisionBytes"
+        },
+        {
+          "@id": "dbp:useFFTCompression"
+        },
+        {
+          "@id": "dbp:useRunLength"
+        },
+        {
+          "@id": "dbp:useBaseIncrement"
+        },
+        {
+          "@id": "dbp:dbpaDatetimePrecision"
+        },
+        {
+          "@id": "dbp:isMostlyIncremental"
+        }
+      ]
+    },
+    {
+      "@id": "dbp:useCase",
+      "@type": "rdf:Property",
+      "rdfs:comment": "この圧縮ヒントのユースケース識別子 (kebab-case、例: realtime-monitoring)",
+      "rdfs:label": "useCase",
+      "schema:domainIncludes": {
+        "@id": "dbp:CompressionHint"
+      },
+      "schema:rangeIncludes": {
+        "@id": "schema:Text"
+      }
+    },
+    {
+      "@id": "dbp:accuracyNote",
+      "@type": "rdf:Property",
+      "rdfs:comment": "このユースケースで許容される誤差の説明",
+      "rdfs:label": "accuracyNote",
+      "schema:domainIncludes": {
+        "@id": "dbp:CompressionHint"
       },
       "schema:rangeIncludes": {
         "@id": "schema:Text"
