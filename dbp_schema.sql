@@ -341,3 +341,55 @@ Table RWDataPeriodicRemoveConfig [headercolor: #2F5597] {                 // RWD
 }
 
 Ref: RWDataPeriodicRemoveConfig.removeConfig  > RWDataRemoveDemand.id
+
+
+Table DataFieldType [headercolor: #7030A0] {                              // データフィールドカタログにおけるフィールドの「種類」（特定のデータセットに依存しない）
+    id URL [pk]                                 // 自身(このJSON-LD)のURL（公開後不変）
+    name VARCHAR(256) 
+    url URL 
+    description VARCHAR(256) 
+    aliases VARCHAR(256)                        // 列名の別表記（検索キーとして使用）
+    status VARCHAR(256)                         // カタログエントリのライフサイクル状態 (draft / stable / deprecated)
+    version int 
+    dateModified Timestamp 
+    supersededBy DataFieldType         // このエントリを置き換えるカタログエントリ（重複統合時のリダイレクト先）
+    provenance VARCHAR(256)                     // カタログエントリのシード由来 (human / extracted-from-profiles / llm-rec20 / open-data-survey)
+    itemType ItemType 
+    variableScaleType VariableScaleTypeEnumeration 
+    rangeMin VARCHAR(256) 
+    rangeMax VARCHAR(256) 
+    decimalPlaces int 
+    isEnumValue boolean 
+    enumList VARCHAR(256) 
+    valueSamples VARCHAR(256) 
+    unitText VARCHAR(256) 
+    unitCode VARCHAR(256)                       // 変数の単位コード (UNECE Recommendation 20 のコード)
+    dbpaDatetimeFormat VARCHAR(256) 
+    dbpaTimestampUnitText VARCHAR(256) 
+    isMostlyConstant boolean 
+    isMostlyIncremental boolean 
+    isOptional boolean 
+    isNullable boolean 
+    compressionHints CompressionHint   // ユースケース別の推奨圧縮設定
+}
+
+Ref: DataFieldType.supersededBy     > DataFieldType.id
+Ref: DataFieldType.compressionHints > CompressionHint.id
+
+
+Table CompressionHint [headercolor: #7030A0] {                            // 特定ユースケースにおけるデータフィールド種別の推奨圧縮設定
+    id URL [pk]
+    name VARCHAR(256)
+    url URL
+    useCase VARCHAR(256)                        // この圧縮ヒントのユースケース識別子 (kebab-case、例: realtime-monitoring)
+    description VARCHAR(256) 
+    accuracyNote VARCHAR(256)                   // このユースケースで許容される誤差の説明
+    decimalPlaces int 
+    lossyCompressionRate float 
+    precisionBytes int 
+    useFFTCompression boolean 
+    useRunLength boolean 
+    useBaseIncrement boolean 
+    dbpaDatetimePrecision VARCHAR(256) 
+    isMostlyIncremental boolean 
+}
