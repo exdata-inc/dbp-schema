@@ -270,6 +270,9 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     // Value samples,  enumerated values, and structure path
     repeated string valueSamples = 90;      // Used to pass value samples to LLM API during compression (non-enum)
     repeated string enumList = 91;          // Used to pass list of enum values to LLM API during compression
+
+    // Data field catalogue
+    optional DataFieldType fieldType = 100; // Reference to the data field type in the data field catalogue
 }
 
 enum ItemType {       // Enum representing semantic type of data (maximum string length for STRING is not represented)
@@ -512,4 +515,70 @@ message RealWorldDataTags {                                 // Represents extend
     optional string url = 3;
     optional string key = 4;                                // Tag key
     optional string value = 5;                              // Tag value
+}
+
+message DataFieldType {                                     // Kind of a data field in the data field catalogue, independent of any specific dataset (subclass of: "schema:Intangible")
+    // JSON-LD basic
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional string description = 4;
+
+    // Identification
+    repeated string aliases = 10;                           // Alternative notations of the field name (used as search keys)
+
+    // Lifecycle
+    optional string status = 20;                            // Lifecycle status of the catalogue entry (draft / stable / deprecated)
+    optional int32 version = 21;
+    optional google.protobuf.Timestamp dateModified = 22;
+    optional DataFieldType supersededBy = 23;               // Catalogue entry that supersedes this entry (redirect target when duplicated entries are merged)
+    optional string provenance = 24;                        // Seed origin of the catalogue entry (human / extracted-from-profiles / llm-rec20 / open-data-survey)
+
+    // Type and value
+    optional ItemType itemType = 30;
+    optional VariableScaleTypeEnumeration variableScaleType = 31;
+    optional string rangeMin = 32;
+    optional string rangeMax = 33;
+    optional int32 decimalPlaces = 34;
+    optional bool isEnumValue = 35;
+    repeated string enumList = 36;
+    repeated string valueSamples = 37;
+
+    // Unit
+    optional google.protobuf.StringValue unitText = 40;
+    optional string unitCode = 41;                          // Unit code of the variable (UNECE Recommendation 20 code)
+
+    // Datetime
+    optional string dbpaDatetimeFormat = 50;
+    optional string dbpaTimestampUnitText = 51;
+
+    // Tendency (prior knowledge on how fields of this kind generally behave)
+    optional bool isMostlyConstant = 60;
+    optional bool isMostlyIncremental = 61;
+    optional bool isOptional = 62;
+    optional bool isNullable = 63;
+
+    // Compression
+    repeated CompressionHint compressionHints = 70;         // Recommended compression settings per use case
+
+    repeated RealWorldDataTags tags = 80;
+}
+
+message CompressionHint {                                   // Recommended compression settings of a data field type for a specific use case
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional string useCase = 4;                            // Identifier of the use case for this compression hint (kebab-case, e.g. realtime-monitoring)
+    optional string description = 5;
+    optional string accuracyNote = 6;                       // Explanation of the error tolerable in this use case
+
+    // Recommended values (compression-related properties of RealWorldDataStructureProperty reused as recommendations)
+    optional int32 decimalPlaces = 10;
+    optional float lossyCompressionRate = 11;
+    optional int32 precisionBytes = 12;
+    optional bool useFFTCompression = 13;
+    optional bool useRunLength = 14;
+    optional bool useBaseIncrement = 15;
+    optional string dbpaDatetimePrecision = 16;
+    optional bool isMostlyIncremental = 17;
 }

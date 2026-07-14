@@ -270,6 +270,9 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     // 値のサンプル・列挙値・構造パス
     repeated string valueSamples = 90;      // 圧縮時に LLM API に値のサンプルを渡すときに使用 (enum 以外)
     repeated string enumList = 91;          // 圧縮時に LLM API に enum 値の一覧を渡すときに使用
+
+    // データフィールドカタログ
+    optional DataFieldType fieldType = 100; // データフィールドカタログ上のフィールド種別への参照
 }
 
 enum ItemType {       // データのセマンティックな型を表す enum (STRING の最大文字列長は表現できていない)
@@ -512,4 +515,70 @@ message RealWorldDataTags {                                 // RealWorldData* �
     optional string url = 3;
     optional string key = 4;                                // タグのキー
     optional string value = 5;                              // タグの値
+}
+
+message DataFieldType {                                     // データフィールドカタログにおけるフィールドの「種類」（特定のデータセットに依存しない） (subclass of: "schema:Intangible")
+    // JSON-LD 基本
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional string description = 4;
+
+    // 識別
+    repeated string aliases = 10;                           // 列名の別表記（検索キーとして使用）
+
+    // ライフサイクル
+    optional string status = 20;                            // カタログエントリのライフサイクル状態 (draft / stable / deprecated)
+    optional int32 version = 21;
+    optional google.protobuf.Timestamp dateModified = 22;
+    optional DataFieldType supersededBy = 23;               // このエントリを置き換えるカタログエントリ（重複統合時のリダイレクト先）
+    optional string provenance = 24;                        // カタログエントリのシード由来 (human / extracted-from-profiles / llm-rec20 / open-data-survey)
+
+    // 型・値
+    optional ItemType itemType = 30;
+    optional VariableScaleTypeEnumeration variableScaleType = 31;
+    optional string rangeMin = 32;
+    optional string rangeMax = 33;
+    optional int32 decimalPlaces = 34;
+    optional bool isEnumValue = 35;
+    repeated string enumList = 36;
+    repeated string valueSamples = 37;
+
+    // 単位
+    optional google.protobuf.StringValue unitText = 40;
+    optional string unitCode = 41;                          // 変数の単位コード (UNECE Recommendation 20 のコード)
+
+    // 日時
+    optional string dbpaDatetimeFormat = 50;
+    optional string dbpaTimestampUnitText = 51;
+
+    // 傾向（この種類のフィールドが一般にどう振る舞うかの事前知識）
+    optional bool isMostlyConstant = 60;
+    optional bool isMostlyIncremental = 61;
+    optional bool isOptional = 62;
+    optional bool isNullable = 63;
+
+    // 圧縮
+    repeated CompressionHint compressionHints = 70;         // ユースケース別の推奨圧縮設定
+
+    repeated RealWorldDataTags tags = 80;
+}
+
+message CompressionHint {                                   // 特定ユースケースにおけるデータフィールド種別の推奨圧縮設定
+    optional string id = 1;
+    optional string name = 2;
+    optional string url = 3;
+    optional string useCase = 4;                            // この圧縮ヒントのユースケース識別子 (kebab-case、例: realtime-monitoring)
+    optional string description = 5;
+    optional string accuracyNote = 6;                       // このユースケースで許容される誤差の説明
+
+    // 推奨値 (RealWorldDataStructureProperty の圧縮系プロパティを推奨値として再利用)
+    optional int32 decimalPlaces = 10;
+    optional float lossyCompressionRate = 11;
+    optional int32 precisionBytes = 12;
+    optional bool useFFTCompression = 13;
+    optional bool useRunLength = 14;
+    optional bool useBaseIncrement = 15;
+    optional string dbpaDatetimePrecision = 16;
+    optional bool isMostlyIncremental = 17;
 }

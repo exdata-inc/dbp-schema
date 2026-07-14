@@ -554,6 +554,11 @@ pub struct RealWorldDataStructureProperty {
     /// Used to pass list of enum values to LLM API during compression
     #[prost(string, repeated, tag = "91")]
     pub enum_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Data field catalogue
+    ///
+    /// Reference to the data field type in the data field catalogue
+    #[prost(message, optional, tag = "100")]
+    pub field_type: ::core::option::Option<DataFieldType>,
 }
 /// JSON-LD representing the storage information for real-world data
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1022,6 +1027,120 @@ pub struct RealWorldDataTags {
     /// Tag value
     #[prost(string, optional, tag = "5")]
     pub value: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Kind of a data field in the data field catalogue, independent of any specific dataset (subclass of: "schema:Intangible")
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataFieldType {
+    /// JSON-LD basic
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "4")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// Identification
+    ///
+    /// Alternative notations of the field name (used as search keys)
+    #[prost(string, repeated, tag = "10")]
+    pub aliases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Lifecycle
+    ///
+    /// Lifecycle status of the catalogue entry (draft / stable / deprecated)
+    #[prost(string, optional, tag = "20")]
+    pub status: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(int32, optional, tag = "21")]
+    pub version: ::core::option::Option<i32>,
+    #[prost(message, optional, tag = "22")]
+    pub date_modified: ::core::option::Option<::prost_types::Timestamp>,
+    /// Catalogue entry that supersedes this entry (redirect target when duplicated entries are merged)
+    #[prost(message, optional, boxed, tag = "23")]
+    pub superseded_by: ::core::option::Option<::prost::alloc::boxed::Box<DataFieldType>>,
+    /// Seed origin of the catalogue entry (human / extracted-from-profiles / llm-rec20 / open-data-survey)
+    #[prost(string, optional, tag = "24")]
+    pub provenance: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type and value
+    #[prost(enumeration = "ItemType", optional, tag = "30")]
+    pub item_type: ::core::option::Option<i32>,
+    #[prost(enumeration = "VariableScaleTypeEnumeration", optional, tag = "31")]
+    pub variable_scale_type: ::core::option::Option<i32>,
+    #[prost(string, optional, tag = "32")]
+    pub range_min: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "33")]
+    pub range_max: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(int32, optional, tag = "34")]
+    pub decimal_places: ::core::option::Option<i32>,
+    #[prost(bool, optional, tag = "35")]
+    pub is_enum_value: ::core::option::Option<bool>,
+    #[prost(string, repeated, tag = "36")]
+    pub enum_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "37")]
+    pub value_samples: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Unit
+    #[prost(message, optional, tag = "40")]
+    pub unit_text: ::core::option::Option<::prost::alloc::string::String>,
+    /// Unit code of the variable (UNECE Recommendation 20 code)
+    #[prost(string, optional, tag = "41")]
+    pub unit_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Datetime
+    #[prost(string, optional, tag = "50")]
+    pub dbpa_datetime_format: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "51")]
+    pub dbpa_timestamp_unit_text: ::core::option::Option<::prost::alloc::string::String>,
+    /// Tendency (prior knowledge on how fields of this kind generally behave)
+    #[prost(bool, optional, tag = "60")]
+    pub is_mostly_constant: ::core::option::Option<bool>,
+    #[prost(bool, optional, tag = "61")]
+    pub is_mostly_incremental: ::core::option::Option<bool>,
+    #[prost(bool, optional, tag = "62")]
+    pub is_optional: ::core::option::Option<bool>,
+    #[prost(bool, optional, tag = "63")]
+    pub is_nullable: ::core::option::Option<bool>,
+    /// Compression
+    ///
+    /// Recommended compression settings per use case
+    #[prost(message, repeated, tag = "70")]
+    pub compression_hints: ::prost::alloc::vec::Vec<CompressionHint>,
+    #[prost(message, repeated, tag = "80")]
+    pub tags: ::prost::alloc::vec::Vec<RealWorldDataTags>,
+}
+/// Recommended compression settings of a data field type for a specific use case
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CompressionHint {
+    #[prost(string, optional, tag = "1")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "2")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "3")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+    /// Identifier of the use case for this compression hint (kebab-case, e.g. realtime-monitoring)
+    #[prost(string, optional, tag = "4")]
+    pub use_case: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "5")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// Explanation of the error tolerable in this use case
+    #[prost(string, optional, tag = "6")]
+    pub accuracy_note: ::core::option::Option<::prost::alloc::string::String>,
+    /// Recommended values (compression-related properties of RealWorldDataStructureProperty reused as recommendations)
+    #[prost(int32, optional, tag = "10")]
+    pub decimal_places: ::core::option::Option<i32>,
+    #[prost(float, optional, tag = "11")]
+    pub lossy_compression_rate: ::core::option::Option<f32>,
+    #[prost(int32, optional, tag = "12")]
+    pub precision_bytes: ::core::option::Option<i32>,
+    #[prost(bool, optional, tag = "13")]
+    pub use_fft_compression: ::core::option::Option<bool>,
+    #[prost(bool, optional, tag = "14")]
+    pub use_run_length: ::core::option::Option<bool>,
+    #[prost(bool, optional, tag = "15")]
+    pub use_base_increment: ::core::option::Option<bool>,
+    #[prost(string, optional, tag = "16")]
+    pub dbpa_datetime_precision: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(bool, optional, tag = "17")]
+    pub is_mostly_incremental: ::core::option::Option<bool>,
 }
 /// Enumerates conversion characteristics, such as single-value-replace, col-merge, or row-merge.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

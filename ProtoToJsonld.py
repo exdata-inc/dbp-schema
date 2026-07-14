@@ -202,6 +202,9 @@ def ParseProto(protofile):
                         tmp_class = jsondata[i]
                         if len(line) > 4:
                             tmp_class.comment = ' '.join(line[4:])
+                        subclass_of = extract_subclass_of(data)
+                        if subclass_of is not None:
+                            tmp_class.subClassOf = {'@id': subclass_of}
                         flag3 = 1
                         break
                 if flag3 == 0:
