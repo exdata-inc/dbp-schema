@@ -1238,6 +1238,9 @@
           "@id": "schema:unitText"
         },
         {
+          "@id": "schema:unitCode"
+        },
+        {
           "@id": "dbp:variableScaleType"
         },
         {
