@@ -144,7 +144,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "rdfs:label": "latitude",
           "dbp:itemType": "Float",
           "rdfs:comment": "Geographic coordinate representing north-south position",
-          "schema:unitText": "DD",
+          "schema:unitCode": "DD",
           "schema:rangeIncludes": {
             "@id": "schema:Float"
           },
@@ -165,7 +165,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "rdfs:label": "longitude",
           "dbp:itemType": "Float",
           "rdfs:comment": "Geographic coordinate representing east-west position",
-          "schema:unitText": "DD",
+          "schema:unitCode": "DD",
           "schema:rangeIncludes": {
             "@id": "schema:Float"
           },
@@ -405,7 +405,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "rdfs:label": "latitude",
           "dbp:itemType": "Float",
           "rdfs:comment": "Geographic coordinate representing north-south position",
-          "schema:unitText": "DD",
+          "schema:unitCode": "DD",
           "schema:rangeIncludes": {
             "@id": "schema:Float"
           },
@@ -426,7 +426,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
           "rdfs:label": "longitude",
           "dbp:itemType": "Float",
           "rdfs:comment": "Geographic coordinate representing east-west position",
-          "schema:unitText": "DD",
+          "schema:unitCode": "DD",
           "schema:rangeIncludes": {
             "@id": "schema:Float"
           },

@@ -1631,7 +1631,7 @@
     {
       "@id": "dbp:dbpaDatetimePrecision",
       "@type": "rdf:Property",
-      "rdfs:comment": "Minimum unit when the data field is of datetime type (string equivalent to @schema:unitText)",
+      "rdfs:comment": "Minimum unit when the data field is of datetime type (UNECE Recommendation 20 code, equivalent to @schema:unitCode)",
       "rdfs:label": "dbpaDatetimePrecision",
       "schema:domainIncludes": [
         {

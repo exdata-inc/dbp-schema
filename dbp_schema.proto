@@ -252,7 +252,7 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
 
     // Datetime metadata
     optional string dbpaDatetimeFormat = 70;                    // Format string when the data field is of datetime type
-    optional string dbpaDatetimePrecision = 71;                 // Minimum unit when the data field is of datetime type (string equivalent to @schema:unitText)
+    optional string dbpaDatetimePrecision = 71;                 // Minimum unit when the data field is of datetime type (UNECE Recommendation 20 code, equivalent to @schema:unitCode)
     optional int32 dbpaDatetimeDiffBytes = 72;                  // Number of bytes used to represent differences when the data field is of datetime type
     optional int32 dbpaDateTimeFormatOffset = 73;               // Timezone offset value for date/time used during compression
     optional bool dbpaDateTimeFormatUtcIsUTCinRFC3339 = 74;     // Whether to represent UTC±0 timezone as UTC in RFC3339-compliant date/time format

@@ -252,7 +252,7 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
 
     // 日時系メタ
     optional string dbpaDatetimeFormat = 70;                    // データフィールドが日付時刻型な場合の、書式文字列
-    optional string dbpaDatetimePrecision = 71;                 // データフィールドが日付時刻型な場合の、最小単位 (@schema:unitText と同等の文字列が入る)
+    optional string dbpaDatetimePrecision = 71;                 // データフィールドが日付時刻型な場合の、最小単位 (@schema:unitCode と同等の UNECE Recommendation 20 のコードが入る)
     optional int32 dbpaDatetimeDiffBytes = 72;                  // データフィールドが日付時刻型な場合の、差分を表現するために使用するバイト数
     optional int32 dbpaDateTimeFormatOffset = 73;               // 圧縮時に使用する、日付・時刻のタイムゾーンオフセット値
     optional bool dbpaDateTimeFormatUtcIsUTCinRFC3339 = 74;     // RFC3339 に準拠した日付・時刻フォーマットで、タイムゾーンの UTC±0 を UTC として表記するかどうか
