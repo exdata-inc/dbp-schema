@@ -508,7 +508,7 @@ pub struct RealWorldDataStructureProperty {
     /// Format string when the data field is of datetime type
     #[prost(string, optional, tag = "70")]
     pub dbpa_datetime_format: ::core::option::Option<::prost::alloc::string::String>,
-    /// Minimum unit when the data field is of datetime type (string equivalent to @schema:unitText)
+    /// Minimum unit when the data field is of datetime type (UNECE Recommendation 20 code, equivalent to @schema:unitCode)
     #[prost(string, optional, tag = "71")]
     pub dbpa_datetime_precision: ::core::option::Option<::prost::alloc::string::String>,
     /// Number of bytes used to represent differences when the data field is of datetime type
