@@ -237,7 +237,8 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     optional ItemType itemType95p = 31;     // データの 95% 以上が満たすセマンティックな型
 
     // 単位
-    optional google.protobuf.StringValue unitText = 40;     // 変数の単位を表す値 (unece.org の Rec 20 の値)
+    optional google.protobuf.StringValue unitText = 40;     // 変数の単位の人間可読な自由文 (例: 度, kg, ℃)
+    optional string unitCode = 41;                          // 変数の単位コード (UNECE Recommendation 20 のコード)
 
     // 変量特性
     optional VariableScaleTypeEnumeration variableScaleType = 50;   // 変数の尺度を表す enum 値

@@ -15,7 +15,7 @@ cargo build
 ### for Go-lang
 
 ```
-protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optional  dbp_schema.proto
+protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optional --go_opt=Mdbp_schema.proto=exdata.co.jp/project/protos/dbp_schema  dbp_schema.proto
 ```
 
 ## RWD Profile Example

@@ -475,9 +475,12 @@ pub struct RealWorldDataStructureProperty {
     pub item_type95p: ::core::option::Option<i32>,
     /// Unit
     ///
-    /// Value representing the unit of the variable (unece.org Rec 20 value)
+    /// Human-readable free-text unit of the variable (e.g. 度, kg, ℃)
     #[prost(message, optional, tag = "40")]
     pub unit_text: ::core::option::Option<::prost::alloc::string::String>,
+    /// Unit code of the variable (UNECE Recommendation 20 code)
+    #[prost(string, optional, tag = "41")]
+    pub unit_code: ::core::option::Option<::prost::alloc::string::String>,
     /// Variable characteristics
     ///
     /// Enum value representing the scale of the variable

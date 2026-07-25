@@ -237,7 +237,8 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional ItemType itemType95p = 31;     // Semantic type satisfied by 95% or more of the data
 
     // Unit
-    optional google.protobuf.StringValue unitText = 40;     // Value representing the unit of the variable (unece.org Rec 20 value)
+    optional google.protobuf.StringValue unitText = 40;     // Human-readable free-text unit of the variable (e.g. 度, kg, ℃)
+    optional string unitCode = 41;                          // Unit code of the variable (UNECE Recommendation 20 code)
 
     // Variable characteristics
     optional VariableScaleTypeEnumeration variableScaleType = 50;   // Enum value representing the scale of the variable
