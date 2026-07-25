@@ -1631,7 +1631,7 @@
     {
       "@id": "dbp:dbpaDatetimePrecision",
       "@type": "rdf:Property",
-      "rdfs:comment": "データフィールドが日付時刻型な場合の、最小単位 (@schema:unitText と同等の文字列が入る)",
+      "rdfs:comment": "データフィールドが日付時刻型な場合の、最小単位 (@schema:unitCode と同等の UNECE Recommendation 20 のコードが入る)",
       "rdfs:label": "dbpaDatetimePrecision",
       "schema:domainIncludes": [
         {
