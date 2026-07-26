@@ -12,14 +12,20 @@ schemalist = origin['@graph']
 schemaids = []
 schemacomments = []
 schemasubClassOfs = []
+# '@id' -> schemaids 上の添字。線形探索を避けるための索引（重複 @id は最初のものを優先）。
+schemaid_index = {}
 
 for elm in schemalist:
+    schemaid_index.setdefault(elm['@id'], len(schemaids))
     schemaids.append(elm['@id'])
     schemacomments.append(elm['rdfs:comment'])
-    if 'rdfs:subClassOf' in elm.keys():
+    if 'rdfs:subClassOf' in elm:
         schemasubClassOfs.append(elm['rdfs:subClassOf'])
     else:
         schemasubClassOfs.append({'@id': 'schema:Thing'})
+
+# 展開済みの schema.org グラフ（数十 MB）はここ以降不要なので解放する
+del schemalist, origin, response
 
 PROTO_TYPE_TO_SCHEMA_TYPE = {
     'int32': 'schema:Integer',
@@ -38,9 +44,14 @@ RDFS_INFOS = [
     {"id": "rdfs:subClassOf", "comment": "an instance of rdf:Property that is used to state that all the instances of one class are instances of another."}
 ]
 
+RDFS_ID_INDEX = {info['id']: i for i, info in enumerate(RDFS_INFOS)}
+
 IGNORE_MESSAGES = [
     'GraphNode', 'IdRef'
 ]
+
+# proto の組み込み型と、Class として起こさない message 名の集合（メンバーシップ判定用）
+NON_CLASS_TYPE_NAMES = frozenset(PROTO_TYPE_TO_SCHEMA_TYPE) | frozenset(IGNORE_MESSAGES)
 
 CONTAINS_NODE_DEFINITION = {
     "name": "containsNode",
@@ -110,11 +121,10 @@ class DataSchema:
         self.domainIncludes.append(t)
 
     def addChildClass(self, rangeInclude):
-        for proto_type, schema_type in PROTO_TYPE_TO_SCHEMA_TYPE.items():
-            if rangeInclude == proto_type and schema_type is not None:
-                t = {'@id': schema_type}
-                self.rangeIncludes.append(t)
-                return
+        schema_type = PROTO_TYPE_TO_SCHEMA_TYPE.get(rangeInclude)
+        if schema_type is not None:
+            self.rangeIncludes.append({'@id': schema_type})
+            return
         t = {'@id': DbpOrSchema(rangeInclude)}
         self.rangeIncludes.append(t)
 
@@ -144,17 +154,11 @@ class DataSchema:
 
 
 def SearchSchema(name):
-    for i in range(len(schemaids)):
-        if schemaids[i] == 'schema:' + name:
-            return i
-    return -1
+    return schemaid_index.get('schema:' + name, -1)
 
 
 def SearchRdfs(name):
-    for i in range(len(RDFS_INFOS)):
-        if RDFS_INFOS[i]['id'] == 'rdfs:' + name:
-            return i
-    return -1
+    return RDFS_ID_INDEX.get('rdfs:' + name, -1)
 
 
 def DbpOrSchema(name):
@@ -162,12 +166,12 @@ def DbpOrSchema(name):
         return '@id'
     if name == 'at_graph':
         return '@graph'
-    for filter in schemaids:
-        if filter == 'schema:' + name:
-            return filter
-    for filter in RDFS_INFOS:
-        if filter['id'] == 'rdfs:' + name:
-            return filter['id']
+    schema_id = 'schema:' + name
+    if schema_id in schemaid_index:
+        return schema_id
+    rdfs_id = 'rdfs:' + name
+    if rdfs_id in RDFS_ID_INDEX:
+        return rdfs_id
     return 'dbp:' + name
 
 
@@ -241,7 +245,7 @@ def ParseProto(protofile):
                             flag3 = 1
                             break
                     if flag3 == 0:
-                        if line[1] not in list(PROTO_TYPE_TO_SCHEMA_TYPE.keys()) + IGNORE_MESSAGES:
+                        if line[1] not in NON_CLASS_TYPE_NAMES:
                             if line[1] == tmp_class.name:
                                 tmp_class.addParentClass(line[2])
                             else:
@@ -267,7 +271,7 @@ def WriteJsonld(items, jsonldfile):
         context = {'dbp': 'http://exdata.co.jp/dbp/schema/', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'schema': 'https://schema.org/'}
         graph = []
         added_contains_node = False
-        for item in sorted(set(items), key=items.index):
+        for item in dict.fromkeys(items):  # 出現順を保ったまま重複を除去（O(n)）
             if item.key == -1 and item.key_rdfs == -1 and item.id != '@id' and item.id != '@graph':
                 if not added_contains_node and item.contains_node is not None:
                     contains_node = DataSchema(
