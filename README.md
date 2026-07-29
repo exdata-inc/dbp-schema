@@ -97,7 +97,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
             "@id": "class1"
           },
           "dbp:variableScaleType": "Interval",
-          "dbp:dbpaDateTimeFormat": "%Y-%m-%dT%H:%M:%S",
+          "dbp:dbpaDatetimeFormat": "%Y-%m-%dT%H:%M:%S",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 0
         },
@@ -296,7 +296,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
             "@id": "class1"
           },
           "dbp:variableScaleType": "Interval",
-          "dbp:dbpaDateTimeFormat": "%Y-%m-%dT%H:%M:%S",
+          "dbp:dbpaDatetimeFormat": "%Y-%m-%dT%H:%M:%S",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 0
         },
@@ -313,7 +313,7 @@ protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optiona
             "@id": "class1"
           },
           "dbp:variableScaleType": "Interval",
-          "dbp:dbpaDateTimeFormat": "%Y-%m-%dT%H:%M:%S",
+          "dbp:dbpaDatetimeFormat": "%Y-%m-%dT%H:%M:%S",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 1
         },
