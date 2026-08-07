@@ -68,6 +68,12 @@ CONTAINS_NODE_PARENT_IDS = [r["parent_id"] for r in CONTAINS_NODE_RELATIONS]
 # cannot be read out of the proto the way domainIncludes / rangeIncludes are and
 # is declared here instead. Writing it into the .jsonld by hand would not
 # survive the next run of this script.
+#
+# Keys have to be ids that WriteJsonld() actually emits, i.e. dbp properties
+# with no same-named term in schema.org or rdfs (those are dropped by the
+# `item.key == -1 and item.key_rdfs == -1` filter and would never carry the
+# relation). WriteJsonld() raises on a key it did not emit, so a typo here fails
+# the run instead of silently producing a vocabulary without the relation.
 SUB_PROPERTY_OF_RELATIONS = {
     # Both are alternative names for the thing the entry is about, so a consumer
     # that only knows schema.org still finds the search keys dbp:aliases holds.
@@ -146,10 +152,16 @@ class DataSchema:
             else:
                 jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'rdfs:subClassOf': self.subClassOf, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
         elif self.type == 'rdf:Property':
+            # Built key by key rather than as one literal per branch, so that an
+            # optional key does not double the number of literals to keep in
+            # sync. Insertion order is the output order, and it is the same as
+            # before: rdfs:subPropertyOf sits between rdfs:label and
+            # schema:domainIncludes.
+            jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label}
             if self.sub_property_of is not None:
-                jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'rdfs:subPropertyOf': {'@id': self.sub_property_of}, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
-            else:
-                jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
+                jsonld['rdfs:subPropertyOf'] = {'@id': self.sub_property_of}
+            jsonld['schema:domainIncludes'] = self.domainIncludes
+            jsonld['schema:rangeIncludes'] = self.rangeIncludes
         else:
             raise ValueError('Type is neither Class nor Property.')
         self.domainIncludes = [self.domainIncludes]
@@ -279,26 +291,40 @@ def ParseProto(protofile):
 
 
 def WriteJsonld(items, jsonldfile):
-    with open(jsonldfile, 'w', encoding='UTF-8') as f:
-        context = {'dbp': 'http://exdata.co.jp/dbp/schema/', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'schema': 'https://schema.org/'}
-        graph = []
-        added_contains_node = False
-        for item in sorted(set(items), key=items.index):
-            if item.key == -1 and item.key_rdfs == -1 and item.id != '@id' and item.id != '@graph':
-                if not added_contains_node and item.contains_node is not None:
-                    contains_node = DataSchema(
-                        CONTAINS_NODE_DEFINITION["name"],
-                        CONTAINS_NODE_DEFINITION["type"],
-                        CONTAINS_NODE_DEFINITION["subclass_of"],
-                        CONTAINS_NODE_DEFINITION["comment"]
-                    )
-                    print(contains_node.id)
-                    graph.append(contains_node.getJsonld())
-                    added_contains_node = True
-                print(item.id)
-                graph.append(item.getJsonld())
-        text = {'@context': context, '@graph': graph}
+    context = {'dbp': 'http://exdata.co.jp/dbp/schema/', 'rdfs': 'http://www.w3.org/2000/01/rdf-schema#', 'schema': 'https://schema.org/'}
+    graph = []
+    added_contains_node = False
+    for item in sorted(set(items), key=items.index):
+        if item.key == -1 and item.key_rdfs == -1 and item.id != '@id' and item.id != '@graph':
+            if not added_contains_node and item.contains_node is not None:
+                contains_node = DataSchema(
+                    CONTAINS_NODE_DEFINITION["name"],
+                    CONTAINS_NODE_DEFINITION["type"],
+                    CONTAINS_NODE_DEFINITION["subclass_of"],
+                    CONTAINS_NODE_DEFINITION["comment"]
+                )
+                print(contains_node.id)
+                graph.append(contains_node.getJsonld())
+                added_contains_node = True
+            print(item.id)
+            graph.append(item.getJsonld())
 
+    # A key that matches nothing is not a no-op: the relation it declares is
+    # simply missing from the vocabulary, and nothing downstream can tell that
+    # apart from a deliberate decision not to declare it. Fail here instead,
+    # while the name is still in front of whoever wrote it. Checked before the
+    # file is opened, so a bad table leaves the committed .jsonld untouched
+    # rather than truncated.
+    emitted = {node['@id'] for node in graph}
+    unmatched = sorted(set(SUB_PROPERTY_OF_RELATIONS) - emitted)
+    if unmatched:
+        raise ValueError(
+            f'SUB_PROPERTY_OF_RELATIONS keys not emitted into {jsonldfile}: {unmatched}'
+        )
+
+    text = {'@context': context, '@graph': graph}
+
+    with open(jsonldfile, 'w', encoding='UTF-8') as f:
         json.dump(text, f, indent = 2, ensure_ascii=False)
 
 

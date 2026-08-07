@@ -1725,7 +1725,7 @@
     {
       "@id": "dbp:rangeMin",
       "@type": "rdf:Property",
-      "rdfs:comment": "数値範囲の最小値",
+      "rdfs:comment": "数値範囲の最小値。CompressionHint に付いた場合は、その hint が属する DataFieldType の値域を、そのユースケースが実際に覆う範囲まで狭める (precisionBytes を、項目型が許容すべき最も広い値域ではなく、狭めた値域から導出できる)。省略した場合は DataFieldType の値を継承する。rangeMin と rangeMax は片方ずつ継承されるので、hint が一方だけを狭めて他方を継承したままにしてもよい。hint の値域は所属する DataFieldType の値域の内側に収まることが前提だが、この語彙に制約記述の仕組みは無いため、検証は利用者側の責務となる",
       "rdfs:label": "rangeMin",
       "schema:domainIncludes": [
         {
@@ -1745,7 +1745,7 @@
     {
       "@id": "dbp:rangeMax",
       "@type": "rdf:Property",
-      "rdfs:comment": "数値範囲の最大値",
+      "rdfs:comment": "数値範囲の最大値。CompressionHint に付いた場合は、その hint が属する DataFieldType の値域を、そのユースケースが実際に覆う範囲まで狭める (precisionBytes を、項目型が許容すべき最も広い値域ではなく、狭めた値域から導出できる)。省略した場合は DataFieldType の値を継承する。rangeMin と rangeMax は片方ずつ継承されるので、hint が一方だけを狭めて他方を継承したままにしてもよい。hint の値域は所属する DataFieldType の値域の内側に収まることが前提だが、この語彙に制約記述の仕組みは無いため、検証は利用者側の責務となる",
       "rdfs:label": "rangeMax",
       "schema:domainIncludes": [
         {

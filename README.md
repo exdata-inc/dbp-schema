@@ -18,6 +18,37 @@ cargo build
 protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optional --go_opt=Mdbp_schema.proto=exdata.co.jp/project/protos/dbp_schema  dbp_schema.proto
 ```
 
+## Data Field Catalogue
+
+`dbp:DataFieldType` describes a *kind* of data field independent of any dataset, and
+`dbp:compressionHints` hangs `dbp:CompressionHint` off it — one per use case — to say how that
+field should be compressed for that use case.
+
+### Value range on a `dbp:CompressionHint`
+
+`dbp:precisionBytes` is meant to follow from the value range (`dbp:rangeMin` / `dbp:rangeMax`)
+and the granularity (`dbp:decimalPlaces`): how many bytes it takes to represent that range at
+that granularity. A `dbp:DataFieldType` has to allow the widest range any of its use cases can
+produce, so a use case that only spans a narrow part of it would otherwise inherit a width far
+larger than it needs. `dbp:rangeMin` / `dbp:rangeMax` are therefore allowed on a
+`dbp:CompressionHint` as well:
+
+- **Omitted** — the hint uses the range of the `dbp:DataFieldType` it belongs to. This is what
+  every hint written before the range was allowed here means, so nothing changed meaning.
+- **Declared** — the hint narrows that range to the subset the use case actually covers, and
+  `dbp:precisionBytes` follows from the subset.
+
+Two things this vocabulary states but does not enforce, because it carries no constraint
+language (no SHACL or equivalent):
+
+1. **The two ends are inherited one by one.** Declaring only `dbp:rangeMin` leaves
+   `dbp:rangeMax` inherited from the `dbp:DataFieldType`; that is a valid hint, not an
+   incomplete one. There is no pairing rule.
+2. **A declared end narrows, never widens.** A hint range is expected to stay inside the range
+   of its `dbp:DataFieldType`. Nothing here rejects a wider value, so the consumer that derives
+   `dbp:precisionBytes` is the one that has to check the containment — writing a wider range
+   breaks the premise the derivation rests on.
+
 ## RWD Profile Example
 
 ### CSV

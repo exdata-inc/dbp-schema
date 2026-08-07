@@ -1725,7 +1725,7 @@
     {
       "@id": "dbp:rangeMin",
       "@type": "rdf:Property",
-      "rdfs:comment": "Minimum value of numeric range",
+      "rdfs:comment": "Minimum value of numeric range. On a CompressionHint it narrows the range of the DataFieldType the hint belongs to, down to the subset that use case actually covers, so precisionBytes follows from that subset rather than from the widest range the field type has to allow; omitted, the value of the DataFieldType applies. rangeMin and rangeMax are inherited one by one, so a hint may narrow one end and leave the other inherited. A hint range is expected to stay inside the range of its DataFieldType; this vocabulary carries no constraint language, so consumers are the ones that have to check it",
       "rdfs:label": "rangeMin",
       "schema:domainIncludes": [
         {
@@ -1745,7 +1745,7 @@
     {
       "@id": "dbp:rangeMax",
       "@type": "rdf:Property",
-      "rdfs:comment": "Maximum value of numeric range",
+      "rdfs:comment": "Maximum value of numeric range. On a CompressionHint it narrows the range of the DataFieldType the hint belongs to, down to the subset that use case actually covers, so precisionBytes follows from that subset rather than from the widest range the field type has to allow; omitted, the value of the DataFieldType applies. rangeMin and rangeMax are inherited one by one, so a hint may narrow one end and leave the other inherited. A hint range is expected to stay inside the range of its DataFieldType; this vocabulary carries no constraint language, so consumers are the ones that have to check it",
       "rdfs:label": "rangeMax",
       "schema:domainIncludes": [
         {
