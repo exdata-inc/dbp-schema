@@ -352,17 +352,22 @@ def WriteJsonld(items, jsonldfile):
     # apart from a deliberate decision not to declare it. Fail here instead,
     # while the name is still in front of whoever wrote it.
     #
-    # Only rdf:Property nodes are eligible: getJsonld() reads sub_property_of in
-    # its rdf:Property branch alone, and the rdfs:Class branch drops it. Matching
-    # against every emitted @id would let a class name pass this check and still
-    # produce a vocabulary without the relation — the exact silence this check
-    # exists to break.
-    emitted = {node['@id'] for node in graph if node['@type'] == 'rdf:Property'}
-    unmatched = sorted(set(SUB_PROPERTY_OF_RELATIONS) - emitted)
+    # The nodes counted are the ones that actually carry rdfs:subPropertyOf, not
+    # the ones that could have carried it. Matching against every emitted @id —
+    # or against every rdf:Property id — only establishes that a node by that
+    # name exists, and infers the relation from the branch structure of
+    # getJsonld(); the property worth checking is that the relation written in
+    # the table reached the file. Reading it off the output holds whatever
+    # getJsonld() does next, and subsumes the @type filter, since the rdfs:Class
+    # branch emits no rdfs:subPropertyOf.
+    with_sub_property_of = {
+        node['@id'] for node in graph if 'rdfs:subPropertyOf' in node
+    }
+    unmatched = sorted(set(SUB_PROPERTY_OF_RELATIONS) - with_sub_property_of)
     if unmatched:
         raise ValueError(
-            f'SUB_PROPERTY_OF_RELATIONS keys not emitted as properties into '
-            f'{jsonldfile}: {unmatched}'
+            f'SUB_PROPERTY_OF_RELATIONS keys whose rdfs:subPropertyOf did not '
+            f'reach {jsonldfile}: {unmatched}'
         )
 
     text = {'@context': context, '@graph': graph}
