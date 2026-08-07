@@ -1733,6 +1733,9 @@
         },
         {
           "@id": "dbp:DataFieldType"
+        },
+        {
+          "@id": "dbp:CompressionHint"
         }
       ],
       "schema:rangeIncludes": {
@@ -1750,6 +1753,9 @@
         },
         {
           "@id": "dbp:DataFieldType"
+        },
+        {
+          "@id": "dbp:CompressionHint"
         }
       ],
       "schema:rangeIncludes": {
@@ -3067,6 +3073,9 @@
       "@type": "rdf:Property",
       "rdfs:comment": "列名の別表記（検索キーとして使用）",
       "rdfs:label": "aliases",
+      "rdfs:subPropertyOf": {
+        "@id": "schema:alternateName"
+      },
       "schema:domainIncludes": {
         "@id": "dbp:DataFieldType"
       },
@@ -3151,6 +3160,12 @@
         },
         {
           "@id": "dbp:isMostlyIncremental"
+        },
+        {
+          "@id": "dbp:rangeMin"
+        },
+        {
+          "@id": "dbp:rangeMax"
         }
       ]
     },

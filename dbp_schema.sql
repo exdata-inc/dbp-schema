@@ -392,4 +392,6 @@ Table CompressionHint [headercolor: #7030A0] {                            // 特
     useBaseIncrement boolean 
     dbpaDatetimePrecision VARCHAR(256) 
     isMostlyIncremental boolean 
+    rangeMin VARCHAR(256)                       // このユースケースが覆う値域の下限 (省略時は所属する DataFieldType の値域を継承)
+    rangeMax VARCHAR(256)                       // このユースケースが覆う値域の上限 (省略時は所属する DataFieldType の値域を継承)
 }

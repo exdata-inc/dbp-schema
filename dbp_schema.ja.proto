@@ -582,4 +582,8 @@ message CompressionHint {                                   // 特定ユース�
     optional bool useBaseIncrement = 15;
     optional string dbpaDatetimePrecision = 16;
     optional bool isMostlyIncremental = 17;
+
+    // このユースケースが覆う値域。省略した場合は所属する DataFieldType の値域を継承し、記述した場合はそのユースケースが実際に覆う範囲まで値域を狭める (precisionBytes を、項目型が許容すべき最も広い値域ではなく、狭めた値域から導出できる)
+    optional string rangeMin = 18;
+    optional string rangeMax = 19;
 }

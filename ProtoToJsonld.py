@@ -62,6 +62,18 @@ CONTAINS_NODE_RELATIONS = [
 
 CONTAINS_NODE_PARENT_IDS = [r["parent_id"] for r in CONTAINS_NODE_RELATIONS]
 
+# dbp properties that specialise a schema.org property, emitted as
+# rdfs:subPropertyOf. A .proto field carries a type and a comment and nothing
+# that could say "this is the schema.org term X, narrowed", so the relation
+# cannot be read out of the proto the way domainIncludes / rangeIncludes are and
+# is declared here instead. Writing it into the .jsonld by hand would not
+# survive the next run of this script.
+SUB_PROPERTY_OF_RELATIONS = {
+    # Both are alternative names for the thing the entry is about, so a consumer
+    # that only knows schema.org still finds the search keys dbp:aliases holds.
+    "dbp:aliases": "schema:alternateName",
+}
+
 
 class DataSchema:
 
@@ -94,6 +106,7 @@ class DataSchema:
         elif self.key_rdfs != -1:
             self.comment = RDFS_INFOS[self.key_rdfs]['comment']
         self.label = name
+        self.sub_property_of = SUB_PROPERTY_OF_RELATIONS.get(self.id)
         if self.id in CONTAINS_NODE_PARENT_IDS:
             print("Found containsNode parent:", self.name)
             self.contains_node = [
@@ -133,7 +146,10 @@ class DataSchema:
             else:
                 jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'rdfs:subClassOf': self.subClassOf, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
         elif self.type == 'rdf:Property':
-            jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
+            if self.sub_property_of is not None:
+                jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'rdfs:subPropertyOf': {'@id': self.sub_property_of}, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
+            else:
+                jsonld = {'@id': self.id, '@type': self.type, 'rdfs:comment': self.comment, 'rdfs:label': self.label, 'schema:domainIncludes': self.domainIncludes, 'schema:rangeIncludes': self.rangeIncludes}
         else:
             raise ValueError('Type is neither Class nor Property.')
         self.domainIncludes = [self.domainIncludes]

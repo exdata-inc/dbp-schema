@@ -582,4 +582,8 @@ message CompressionHint {                                   // Recommended compr
     optional bool useBaseIncrement = 15;
     optional string dbpaDatetimePrecision = 16;
     optional bool isMostlyIncremental = 17;
+
+    // Value range this use case covers. Omitted, the hint inherits the range of the DataFieldType it belongs to; declared, it narrows that range to the subset the use case actually spans, so precisionBytes follows from that subset rather than from the widest range the field type has to allow
+    optional string rangeMin = 18;
+    optional string rangeMax = 19;
 }
