@@ -1765,7 +1765,7 @@
     {
       "@id": "dbp:precisionBytes",
       "@type": "rdf:Property",
-      "rdfs:comment": "Number of bytes used for numeric representation during compression",
+      "rdfs:comment": "Number of bytes used for numeric representation during compression. It follows from rangeMin / rangeMax and decimalPlaces: how many bytes it takes to represent that range at that granularity. On a CompressionHint the inputs are the ones that apply to that hint, i.e. the narrowed range where the hint declares one and the range of the DataFieldType where it does not",
       "rdfs:label": "precisionBytes",
       "schema:domainIncludes": [
         {
@@ -1782,7 +1782,7 @@
     {
       "@id": "dbp:decimalPlaces",
       "@type": "rdf:Property",
-      "rdfs:comment": "How many decimal places to retain when compressing float values",
+      "rdfs:comment": "How many decimal places to retain when compressing float values. On a CompressionHint it is inherited the same way the two range ends are: omitted, the value of the DataFieldType applies; declared, it applies to that hint. It is the third input to precisionBytes, alongside rangeMin and rangeMax. A declared value is expected to keep no more places than the DataFieldType does (it coarsens, never refines, just as a declared range end narrows); this vocabulary carries no constraint language, so consumers are the ones that have to check it",
       "rdfs:label": "decimalPlaces",
       "schema:domainIncludes": [
         {

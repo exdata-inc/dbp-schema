@@ -37,17 +37,27 @@ larger than it needs. `dbp:rangeMin` / `dbp:rangeMax` are therefore allowed on a
   every hint written before the range was allowed here means, so nothing changed meaning.
 - **Declared** — the hint narrows that range to the subset the use case actually covers, and
   `dbp:precisionBytes` follows from the subset.
+- **One end at a time** — the two ends are inherited independently. Declaring only
+  `dbp:rangeMin` leaves `dbp:rangeMax` inherited from the `dbp:DataFieldType`; that is a valid
+  hint, not an incomplete one. There is no pairing rule.
+
+`dbp:decimalPlaces` is read the same way: omitted on a hint, the value of the
+`dbp:DataFieldType` applies; declared, it applies to that hint. It is the third input to
+`dbp:precisionBytes` alongside the two range ends, so leaving its inheritance undefined would
+leave the derivation undefined for any hint that omits it.
 
 Two things this vocabulary states but does not enforce, because it carries no constraint
 language (no SHACL or equivalent):
 
-1. **The two ends are inherited one by one.** Declaring only `dbp:rangeMin` leaves
-   `dbp:rangeMax` inherited from the `dbp:DataFieldType`; that is a valid hint, not an
-   incomplete one. There is no pairing rule.
-2. **A declared end narrows, never widens.** A hint range is expected to stay inside the range
-   of its `dbp:DataFieldType`. Nothing here rejects a wider value, so the consumer that derives
-   `dbp:precisionBytes` is the one that has to check the containment — writing a wider range
-   breaks the premise the derivation rests on.
+1. **A declared end narrows, never widens.** A hint range is expected to stay inside the range
+   of its `dbp:DataFieldType`.
+2. **A declared `dbp:decimalPlaces` coarsens, never refines.** A hint is expected to keep no
+   more places than its `dbp:DataFieldType` does. Compression discards digits; a hint that
+   asked for finer granularity than the field type declares would be asking for digits the
+   field type says are not there.
+
+Nothing here rejects either, so the consumer that derives `dbp:precisionBytes` is the one that
+has to check them — both break the premise the derivation rests on.
 
 ## RWD Profile Example
 

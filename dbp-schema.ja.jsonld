@@ -1765,7 +1765,7 @@
     {
       "@id": "dbp:precisionBytes",
       "@type": "rdf:Property",
-      "rdfs:comment": "圧縮時に数値の表現に使用するバイト数",
+      "rdfs:comment": "圧縮時に数値の表現に使用するバイト数。rangeMin / rangeMax と decimalPlaces から導出される (その値域をその粒度で表すのに必要なバイト数)。CompressionHint に付いた場合の入力はその hint に適用される値、すなわち hint が値域を記述していれば狭めた値域、記述していなければ DataFieldType の値域となる",
       "rdfs:label": "precisionBytes",
       "schema:domainIncludes": [
         {
@@ -1782,7 +1782,7 @@
     {
       "@id": "dbp:decimalPlaces",
       "@type": "rdf:Property",
-      "rdfs:comment": "Float 値の圧縮時に小数点以下何桁までを保持するか",
+      "rdfs:comment": "Float 値の圧縮時に小数点以下何桁までを保持するか。CompressionHint に付いた場合の継承の仕方は値域の両端と同じで、省略した場合は DataFieldType の値を継承し、記述した場合はその hint に適用される。rangeMin / rangeMax と並ぶ precisionBytes の 3 つ目の入力。記述する場合は DataFieldType より多くの桁を保持しないことが前提だが (値域の端が狭まる側にしか動かないのと同じく、桁は粗くなる側にしか動かない)、この語彙に制約記述の仕組みは無いため、検証は利用者側の責務となる",
       "rdfs:label": "decimalPlaces",
       "schema:domainIncludes": [
         {

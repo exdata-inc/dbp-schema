@@ -12,10 +12,19 @@ schemalist = origin['@graph']
 schemaids = []
 schemacomments = []
 schemasubClassOfs = []
+# Ids of the schema.org terms that are properties, kept apart from schemaids
+# (which holds classes, datatypes and enumeration members too) so that a
+# relation whose target has to be a property can be checked against properties
+# alone. @type is a plain string in this release; normalised anyway, because a
+# list would otherwise drop the term from this set without saying so.
+schemapropertyids = set()
 
 for elm in schemalist:
     schemaids.append(elm['@id'])
     schemacomments.append(elm['rdfs:comment'])
+    elm_types = elm['@type'] if isinstance(elm['@type'], list) else [elm['@type']]
+    if 'rdf:Property' in elm_types:
+        schemapropertyids.add(elm['@id'])
     if 'rdfs:subClassOf' in elm.keys():
         schemasubClassOfs.append(elm['rdfs:subClassOf'])
     else:
@@ -309,17 +318,51 @@ def WriteJsonld(items, jsonldfile):
             print(item.id)
             graph.append(item.getJsonld())
 
+    # Both checks below run before the file is opened, so a bad table leaves the
+    # committed .jsonld untouched rather than truncated.
+
+    # The value is emitted as-is as the @id the relation points at. A typo there
+    # does not remove the relation the way a typo in the key does: it publishes
+    # one that points at a term nobody defines, which is the harder of the two
+    # for a consumer to notice. schema.org's terms are already loaded for the
+    # rest of the run, so checking against them costs nothing.
+    #
+    # Membership is required unconditionally rather than only for values that
+    # look like schema.org ones: gating on the prefix would let the prefix
+    # itself be the typo ('shema:alternateName') and wave it straight through,
+    # which is the case this check exists for. The set is properties only,
+    # because rdfs:subPropertyOf pointing at a class or a datatype is not a
+    # narrower kind of typo — it is the same silent nonsense in a different
+    # shape. A target from another vocabulary would fail here; that is
+    # deliberate, and the fix is to widen this check alongside the table rather
+    # than to let one through unchecked.
+    bad_values = sorted(
+        (key, value)
+        for key, value in SUB_PROPERTY_OF_RELATIONS.items()
+        if value not in schemapropertyids
+    )
+    if bad_values:
+        raise ValueError(
+            f'SUB_PROPERTY_OF_RELATIONS values that are not schema.org '
+            f'properties: {bad_values}'
+        )
+
     # A key that matches nothing is not a no-op: the relation it declares is
     # simply missing from the vocabulary, and nothing downstream can tell that
     # apart from a deliberate decision not to declare it. Fail here instead,
-    # while the name is still in front of whoever wrote it. Checked before the
-    # file is opened, so a bad table leaves the committed .jsonld untouched
-    # rather than truncated.
-    emitted = {node['@id'] for node in graph}
+    # while the name is still in front of whoever wrote it.
+    #
+    # Only rdf:Property nodes are eligible: getJsonld() reads sub_property_of in
+    # its rdf:Property branch alone, and the rdfs:Class branch drops it. Matching
+    # against every emitted @id would let a class name pass this check and still
+    # produce a vocabulary without the relation — the exact silence this check
+    # exists to break.
+    emitted = {node['@id'] for node in graph if node['@type'] == 'rdf:Property'}
     unmatched = sorted(set(SUB_PROPERTY_OF_RELATIONS) - emitted)
     if unmatched:
         raise ValueError(
-            f'SUB_PROPERTY_OF_RELATIONS keys not emitted into {jsonldfile}: {unmatched}'
+            f'SUB_PROPERTY_OF_RELATIONS keys not emitted as properties into '
+            f'{jsonldfile}: {unmatched}'
         )
 
     text = {'@context': context, '@graph': graph}

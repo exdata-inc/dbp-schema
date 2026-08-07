@@ -263,8 +263,8 @@ message RealWorldDataStructureProperty {    // JSON-LDの中でデータのメ�
     // 数値レンジ等
     optional string rangeMin = 80;          // 数値範囲の最小値。CompressionHint に付いた場合は、その hint が属する DataFieldType の値域を、そのユースケースが実際に覆う範囲まで狭める (precisionBytes を、項目型が許容すべき最も広い値域ではなく、狭めた値域から導出できる)。省略した場合は DataFieldType の値を継承する。rangeMin と rangeMax は片方ずつ継承されるので、hint が一方だけを狭めて他方を継承したままにしてもよい。hint の値域は所属する DataFieldType の値域の内側に収まることが前提だが、この語彙に制約記述の仕組みは無いため、検証は利用者側の責務となる
     optional string rangeMax = 81;          // 数値範囲の最大値。CompressionHint に付いた場合は、その hint が属する DataFieldType の値域を、そのユースケースが実際に覆う範囲まで狭める (precisionBytes を、項目型が許容すべき最も広い値域ではなく、狭めた値域から導出できる)。省略した場合は DataFieldType の値を継承する。rangeMin と rangeMax は片方ずつ継承されるので、hint が一方だけを狭めて他方を継承したままにしてもよい。hint の値域は所属する DataFieldType の値域の内側に収まることが前提だが、この語彙に制約記述の仕組みは無いため、検証は利用者側の責務となる
-    optional int32 precisionBytes = 82;     // 圧縮時に数値の表現に使用するバイト数
-    optional int32 decimalPlaces = 83;      // Float 値の圧縮時に小数点以下何桁までを保持するか
+    optional int32 precisionBytes = 82;     // 圧縮時に数値の表現に使用するバイト数。rangeMin / rangeMax と decimalPlaces から導出される (その値域をその粒度で表すのに必要なバイト数)。CompressionHint に付いた場合の入力はその hint に適用される値、すなわち hint が値域を記述していれば狭めた値域、記述していなければ DataFieldType の値域となる
+    optional int32 decimalPlaces = 83;      // Float 値の圧縮時に小数点以下何桁までを保持するか。CompressionHint に付いた場合の継承の仕方は値域の両端と同じで、省略した場合は DataFieldType の値を継承し、記述した場合はその hint に適用される。rangeMin / rangeMax と並ぶ precisionBytes の 3 つ目の入力。記述する場合は DataFieldType より多くの桁を保持しないことが前提だが (値域の端が狭まる側にしか動かないのと同じく、桁は粗くなる側にしか動かない)、この語彙に制約記述の仕組みは無いため、検証は利用者側の責務となる
     optional string baseIncrement = 84;     // データフィールドが単調増加な場合の、差分の最頻値
     optional bool useBaseIncrement = 85;    // データフィールドが単調増加な場合に、差分の最頻値を圧縮に使用すべきかどうか
 
@@ -574,9 +574,9 @@ message CompressionHint {                                   // 特定ユース�
     optional string accuracyNote = 6;                       // このユースケースで許容される誤差の説明
 
     // 推奨値 (RealWorldDataStructureProperty の圧縮系プロパティを推奨値として再利用)
-    optional int32 decimalPlaces = 10;
+    optional int32 decimalPlaces = 10;                      // 下の rangeMin / rangeMax と同じく 1 プロパティずつ継承する: 省略した場合は DataFieldType の値が適用される。記述する場合は DataFieldType より多くの桁を保持しないことが前提
     optional float lossyCompressionRate = 11;
-    optional int32 precisionBytes = 12;
+    optional int32 precisionBytes = 12;                     // decimalPlaces と rangeMin / rangeMax から導出される。入力はこの hint に適用される値 (記述されていればここの値、無ければ DataFieldType から継承した値)
     optional bool useFFTCompression = 13;
     optional bool useRunLength = 14;
     optional bool useBaseIncrement = 15;
