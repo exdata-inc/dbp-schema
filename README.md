@@ -138,7 +138,7 @@ has to check them — both break the premise the derivation rests on.
             "@id": "class1"
           },
           "dbp:variableScaleType": "Interval",
-          "dbp:dbpaDateTimeFormat": "%Y-%m-%dT%H:%M:%S",
+          "dbp:dbpaDatetimeFormat": "%Y-%m-%dT%H:%M:%S",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 0
         },
@@ -337,7 +337,7 @@ has to check them — both break the premise the derivation rests on.
             "@id": "class1"
           },
           "dbp:variableScaleType": "Interval",
-          "dbp:dbpaDateTimeFormat": "%Y-%m-%dT%H:%M:%S",
+          "dbp:dbpaDatetimeFormat": "%Y-%m-%dT%H:%M:%S",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 0
         },
@@ -354,7 +354,7 @@ has to check them — both break the premise the derivation rests on.
             "@id": "class1"
           },
           "dbp:variableScaleType": "Interval",
-          "dbp:dbpaDateTimeFormat": "%Y-%m-%dT%H:%M:%S",
+          "dbp:dbpaDatetimeFormat": "%Y-%m-%dT%H:%M:%S",
           "dbp:dbpaCompressParentListID": 0,
           "dbp:dbpaCompressColumnID": 1
         },
