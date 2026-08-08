@@ -261,10 +261,10 @@ message RealWorldDataStructureProperty {    // Class for describing data metadat
     optional string dbpaTimestampUnitText = 77;                 // Value representing the time unit of timestamp when data field is of datetime type
 
     // Numeric range etc
-    optional string rangeMin = 80;          // Minimum value of numeric range
-    optional string rangeMax = 81;          // Maximum value of numeric range
-    optional int32 precisionBytes = 82;     // Number of bytes used for numeric representation during compression
-    optional int32 decimalPlaces = 83;      // How many decimal places to retain when compressing float values
+    optional string rangeMin = 80;          // Minimum value of numeric range. On a CompressionHint it narrows the range of the DataFieldType the hint belongs to, down to the subset that use case actually covers, so precisionBytes follows from that subset rather than from the widest range the field type has to allow; omitted, the value of the DataFieldType applies. rangeMin and rangeMax are inherited one by one, so a hint may narrow one end and leave the other inherited. A hint range is expected to stay inside the range of its DataFieldType; this vocabulary carries no constraint language, so consumers are the ones that have to check it
+    optional string rangeMax = 81;          // Maximum value of numeric range. On a CompressionHint it narrows the range of the DataFieldType the hint belongs to, down to the subset that use case actually covers, so precisionBytes follows from that subset rather than from the widest range the field type has to allow; omitted, the value of the DataFieldType applies. rangeMin and rangeMax are inherited one by one, so a hint may narrow one end and leave the other inherited. A hint range is expected to stay inside the range of its DataFieldType; this vocabulary carries no constraint language, so consumers are the ones that have to check it
+    optional int32 precisionBytes = 82;     // Number of bytes used for numeric representation during compression. It follows from rangeMin / rangeMax and decimalPlaces: how many bytes it takes to represent that range at that granularity. On a CompressionHint the inputs are the ones that apply to that hint, i.e. the narrowed range where the hint declares one and the range of the DataFieldType where it does not
+    optional int32 decimalPlaces = 83;      // How many decimal places to retain when compressing float values. On a CompressionHint it is inherited the same way the two range ends are: omitted, the value of the DataFieldType applies; declared, it applies to that hint. It is the third input to precisionBytes, alongside rangeMin and rangeMax. A declared value is expected to keep no more places than the DataFieldType does (it coarsens, never refines, just as a declared range end narrows); this vocabulary carries no constraint language, so consumers are the ones that have to check it
     optional string baseIncrement = 84;     // Most frequent value of differences when data field is monotonically increasing
     optional bool useBaseIncrement = 85;    // Whether the most frequent value of differences should be used for compression when data field is monotonically increasing
 
@@ -574,12 +574,18 @@ message CompressionHint {                                   // Recommended compr
     optional string accuracyNote = 6;                       // Explanation of the error tolerable in this use case
 
     // Recommended values (compression-related properties of RealWorldDataStructureProperty reused as recommendations)
-    optional int32 decimalPlaces = 10;
+    optional int32 decimalPlaces = 10;                      // Inherited one property at a time like rangeMin / rangeMax below: omitted, the value of the DataFieldType applies. Declared, it is expected to keep no more places than the DataFieldType does
     optional float lossyCompressionRate = 11;
-    optional int32 precisionBytes = 12;
+    optional int32 precisionBytes = 12;                     // Follows from decimalPlaces and rangeMin / rangeMax, taking the values that apply to this hint (declared here where present, inherited from the DataFieldType otherwise)
     optional bool useFFTCompression = 13;
     optional bool useRunLength = 14;
     optional bool useBaseIncrement = 15;
     optional string dbpaDatetimePrecision = 16;
     optional bool isMostlyIncremental = 17;
+
+    // Value range this use case covers. Omitted, the hint inherits the range of the DataFieldType it belongs to; declared, it narrows that range to the subset the use case actually spans, so precisionBytes follows from that subset rather than from the widest range the field type has to allow.
+    // The two ends are inherited one by one: declaring only rangeMin leaves rangeMax inherited, and that is a valid hint rather than an incomplete one.
+    // A declared end is expected to stay inside the corresponding end of the DataFieldType (it narrows, never widens). This vocabulary carries no constraint language, so nothing here rejects a wider value; consumers that derive precisionBytes are the ones that have to check it.
+    optional string rangeMin = 18;
+    optional string rangeMax = 19;
 }

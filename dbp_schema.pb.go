@@ -1890,10 +1890,10 @@ type RealWorldDataStructureProperty struct {
 	DbpaTimestampRepresentingColumns    []int32 `protobuf:"varint,76,rep,packed,name=dbpaTimestampRepresentingColumns,proto3" json:"dbpaTimestampRepresentingColumns,omitempty"`      // List of column IDs when data field is of datetime type
 	DbpaTimestampUnitText               *string `protobuf:"bytes,77,opt,name=dbpaTimestampUnitText,proto3,oneof" json:"dbpaTimestampUnitText,omitempty"`                              // Value representing the time unit of timestamp when data field is of datetime type
 	// Numeric range etc
-	RangeMin         *string `protobuf:"bytes,80,opt,name=rangeMin,proto3,oneof" json:"rangeMin,omitempty"`                  // Minimum value of numeric range
-	RangeMax         *string `protobuf:"bytes,81,opt,name=rangeMax,proto3,oneof" json:"rangeMax,omitempty"`                  // Maximum value of numeric range
-	PrecisionBytes   *int32  `protobuf:"varint,82,opt,name=precisionBytes,proto3,oneof" json:"precisionBytes,omitempty"`     // Number of bytes used for numeric representation during compression
-	DecimalPlaces    *int32  `protobuf:"varint,83,opt,name=decimalPlaces,proto3,oneof" json:"decimalPlaces,omitempty"`       // How many decimal places to retain when compressing float values
+	RangeMin         *string `protobuf:"bytes,80,opt,name=rangeMin,proto3,oneof" json:"rangeMin,omitempty"`                  // Minimum value of numeric range. On a CompressionHint it narrows the range of the DataFieldType the hint belongs to, down to the subset that use case actually covers, so precisionBytes follows from that subset rather than from the widest range the field type has to allow; omitted, the value of the DataFieldType applies. rangeMin and rangeMax are inherited one by one, so a hint may narrow one end and leave the other inherited. A hint range is expected to stay inside the range of its DataFieldType; this vocabulary carries no constraint language, so consumers are the ones that have to check it
+	RangeMax         *string `protobuf:"bytes,81,opt,name=rangeMax,proto3,oneof" json:"rangeMax,omitempty"`                  // Maximum value of numeric range. On a CompressionHint it narrows the range of the DataFieldType the hint belongs to, down to the subset that use case actually covers, so precisionBytes follows from that subset rather than from the widest range the field type has to allow; omitted, the value of the DataFieldType applies. rangeMin and rangeMax are inherited one by one, so a hint may narrow one end and leave the other inherited. A hint range is expected to stay inside the range of its DataFieldType; this vocabulary carries no constraint language, so consumers are the ones that have to check it
+	PrecisionBytes   *int32  `protobuf:"varint,82,opt,name=precisionBytes,proto3,oneof" json:"precisionBytes,omitempty"`     // Number of bytes used for numeric representation during compression. It follows from rangeMin / rangeMax and decimalPlaces: how many bytes it takes to represent that range at that granularity. On a CompressionHint the inputs are the ones that apply to that hint, i.e. the narrowed range where the hint declares one and the range of the DataFieldType where it does not
+	DecimalPlaces    *int32  `protobuf:"varint,83,opt,name=decimalPlaces,proto3,oneof" json:"decimalPlaces,omitempty"`       // How many decimal places to retain when compressing float values. On a CompressionHint it is inherited the same way the two range ends are: omitted, the value of the DataFieldType applies; declared, it applies to that hint. It is the third input to precisionBytes, alongside rangeMin and rangeMax. A declared value is expected to keep no more places than the DataFieldType does (it coarsens, never refines, just as a declared range end narrows); this vocabulary carries no constraint language, so consumers are the ones that have to check it
 	BaseIncrement    *string `protobuf:"bytes,84,opt,name=baseIncrement,proto3,oneof" json:"baseIncrement,omitempty"`        // Most frequent value of differences when data field is monotonically increasing
 	UseBaseIncrement *bool   `protobuf:"varint,85,opt,name=useBaseIncrement,proto3,oneof" json:"useBaseIncrement,omitempty"` // Whether the most frequent value of differences should be used for compression when data field is monotonically increasing
 	// Value samples,  enumerated values, and structure path
@@ -4550,16 +4550,21 @@ type CompressionHint struct {
 	Description  *string                `protobuf:"bytes,5,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	AccuracyNote *string                `protobuf:"bytes,6,opt,name=accuracyNote,proto3,oneof" json:"accuracyNote,omitempty"` // Explanation of the error tolerable in this use case
 	// Recommended values (compression-related properties of RealWorldDataStructureProperty reused as recommendations)
-	DecimalPlaces         *int32   `protobuf:"varint,10,opt,name=decimalPlaces,proto3,oneof" json:"decimalPlaces,omitempty"`
+	DecimalPlaces         *int32   `protobuf:"varint,10,opt,name=decimalPlaces,proto3,oneof" json:"decimalPlaces,omitempty"` // Inherited one property at a time like rangeMin / rangeMax below: omitted, the value of the DataFieldType applies. Declared, it is expected to keep no more places than the DataFieldType does
 	LossyCompressionRate  *float32 `protobuf:"fixed32,11,opt,name=lossyCompressionRate,proto3,oneof" json:"lossyCompressionRate,omitempty"`
-	PrecisionBytes        *int32   `protobuf:"varint,12,opt,name=precisionBytes,proto3,oneof" json:"precisionBytes,omitempty"`
+	PrecisionBytes        *int32   `protobuf:"varint,12,opt,name=precisionBytes,proto3,oneof" json:"precisionBytes,omitempty"` // Follows from decimalPlaces and rangeMin / rangeMax, taking the values that apply to this hint (declared here where present, inherited from the DataFieldType otherwise)
 	UseFFTCompression     *bool    `protobuf:"varint,13,opt,name=useFFTCompression,proto3,oneof" json:"useFFTCompression,omitempty"`
 	UseRunLength          *bool    `protobuf:"varint,14,opt,name=useRunLength,proto3,oneof" json:"useRunLength,omitempty"`
 	UseBaseIncrement      *bool    `protobuf:"varint,15,opt,name=useBaseIncrement,proto3,oneof" json:"useBaseIncrement,omitempty"`
 	DbpaDatetimePrecision *string  `protobuf:"bytes,16,opt,name=dbpaDatetimePrecision,proto3,oneof" json:"dbpaDatetimePrecision,omitempty"`
 	IsMostlyIncremental   *bool    `protobuf:"varint,17,opt,name=isMostlyIncremental,proto3,oneof" json:"isMostlyIncremental,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
+	// Value range this use case covers. Omitted, the hint inherits the range of the DataFieldType it belongs to; declared, it narrows that range to the subset the use case actually spans, so precisionBytes follows from that subset rather than from the widest range the field type has to allow.
+	// The two ends are inherited one by one: declaring only rangeMin leaves rangeMax inherited, and that is a valid hint rather than an incomplete one.
+	// A declared end is expected to stay inside the corresponding end of the DataFieldType (it narrows, never widens). This vocabulary carries no constraint language, so nothing here rejects a wider value; consumers that derive precisionBytes are the ones that have to check it.
+	RangeMin      *string `protobuf:"bytes,18,opt,name=rangeMin,proto3,oneof" json:"rangeMin,omitempty"`
+	RangeMax      *string `protobuf:"bytes,19,opt,name=rangeMax,proto3,oneof" json:"rangeMax,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CompressionHint) Reset() {
@@ -4688,6 +4693,20 @@ func (x *CompressionHint) GetIsMostlyIncremental() bool {
 		return *x.IsMostlyIncremental
 	}
 	return false
+}
+
+func (x *CompressionHint) GetRangeMin() string {
+	if x != nil && x.RangeMin != nil {
+		return *x.RangeMin
+	}
+	return ""
+}
+
+func (x *CompressionHint) GetRangeMax() string {
+	if x != nil && x.RangeMax != nil {
+		return *x.RangeMax
+	}
+	return ""
 }
 
 var File_dbp_schema_proto protoreflect.FileDescriptor
@@ -5468,7 +5487,7 @@ const file_dbp_schema_proto_rawDesc = "" +
 	"\x11_isMostlyConstantB\x16\n" +
 	"\x14_isMostlyIncrementalB\r\n" +
 	"\v_isOptionalB\r\n" +
-	"\v_isNullable\"\xc6\x06\n" +
+	"\v_isNullable\"\xa2\a\n" +
 	"\x0fCompressionHint\x12\x13\n" +
 	"\x02id\x18\x01 \x01(\tH\x00R\x02id\x88\x01\x01\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x01R\x04name\x88\x01\x01\x12\x15\n" +
@@ -5485,7 +5504,9 @@ const file_dbp_schema_proto_rawDesc = "" +
 	"R\fuseRunLength\x88\x01\x01\x12/\n" +
 	"\x10useBaseIncrement\x18\x0f \x01(\bH\vR\x10useBaseIncrement\x88\x01\x01\x129\n" +
 	"\x15dbpaDatetimePrecision\x18\x10 \x01(\tH\fR\x15dbpaDatetimePrecision\x88\x01\x01\x125\n" +
-	"\x13isMostlyIncremental\x18\x11 \x01(\bH\rR\x13isMostlyIncremental\x88\x01\x01B\x05\n" +
+	"\x13isMostlyIncremental\x18\x11 \x01(\bH\rR\x13isMostlyIncremental\x88\x01\x01\x12\x1f\n" +
+	"\brangeMin\x18\x12 \x01(\tH\x0eR\brangeMin\x88\x01\x01\x12\x1f\n" +
+	"\brangeMax\x18\x13 \x01(\tH\x0fR\brangeMax\x88\x01\x01B\x05\n" +
 	"\x03_idB\a\n" +
 	"\x05_nameB\x06\n" +
 	"\x04_urlB\n" +
@@ -5500,7 +5521,9 @@ const file_dbp_schema_proto_rawDesc = "" +
 	"\r_useRunLengthB\x13\n" +
 	"\x11_useBaseIncrementB\x18\n" +
 	"\x16_dbpaDatetimePrecisionB\x16\n" +
-	"\x14_isMostlyIncremental*]\n" +
+	"\x14_isMostlyIncrementalB\v\n" +
+	"\t_rangeMinB\v\n" +
+	"\t_rangeMax*]\n" +
 	"#ConversionCharacteristicEnumeration\x12\x18\n" +
 	"\x14SINGLE_VALUE_REPLACE\x10\x00\x12\r\n" +
 	"\tCOL_MERGE\x10\x01\x12\r\n" +

@@ -1725,7 +1725,7 @@
     {
       "@id": "dbp:rangeMin",
       "@type": "rdf:Property",
-      "rdfs:comment": "Minimum value of numeric range",
+      "rdfs:comment": "Minimum value of numeric range. On a CompressionHint it narrows the range of the DataFieldType the hint belongs to, down to the subset that use case actually covers, so precisionBytes follows from that subset rather than from the widest range the field type has to allow; omitted, the value of the DataFieldType applies. rangeMin and rangeMax are inherited one by one, so a hint may narrow one end and leave the other inherited. A hint range is expected to stay inside the range of its DataFieldType; this vocabulary carries no constraint language, so consumers are the ones that have to check it",
       "rdfs:label": "rangeMin",
       "schema:domainIncludes": [
         {
@@ -1733,6 +1733,9 @@
         },
         {
           "@id": "dbp:DataFieldType"
+        },
+        {
+          "@id": "dbp:CompressionHint"
         }
       ],
       "schema:rangeIncludes": {
@@ -1742,7 +1745,7 @@
     {
       "@id": "dbp:rangeMax",
       "@type": "rdf:Property",
-      "rdfs:comment": "Maximum value of numeric range",
+      "rdfs:comment": "Maximum value of numeric range. On a CompressionHint it narrows the range of the DataFieldType the hint belongs to, down to the subset that use case actually covers, so precisionBytes follows from that subset rather than from the widest range the field type has to allow; omitted, the value of the DataFieldType applies. rangeMin and rangeMax are inherited one by one, so a hint may narrow one end and leave the other inherited. A hint range is expected to stay inside the range of its DataFieldType; this vocabulary carries no constraint language, so consumers are the ones that have to check it",
       "rdfs:label": "rangeMax",
       "schema:domainIncludes": [
         {
@@ -1750,6 +1753,9 @@
         },
         {
           "@id": "dbp:DataFieldType"
+        },
+        {
+          "@id": "dbp:CompressionHint"
         }
       ],
       "schema:rangeIncludes": {
@@ -1759,7 +1765,7 @@
     {
       "@id": "dbp:precisionBytes",
       "@type": "rdf:Property",
-      "rdfs:comment": "Number of bytes used for numeric representation during compression",
+      "rdfs:comment": "Number of bytes used for numeric representation during compression. It follows from rangeMin / rangeMax and decimalPlaces: how many bytes it takes to represent that range at that granularity. On a CompressionHint the inputs are the ones that apply to that hint, i.e. the narrowed range where the hint declares one and the range of the DataFieldType where it does not",
       "rdfs:label": "precisionBytes",
       "schema:domainIncludes": [
         {
@@ -1776,7 +1782,7 @@
     {
       "@id": "dbp:decimalPlaces",
       "@type": "rdf:Property",
-      "rdfs:comment": "How many decimal places to retain when compressing float values",
+      "rdfs:comment": "How many decimal places to retain when compressing float values. On a CompressionHint it is inherited the same way the two range ends are: omitted, the value of the DataFieldType applies; declared, it applies to that hint. It is the third input to precisionBytes, alongside rangeMin and rangeMax. A declared value is expected to keep no more places than the DataFieldType does (it coarsens, never refines, just as a declared range end narrows); this vocabulary carries no constraint language, so consumers are the ones that have to check it",
       "rdfs:label": "decimalPlaces",
       "schema:domainIncludes": [
         {
@@ -3067,6 +3073,9 @@
       "@type": "rdf:Property",
       "rdfs:comment": "Alternative notations of the field name (used as search keys)",
       "rdfs:label": "aliases",
+      "rdfs:subPropertyOf": {
+        "@id": "schema:alternateName"
+      },
       "schema:domainIncludes": {
         "@id": "dbp:DataFieldType"
       },
@@ -3151,6 +3160,12 @@
         },
         {
           "@id": "dbp:isMostlyIncremental"
+        },
+        {
+          "@id": "dbp:rangeMin"
+        },
+        {
+          "@id": "dbp:rangeMax"
         }
       ]
     },
