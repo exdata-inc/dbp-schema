@@ -531,16 +531,16 @@ pub struct RealWorldDataStructureProperty {
     pub dbpa_timestamp_unit_text: ::core::option::Option<::prost::alloc::string::String>,
     /// Numeric range etc
     ///
-    /// Minimum value of numeric range
+    /// Minimum value of numeric range. On a CompressionHint it narrows the range of the DataFieldType the hint belongs to, down to the subset that use case actually covers, so precisionBytes follows from that subset rather than from the widest range the field type has to allow; omitted, the value of the DataFieldType applies. rangeMin and rangeMax are inherited one by one, so a hint may narrow one end and leave the other inherited. A hint range is expected to stay inside the range of its DataFieldType; this vocabulary carries no constraint language, so consumers are the ones that have to check it
     #[prost(string, optional, tag = "80")]
     pub range_min: ::core::option::Option<::prost::alloc::string::String>,
-    /// Maximum value of numeric range
+    /// Maximum value of numeric range. On a CompressionHint it narrows the range of the DataFieldType the hint belongs to, down to the subset that use case actually covers, so precisionBytes follows from that subset rather than from the widest range the field type has to allow; omitted, the value of the DataFieldType applies. rangeMin and rangeMax are inherited one by one, so a hint may narrow one end and leave the other inherited. A hint range is expected to stay inside the range of its DataFieldType; this vocabulary carries no constraint language, so consumers are the ones that have to check it
     #[prost(string, optional, tag = "81")]
     pub range_max: ::core::option::Option<::prost::alloc::string::String>,
-    /// Number of bytes used for numeric representation during compression
+    /// Number of bytes used for numeric representation during compression. It follows from rangeMin / rangeMax and decimalPlaces: how many bytes it takes to represent that range at that granularity. On a CompressionHint the inputs are the ones that apply to that hint, i.e. the narrowed range where the hint declares one and the range of the DataFieldType where it does not
     #[prost(int32, optional, tag = "82")]
     pub precision_bytes: ::core::option::Option<i32>,
-    /// How many decimal places to retain when compressing float values
+    /// How many decimal places to retain when compressing float values. On a CompressionHint it is inherited the same way the two range ends are: omitted, the value of the DataFieldType applies; declared, it applies to that hint. It is the third input to precisionBytes, alongside rangeMin and rangeMax. A declared value is expected to keep no more places than the DataFieldType does (it coarsens, never refines, just as a declared range end narrows); this vocabulary carries no constraint language, so consumers are the ones that have to check it
     #[prost(int32, optional, tag = "83")]
     pub decimal_places: ::core::option::Option<i32>,
     /// Most frequent value of differences when data field is monotonically increasing
@@ -1128,10 +1128,13 @@ pub struct CompressionHint {
     #[prost(string, optional, tag = "6")]
     pub accuracy_note: ::core::option::Option<::prost::alloc::string::String>,
     /// Recommended values (compression-related properties of RealWorldDataStructureProperty reused as recommendations)
+    ///
+    /// Inherited one property at a time like rangeMin / rangeMax below: omitted, the value of the DataFieldType applies. Declared, it is expected to keep no more places than the DataFieldType does
     #[prost(int32, optional, tag = "10")]
     pub decimal_places: ::core::option::Option<i32>,
     #[prost(float, optional, tag = "11")]
     pub lossy_compression_rate: ::core::option::Option<f32>,
+    /// Follows from decimalPlaces and rangeMin / rangeMax, taking the values that apply to this hint (declared here where present, inherited from the DataFieldType otherwise)
     #[prost(int32, optional, tag = "12")]
     pub precision_bytes: ::core::option::Option<i32>,
     #[prost(bool, optional, tag = "13")]
@@ -1144,6 +1147,13 @@ pub struct CompressionHint {
     pub dbpa_datetime_precision: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(bool, optional, tag = "17")]
     pub is_mostly_incremental: ::core::option::Option<bool>,
+    /// Value range this use case covers. Omitted, the hint inherits the range of the DataFieldType it belongs to; declared, it narrows that range to the subset the use case actually spans, so precisionBytes follows from that subset rather than from the widest range the field type has to allow.
+    /// The two ends are inherited one by one: declaring only rangeMin leaves rangeMax inherited, and that is a valid hint rather than an incomplete one.
+    /// A declared end is expected to stay inside the corresponding end of the DataFieldType (it narrows, never widens). This vocabulary carries no constraint language, so nothing here rejects a wider value; consumers that derive precisionBytes are the ones that have to check it.
+    #[prost(string, optional, tag = "18")]
+    pub range_min: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag = "19")]
+    pub range_max: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Enumerates conversion characteristics, such as single-value-replace, col-merge, or row-merge.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
