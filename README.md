@@ -18,6 +18,16 @@ cargo build
 protoc -I . --go_out=paths=source_relative:. --experimental_allow_proto3_optional --go_opt=Mdbp_schema.proto=exdata.co.jp/project/protos/dbp_schema  dbp_schema.proto
 ```
 
+## Check
+
+The examples below are written by hand, while `dbp-schema.jsonld` is generated from
+`dbp_schema.proto`, so a term can be misspelled here without anything failing. This checks that
+every `dbp:` term the README uses is one the vocabulary defines:
+
+```
+python3 check_readme_terms.py
+```
+
 ## Data Field Catalogue
 
 `dbp:DataFieldType` describes a *kind* of data field independent of any dataset, and
@@ -139,8 +149,8 @@ has to check them — both break the premise the derivation rests on.
           },
           "dbp:variableScaleType": "Interval",
           "dbp:dbpaDatetimeFormat": "%Y-%m-%dT%H:%M:%S",
-          "dbp:dbpaCompressParentListID": 0,
-          "dbp:dbpaCompressColumnID": 0
+          "dbp:dbpaCompressParentListId": 0,
+          "dbp:dbpaCompressColumnId": 0
         },
         {
           "@id": "id",
@@ -156,8 +166,8 @@ has to check them — both break the premise the derivation rests on.
           },
           "dbp:variableScaleType": "Nominal",
           "dbp:isEnumValue": false,
-          "dbp:dbpaCompressParentListID": 0,
-          "dbp:dbpaCompressColumnID": 1
+          "dbp:dbpaCompressParentListId": 0,
+          "dbp:dbpaCompressColumnId": 1
         },
         {
           "@id": "seq",
@@ -172,8 +182,8 @@ has to check them — both break the premise the derivation rests on.
             "@id": "class1"
           },
           "dbp:variableScaleType": "Ordinal",
-          "dbp:dbpaCompressParentListID": 0,
-          "dbp:dbpaCompressColumnID": 2,
+          "dbp:dbpaCompressParentListId": 0,
+          "dbp:dbpaCompressColumnId": 2,
           "dbp:rangeMin": "100",
           "dbp:rangeMax": "999999",
           "dbp:baseIncrement": 1,
@@ -193,8 +203,8 @@ has to check them — both break the premise the derivation rests on.
             "@id": "class1"
           },
           "dbp:variableScaleType": "Proportional",
-          "dbp:dbpaCompressParentListID": 0,
-          "dbp:dbpaCompressColumnID": 3,
+          "dbp:dbpaCompressParentListId": 0,
+          "dbp:dbpaCompressColumnId": 3,
           "dbp:rangeMin": "35.15300000",
           "dbp:rangeMax": "35.15999999",
           "dbp:decimalPlaces:": 6,
@@ -214,8 +224,8 @@ has to check them — both break the premise the derivation rests on.
             "@id": "class1"
           },
           "dbp:variableScaleType": "Interval",
-          "dbp:dbpaCompressParentListID": 0,
-          "dbp:dbpaCompressColumnID": 4,
+          "dbp:dbpaCompressParentListId": 0,
+          "dbp:dbpaCompressColumnId": 4,
           "dbp:rangeMin": "136.9700000",
           "dbp:rangeMax": "136.9899999",
           "dbp:decimalPlaces:": 5,
@@ -338,8 +348,8 @@ has to check them — both break the premise the derivation rests on.
           },
           "dbp:variableScaleType": "Interval",
           "dbp:dbpaDatetimeFormat": "%Y-%m-%dT%H:%M:%S",
-          "dbp:dbpaCompressParentListID": 0,
-          "dbp:dbpaCompressColumnID": 0
+          "dbp:dbpaCompressParentListId": 0,
+          "dbp:dbpaCompressColumnId": 0
         },
         {
           "@id": "dateEnd",
@@ -355,8 +365,8 @@ has to check them — both break the premise the derivation rests on.
           },
           "dbp:variableScaleType": "Interval",
           "dbp:dbpaDatetimeFormat": "%Y-%m-%dT%H:%M:%S",
-          "dbp:dbpaCompressParentListID": 0,
-          "dbp:dbpaCompressColumnID": 1
+          "dbp:dbpaCompressParentListId": 0,
+          "dbp:dbpaCompressColumnId": 1
         },
         {
           "@id": "id",
@@ -372,8 +382,8 @@ has to check them — both break the premise the derivation rests on.
           },
           "dbp:variableScaleType": "Nominal",
           "dbp:isEnumValue": false,
-          "dbp:dbpaCompressParentListID": 0,
-          "dbp:dbpaCompressColumnID": 2
+          "dbp:dbpaCompressParentListId": 0,
+          "dbp:dbpaCompressColumnId": 2
         },
         {
           "@id": "deviceType",
@@ -389,8 +399,8 @@ has to check them — both break the premise the derivation rests on.
           },
           "dbp:variableScaleType": "Nominal",
           "dbp:isEnumValue": true,
-          "dbp:dbpaCompressParentListID": 0,
-          "dbp:dbpaCompressColumnID": 3
+          "dbp:dbpaCompressParentListId": 0,
+          "dbp:dbpaCompressColumnId": 3
         },
         {
           "@id": "points",
@@ -404,8 +414,8 @@ has to check them — both break the premise the derivation rests on.
           "schema:domainIncludes": {
             "@id": "class1"
           },
-          "dbp:dbpaCompressParentListID": 0,
-          "dbp:dbpaCompressColumnID": 4,
+          "dbp:dbpaCompressParentListId": 0,
+          "dbp:dbpaCompressColumnId": 4,
           "dbp:dbpaChildrenLists": [
             1
           ]
@@ -454,8 +464,8 @@ has to check them — both break the premise the derivation rests on.
             "@id": "class2"
           },
           "dbp:variableScaleType": "Proportional",
-          "dbp:dbpaCompressParentListID": 1,
-          "dbp:dbpaCompressColumnID": 0,
+          "dbp:dbpaCompressParentListId": 1,
+          "dbp:dbpaCompressColumnId": 0,
           "dbp:rangeMin": "35.153000000",
           "dbp:rangeMax": "35.159999999",
           "dbp:decimalPlaces:": 6,
@@ -475,8 +485,8 @@ has to check them — both break the premise the derivation rests on.
             "@id": "class2"
           },
           "dbp:variableScaleType": "Interval",
-          "dbp:dbpaCompressParentListID": 1,
-          "dbp:dbpaCompressColumnID": 1,
+          "dbp:dbpaCompressParentListId": 1,
+          "dbp:dbpaCompressColumnId": 1,
           "dbp:rangeMin": "136.97000000",
           "dbp:rangeMax": "136.98999999",
           "dbp:decimalPlaces:": 7,
