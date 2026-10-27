@@ -3,6 +3,7 @@
 JSON-LD schema of metadata for [DataBrewingPlatform](https://github.com/exdata-inc/DataBrewingPlatform)
 
 It also contains schema for RWD Profile (`dbp:RealWorldDataFieldProfile`), which describes structure of Real-World Data.
+What each property of an RWD Profile means is described in [docs/rwd-profile-properties.md](docs/rwd-profile-properties.md) (in Japanese).
 
 ## Build
 
