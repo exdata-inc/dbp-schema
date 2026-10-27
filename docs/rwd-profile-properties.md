@@ -165,9 +165,10 @@ README の [RWD Profile Example](../README.md#rwd-profile-example) に、CSV と
 | <a id="schema-rangeincludes"></a>`schema:rangeIncludes` | `IdRef`（複数） | **中身** への参照（親 → 子）。リストなら「要素のクラス」、クラスなら「持っているプロパティ」を指す |
 | <a id="schema-domainincludes"></a>`schema:domainIncludes` | `IdRef`（複数） | **持ち主** への参照（子 → 親） |
 
-- **プロパティ（列）の `schema:rangeIncludes` には、2 つの使い方があります。**
+- **`schema:rangeIncludes` は、構造ノードへの参照のほかに、値の型への参照にも使います。**
   - 入れ子のとき: 子のリスト・クラスのノードを指す（`{ "@id": "list2" }`）
   - 入れ子でないとき: その列の値の型を表す schema.org のクラスを指す（`{ "@id": "schema:Integer" }` など）。5.3 節の `dbp:itemType` と対になります。
+  - **リストのノード** でも、要素がスカラ（JSON の `[1, 2, 3]` など）のときは、要素の型を指せます。型の参照先は `@graph` にノードとして存在しません。1 つのリストの中で、型への参照と構造ノードへの参照が並ぶこともあります。
 - 語彙の型は「複数（`repeated`）」ですが、JSON-LD ではオブジェクト 1 つで書いても、配列で書いても、同じ意味です。**読む側は両方を受け付ける** 必要があります。
 
 ### 4.2 リスト `dbp:DbpList`
