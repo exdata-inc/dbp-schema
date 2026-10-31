@@ -208,7 +208,7 @@ README の [RWD Profile Example](../README.md#rwd-profile-example) に、CSV と
 ## 5. プロパティ（列）`dbp:RealWorldDataStructureProperty`
 
 データの 1 つの列（JSON ではキー）の、型・値の特徴・圧縮のヒントを表します。
-データフィールドカタログの `dbp:DataFieldType` と `dbp:CompressionHint` は、このクラスのプロパティの多くを **同じ名前のまま再利用** しています（`dbp:itemType` `dbp:rangeMin` `dbp:decimalPlaces` など）。再利用したときの読み方は、README の [Data Field Catalogue](../README.md#data-field-catalogue) を見てください。
+データフィールドカタログの `dbp:DataFieldType` と `dbp:CompressionHint` は、このクラスのプロパティの多くを **同じ名前のまま再利用** しています（`dbp:itemType` `dbp:rangeMin` `dbp:decimalPlaces` など）。データフィールドカタログの概要は README の [Data Field Catalogue](../README.md#data-field-catalogue) にあります（`dbp:CompressionHint` に付けたときの読み方は [5.7 節](#57-数値の範囲と精度)）。
 
 ### 5.1 基本
 
@@ -354,8 +354,8 @@ SemantiPack で圧縮するときの、番号と設定です。
 | 2 | **`ID` と `Id` の綴り。** 語彙は `dbp:dbpaCompressParentListId` / `dbp:dbpaCompressColumnId`（`Id`）です。一方、README の例と SemantiPack が読み書きするキーは `dbp:dbpaCompressParentListID` / `dbp:dbpaCompressColumnID`（`ID`）です。リストの `dbp:dbpaCompressListID` とクラスの `dbp:dbpaCompressRowID` は、どちらも `ID` で一致しています。 |
 | 3 | **`dbp:dbpaTimestampRepresentingColumns` / `dbp:dbpaTimestampUnitText` の付く場所。** 語彙は `dbp:RealWorldDataStructureProperty` のプロパティとして定義しています。SemantiPack は、時刻が複数の列に分かれているとき、これを **リストのノード** に書きます。 |
 | 4 | **`dbp:dbpaChildrenLists` の付く場所。** 語彙は `dbp:DbpList` のプロパティです。README の例と SemantiPack は、入れ子のリストを持つ **列（プロパティ）のノード** に書きます。 |
-| 5 | **`rdfs:comment` と `schema:comment`。** 語彙は `schema:comment` を定義し、README の例は `rdfs:comment` と書いています。 |
-| 6 | **`dbp:itemType` の値。** 語彙の enum に無い `list` / `class`（入れ子の印）や、JSON 由来の `Null` が使われます。`String(32)` のように長さを足した書き方も README にあります。 |
-| 7 | **`@context` の `dbp`。** `dbp-schema.jsonld` は `http://exdata.co.jp/dbp/schema/`、README の例は `https://exdata.co.jp/dbp/schema/` で、`http` と `https` が違います。 |
+| 5 | **`rdfs:comment` と `schema:comment`。** 語彙（`dbp-schema.jsonld`）は `schema:comment` を定義しています。一方、`.proto` のコメントと README の例は `rdfs:comment` と書いています。 |
+| 6 | **`dbp:itemType` の値。** 語彙の enum に無い `list` / `class`（入れ子の印）が使われます。`String(32)` のように長さを足した書き方も README にあります。なお `NULL` は enum にありますが、SemantiPack は値が `null` だけの列も `String` として出力します。 |
+| 7 | **`@context` の名前空間。** `dbp` は、`dbp-schema.jsonld` が `http://exdata.co.jp/dbp/schema/`、README の例が `https://exdata.co.jp/dbp/schema/` で、`http` と `https` が違います。README の例の `rdf` も `https://www.w3.org/1999/02/22-rdf-syntax-ns#` で、RDF の名前空間（`http://…`）と違います。 |
 | 8 | **README の例の綴り。** `"dbp:decimalPlaces:"`（名前のあとに `:` が余計に付いている）が、README の CSV・JSON の例に出てきます。 |
 | 9 | **この語彙に無いプロパティ。** SemantiPack は、語彙に未定義のキーも出力します（ページ分割圧縮の `dbp:dbpaPageSize` `dbp:dbpaPageInfos`、圧縮レイヤの `dbp:spaLayers` `dbp:spaForceGeneralLayer`、`dbp:polynomialDegree`、CSV の `dbp:csvIsRowTailCollapsed`、XLSX の `dbp:xlsxSheets` など）。意味は SemantiPack 側の文書に書かれています。 |
